@@ -39,6 +39,8 @@ class AuthRepositoryImpl(
                     emit(Resource.Success(responseBody.data?.toUserCredential()))
                 }
 
+                HttpStatusCode.Conflict -> emit(Resource.Error(context.getString(R.string.username_already_exists)))
+
                 HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_is_error)))
 
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
