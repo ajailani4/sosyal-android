@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Sosyal</string>
+
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="have_account">Have an account?</string>
+    <string name="login_here">Login here</string>
 </resources>
