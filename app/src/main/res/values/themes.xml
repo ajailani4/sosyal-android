@@ -2,6 +2,8 @@
 <resources>
 
     <style name="Theme.Sosyal" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorAccent">@color/secondary</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 </resources>
