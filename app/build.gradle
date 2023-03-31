@@ -23,13 +23,13 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://b82f-114-79-5-132.ngrok.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://2376-114-79-5-213.ngrok.io\"")
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://b82f-114-79-5-132.ngrok.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://2376-114-79-5-213.ngrok.io\"")
         }
     }
     compileOptions {
@@ -65,7 +65,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-compose:2.6.0-alpha04'
 
     // Koin
-    implementation 'io.insert-koin:koin-android:3.4.0'
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
     // Ktor Client
     implementation "io.ktor:ktor-client-core:$ktor_version"
