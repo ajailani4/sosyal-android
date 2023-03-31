@@ -1,0 +1,47 @@
+package com.sosyal.app.data.repository
+
+import android.content.Context
+import com.sosyal.app.R
+import com.sosyal.app.data.mapper.toUserCredential
+import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
+import com.sosyal.app.data.remote.dto.UserCredentialDto
+import com.sosyal.app.data.remote.dto.request.RegisterRequest
+import com.sosyal.app.data.remote.dto.response.BaseResponse
+import com.sosyal.app.domain.repository.AuthRepository
+import com.sosyal.app.util.Resource
+import io.ktor.client.call.*
+import io.ktor.http.*
+import kotlinx.coroutines.flow.flow
+
+class AuthRepositoryImpl(
+    private val authRemoteDataSource: AuthRemoteDataSource,
+    private val context: Context
+) : AuthRepository {
+    override fun register(
+        name: String,
+        email: String,
+        username: String,
+        password: String
+    ) =
+        flow {
+            val response = authRemoteDataSource.register(
+                RegisterRequest(
+                    name = name,
+                    email = email,
+                    username = username,
+                    password = password
+                )
+            )
+
+            when (response.status) {
+                HttpStatusCode.Created -> {
+                    val responseBody: BaseResponse<UserCredentialDto> = response.body()
+                    emit(Resource.Success(responseBody.data?.toUserCredential()))
+                }
+
+                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_is_error)))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
+}

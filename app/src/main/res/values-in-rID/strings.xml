@@ -9,4 +9,7 @@
     <string name="password">Kata Sandi</string>
     <string name="have_account">Sudah punya akun?</string>
     <string name="login_here">Masuk di sini</string>
+
+    <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
+    <string name="server_is_error">Server bermasalah</string>
 </resources>
