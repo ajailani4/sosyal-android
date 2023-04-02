@@ -1,6 +1,5 @@
 package com.sosyal.app.ui.screen.register
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -40,7 +39,8 @@ class RegisterViewModel(
             }
 
             RegisterEvent.OnPasswordVisibilityChanged -> {
-                registerState = registerState.copy(passwordVisibility = !registerState.passwordVisibility)
+                registerState =
+                    registerState.copy(passwordVisibility = !registerState.passwordVisibility)
             }
         }
     }
