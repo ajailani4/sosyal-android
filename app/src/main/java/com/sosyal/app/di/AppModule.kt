@@ -2,6 +2,7 @@ package com.sosyal.app.di
 
 import android.util.Log
 import com.sosyal.app.BuildConfig
+import com.sosyal.app.data.local.PreferencesDataStore
 import com.sosyal.app.data.remote.api_service.AuthService
 import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
 import com.sosyal.app.data.repository.AuthRepositoryImpl
@@ -46,6 +47,8 @@ val appModule = module {
             }
         }
     }
+
+    single { PreferencesDataStore(androidContext()) }
 
     // Service
     single { AuthService(get()) }
