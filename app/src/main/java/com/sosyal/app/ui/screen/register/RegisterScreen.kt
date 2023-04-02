@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
+import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -199,16 +200,22 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = koinViewModel()) {
             }
         }
 
-        if (registerState.registerLoading) {
-            ProgressBarWithBackground()
-        }
-        
-        if (registerState.registerErrorMessage != null) {
-            LaunchedEffect(scaffoldState) {
-                registerState.registerErrorMessage.let {
-                    scaffoldState.snackbarHostState.showSnackbar(it)
+        when (registerState.uiState) {
+            UIState.Loading -> ProgressBarWithBackground()
+
+            is UIState.Success -> {
+
+            }
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    registerState.uiState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
                 }
             }
+
+            else -> {}
         }
     }
 }

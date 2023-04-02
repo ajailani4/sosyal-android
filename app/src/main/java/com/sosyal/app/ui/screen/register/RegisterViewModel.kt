@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
+import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -44,7 +45,7 @@ class RegisterViewModel(
     }
 
     private fun register() {
-        registerState = registerState.copy(registerLoading = true)
+        registerState = registerState.copy(uiState = UIState.Loading)
 
         viewModelScope.launch {
             registerState.apply {
@@ -54,23 +55,16 @@ class RegisterViewModel(
                     username = username,
                     password = password
                 ).catch {
-                    registerState = registerState.copy(registerErrorMessage = it.message)
+                    registerState = registerState.copy(uiState = UIState.Error(it.message))
                 }.collect {
                     registerState = when (it) {
                         is Resource.Success -> {
                             Log.d("Register status", "Success")
-                            registerState.copy(
-                                registerLoading = false,
-                                registerSuccess = true,
-                                registerErrorMessage = null
-                            )
+                            registerState.copy(uiState = UIState.Success(it.data))
                         }
 
                         is Resource.Error -> {
-                            registerState.copy(
-                                registerLoading = false,
-                                registerErrorMessage = it.message
-                            )
+                            registerState.copy(uiState = UIState.Error(it.message))
                         }
                     }
                 }
