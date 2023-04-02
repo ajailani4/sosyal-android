@@ -11,4 +11,9 @@ interface AuthRepository {
         username: String,
         password: String
     ): Flow<Resource<UserCredential>>
+
+    fun login(
+        username: String,
+        password: String
+    ): Flow<Resource<UserCredential>>
 }

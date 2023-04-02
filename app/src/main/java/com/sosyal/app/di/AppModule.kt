@@ -6,6 +6,7 @@ import com.sosyal.app.data.remote.api_service.AuthService
 import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
 import com.sosyal.app.data.repository.AuthRepositoryImpl
 import com.sosyal.app.domain.repository.AuthRepository
+import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
 import com.sosyal.app.ui.screen.register.RegisterViewModel
 import io.ktor.client.*
@@ -56,6 +57,7 @@ val appModule = module {
 
     // Use Case
     single { RegisterAccountUseCase(get()) }
+    single { LoginAccountUseCase(get()) }
 
     // ViewModel
     viewModel { RegisterViewModel(get()) }
