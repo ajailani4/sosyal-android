@@ -6,7 +6,9 @@ import com.sosyal.app.data.local.PreferencesDataStore
 import com.sosyal.app.data.remote.api_service.AuthService
 import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
 import com.sosyal.app.data.repository.AuthRepositoryImpl
+import com.sosyal.app.data.repository.UserCredentialRepositoryImpl
 import com.sosyal.app.domain.repository.AuthRepository
+import com.sosyal.app.domain.repository.UserCredentialRepository
 import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
 import com.sosyal.app.ui.screen.login.LoginViewModel
@@ -58,6 +60,7 @@ val appModule = module {
 
     // Repository
     single<AuthRepository> { AuthRepositoryImpl(get(), androidContext()) }
+    single<UserCredentialRepository> { UserCredentialRepositoryImpl(get()) }
 
     // Use Case
     single { RegisterAccountUseCase(get()) }
