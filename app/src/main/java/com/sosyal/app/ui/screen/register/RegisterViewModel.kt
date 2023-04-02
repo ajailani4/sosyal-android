@@ -38,8 +38,7 @@ class RegisterViewModel(
             }
 
             RegisterEvent.OnPasswordVisibilityChanged -> {
-                registerState =
-                    registerState.copy(passwordVisibility = !registerState.passwordVisibility)
+                registerState = registerState.copy(passwordVisibility = !registerState.passwordVisibility)
             }
         }
     }

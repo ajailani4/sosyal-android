@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,14 +24,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
+import com.sosyal.app.ui.common.UIState
+import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.screen.register.RegisterEvent
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
+    loginViewModel: LoginViewModel = koinViewModel(),
     onNavigateUp: () -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
+    val onEvent = loginViewModel::onEvent
+    val loginState = loginViewModel.loginState
+
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
@@ -65,8 +73,8 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(50.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = loginState.username,
+                    onValueChange = { onEvent(LoginEvent.OnUsernameChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.username))
                     },
@@ -81,8 +89,8 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = loginState.password,
+                    onValueChange = { onEvent(LoginEvent.OnPasswordChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.password))
                     },
@@ -93,13 +101,13 @@ fun LoginScreen(
                         )
                     },
                     trailingIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = { onEvent(LoginEvent.OnPasswordVisibilityChanged) }) {
                             Icon(
-                                imageVector = Icons.Default.Visibility/*if (loginState.passwordVisibility) {
+                                imageVector = if (loginState.passwordVisibility) {
                                     Icons.Default.VisibilityOff
                                 } else {
                                     Icons.Default.Visibility
-                                }*/,
+                                },
                                 contentDescription = "Password visibility icon"
                             )
                         }
@@ -108,17 +116,30 @@ fun LoginScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
-                    visualTransformation = PasswordVisualTransformation()/*if (loginState.passwordVisibility) {
+                    visualTransformation = if (loginState.passwordVisibility) {
                         VisualTransformation.None
                     } else {
                         PasswordVisualTransformation()
-                    }*/
+                    }
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.medium,
-                    onClick = {}
+                    onClick = {
+                        loginState.apply {
+                            if (username.isNotEmpty() && password.isNotEmpty()
+                            ) {
+                                onEvent(LoginEvent.Login)
+                            } else {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar(
+                                        context.getString(R.string.fill_the_form)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
@@ -146,6 +167,24 @@ fun LoginScreen(
                     onClick = { onNavigateToRegister() }
                 )
             }
+        }
+
+        when (loginState.uiState) {
+            UIState.Loading -> ProgressBarWithBackground()
+
+            is UIState.Success -> {
+
+            }
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    loginState.uiState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            else -> {}
         }
     }
 }

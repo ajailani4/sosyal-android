@@ -8,6 +8,7 @@ import com.sosyal.app.data.repository.AuthRepositoryImpl
 import com.sosyal.app.domain.repository.AuthRepository
 import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
+import com.sosyal.app.ui.screen.login.LoginViewModel
 import com.sosyal.app.ui.screen.register.RegisterViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -61,4 +62,5 @@ val appModule = module {
 
     // ViewModel
     viewModel { RegisterViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
 }
