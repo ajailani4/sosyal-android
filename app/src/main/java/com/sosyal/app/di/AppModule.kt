@@ -11,6 +11,8 @@ import com.sosyal.app.domain.repository.AuthRepository
 import com.sosyal.app.domain.repository.UserCredentialRepository
 import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
+import com.sosyal.app.domain.use_case.user_credential.GetAccessTokenUseCase
+import com.sosyal.app.domain.use_case.user_credential.SaveAccessTokenUseCase
 import com.sosyal.app.ui.screen.login.LoginViewModel
 import com.sosyal.app.ui.screen.register.RegisterViewModel
 import io.ktor.client.*
@@ -65,8 +67,10 @@ val appModule = module {
     // Use Case
     single { RegisterAccountUseCase(get()) }
     single { LoginAccountUseCase(get()) }
+    single { SaveAccessTokenUseCase(get()) }
+    single { GetAccessTokenUseCase(get()) }
 
     // ViewModel
-    viewModel { RegisterViewModel(get()) }
+    viewModel { RegisterViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
 }
