@@ -15,6 +15,7 @@ import com.sosyal.app.domain.use_case.user_credential.GetAccessTokenUseCase
 import com.sosyal.app.domain.use_case.user_credential.SaveAccessTokenUseCase
 import com.sosyal.app.ui.screen.login.LoginViewModel
 import com.sosyal.app.ui.screen.register.RegisterViewModel
+import com.sosyal.app.ui.screen.splash.SplashViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -71,6 +72,7 @@ val appModule = module {
     single { GetAccessTokenUseCase(get()) }
 
     // ViewModel
+    viewModel { SplashViewModel(get()) }
     viewModel { RegisterViewModel(get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
 }

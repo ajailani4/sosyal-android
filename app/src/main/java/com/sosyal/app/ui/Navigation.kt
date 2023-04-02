@@ -20,6 +20,15 @@ fun Navigation(
                 },
                 onNavigateToLogin = {
                     navController.navigate(Screen.Login.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.Register.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -31,8 +40,21 @@ fun Navigation(
                 },
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.Register.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
+        }
+
+        composable(route = Screen.Home.route) {
+
         }
     }
 }

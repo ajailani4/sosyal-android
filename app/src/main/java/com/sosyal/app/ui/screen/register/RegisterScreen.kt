@@ -33,7 +33,8 @@ import org.koin.androidx.compose.koinViewModel
 fun RegisterScreen(
     registerViewModel: RegisterViewModel = koinViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val onEvent = registerViewModel::onEvent
     val registerState = registerViewModel.registerState
@@ -208,7 +209,7 @@ fun RegisterScreen(
             UIState.Loading -> ProgressBarWithBackground()
 
             is UIState.Success -> {
-
+                onNavigateToHome()
             }
 
             is UIState.Error -> {

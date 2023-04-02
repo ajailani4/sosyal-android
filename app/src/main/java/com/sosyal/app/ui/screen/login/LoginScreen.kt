@@ -34,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     loginViewModel: LoginViewModel = koinViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToRegister: () -> Unit
+    onNavigateToRegister: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val onEvent = loginViewModel::onEvent
     val loginState = loginViewModel.loginState
@@ -173,7 +174,7 @@ fun LoginScreen(
             UIState.Loading -> ProgressBarWithBackground()
 
             is UIState.Success -> {
-
+                onNavigateToHome()
             }
 
             is UIState.Error -> {

@@ -3,38 +3,52 @@ package com.sosyal.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.sosyal.app.ui.Navigation
 import com.sosyal.app.ui.Screen
+import com.sosyal.app.ui.screen.splash.SplashViewModel
 import com.sosyal.app.ui.theme.SosyalTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+    private val splashViewModel: SplashViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         installSplashScreen()
 
-        setContent {
-            SosyalTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    val navController = rememberNavController()
+        lifecycleScope.launch {
+            splashViewModel.getAccessToken().first().let { accessToken ->
+                val startDestination = if (accessToken != "") {
+                    Screen.Home.route
+                } else {
+                    Screen.Register.route
+                }
 
-                    Navigation(
-                        navController = navController,
-                        startDestination = Screen.Register.route
-                    )
+                setContent {
+                    SosyalTheme {
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colors.background
+                        ) {
+                            val navController = rememberNavController()
+
+                            Navigation(
+                                navController = navController,
+                                startDestination = startDestination
+                            )
+                        }
+                    }
                 }
             }
         }
