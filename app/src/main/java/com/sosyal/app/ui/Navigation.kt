@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.sosyal.app.ui.screen.login.LoginScreen
 import com.sosyal.app.ui.screen.register.RegisterScreen
 
 @Composable
@@ -13,7 +14,25 @@ fun Navigation(
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.Register.route) {
-            RegisterScreen()
+            RegisterScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route)
+                }
+            )
+        }
+
+        composable(route = Screen.Login.route) {
+            LoginScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
+            )
         }
     }
 }

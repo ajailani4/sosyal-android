@@ -2,6 +2,7 @@
     <string name="app_name">Sosyal</string>
 
     <string name="register">Register</string>
+    <string name="login">Login</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
@@ -10,6 +11,8 @@
     <string name="login_here">Login here</string>
     <string name="fill_the_form">Please fill the form completely</string>
     <string name="username_already_exists">Username already exists. Try another username</string>
+    <string name="have_no_account">Don\'t have an account?</string>
+    <string name="register_here">Register here</string>
 
     <string name="something_wrong_happened">Sorry, something wrong happened</string>
     <string name="server_is_error">Server is error</string>
