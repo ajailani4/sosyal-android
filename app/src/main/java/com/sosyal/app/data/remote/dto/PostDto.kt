@@ -1,7 +1,10 @@
-package com.sosyal.app.domain.model
+package com.sosyal.app.data.remote.dto
 
-data class Post(
-    val id: String,
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class PostDto(
+    val id: String? = null,
     val username: String,
     val userAvatar: String? = null,
     val content: String,
