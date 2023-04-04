@@ -24,7 +24,7 @@ val Typography = Typography(
     ),
     subtitle1 = TextStyle(
         fontFamily = manropeFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     ),
     body1 = TextStyle(

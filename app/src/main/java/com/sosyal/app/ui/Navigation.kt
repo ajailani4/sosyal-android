@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.sosyal.app.ui.screen.home.HomeScreen
 import com.sosyal.app.ui.screen.login.LoginScreen
 import com.sosyal.app.ui.screen.register.RegisterScreen
 
@@ -54,7 +55,7 @@ fun Navigation(
         }
 
         composable(route = Screen.Home.route) {
-
+            HomeScreen()
         }
     }
 }

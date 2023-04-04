@@ -1,5 +1,6 @@
 package com.sosyal.app.ui.theme
 
+import androidx.compose.material.Colors
 import androidx.compose.ui.graphics.Color
 
 // Light Theme
@@ -15,3 +16,11 @@ val light_surface = Color(0xFFFFFFFF)
 val light_onSurface = Color(0xFF000000)
 val light_error = Color(0xFFCF082B)
 val light_onError = Color(0xFFFFFFFF)
+
+// Additional
+val Colors.backgroundGrey: Color
+    get() = Color(0xFFE4E5E7)
+
+val Grey = Color(0xFF656D76)
+val Grey2 = Color(0xFFC6CACE)
+val Grey3 = Color(0xFF8C959D)
