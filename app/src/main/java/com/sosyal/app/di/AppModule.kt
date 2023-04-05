@@ -19,15 +19,19 @@ import com.sosyal.app.domain.use_case.post.GetPostUseCase
 import com.sosyal.app.domain.use_case.post.SubmitPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetAccessTokenUseCase
 import com.sosyal.app.domain.use_case.user_credential.SaveAccessTokenUseCase
+import com.sosyal.app.ui.screen.home.HomeViewModel
 import com.sosyal.app.ui.screen.login.LoginViewModel
 import com.sosyal.app.ui.screen.register.RegisterViewModel
 import com.sosyal.app.ui.screen.splash.SplashViewModel
+import com.sosyal.app.util.AuthInterceptor
 import com.sosyal.app.util.Constants
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
+import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.websocket.*
+import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
@@ -37,8 +41,14 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
-    single {
-        HttpClient(CIO) {
+    single(named(Constants.BaseUrl.HTTPS)) {
+        HttpClient(OkHttp) {
+            engine {
+                config {
+                    addInterceptor(AuthInterceptor(get()))
+                }
+            }
+
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
@@ -62,14 +72,54 @@ val appModule = module {
         }
     }
 
+    single(named(Constants.BaseUrl.WS)) {
+        HttpClient(OkHttp) {
+            engine {
+                config {
+                    addInterceptor(AuthInterceptor(get()))
+                }
+            }
+
+            install(Logging) {
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        Log.d("Ktor Log: ", message)
+                    }
+                }
+            }
+
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                    encodeDefaults = true
+                })
+            }
+
+            install(WebSockets) {
+                contentConverter = KotlinxWebsocketSerializationConverter(Json)
+            }
+
+            defaultRequest {
+                url(BuildConfig.WS_BASE_URL)
+            }
+        }
+    }
+
     single { PreferencesDataStore(androidContext()) }
 
     // Coroutine Dispatcher
     single(named(Constants.CoroutineDispatcher.IO_DISPATCHER)) { Dispatchers.IO }
 
     // Service
-    single { AuthService(get()) }
-    single { PostService(get(), get(named(Constants.CoroutineDispatcher.IO_DISPATCHER))) }
+    single { AuthService(get(named(Constants.BaseUrl.HTTPS))) }
+    single {
+        PostService(
+            get(named(Constants.BaseUrl.WS)),
+            get(named(Constants.CoroutineDispatcher.IO_DISPATCHER))
+        )
+    }
 
     // Remote Data Source
     single { AuthRemoteDataSource(get()) }
@@ -92,4 +142,5 @@ val appModule = module {
     viewModel { SplashViewModel(get()) }
     viewModel { RegisterViewModel(get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
+    viewModel { HomeViewModel(get()) }
 }

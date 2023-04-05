@@ -9,4 +9,9 @@ class Constants {
     object CoroutineDispatcher {
         const val IO_DISPATCHER = "IODispatcher"
     }
+
+    object BaseUrl {
+        const val HTTPS = "HTTPS"
+        const val WS = "WS"
+    }
 }
