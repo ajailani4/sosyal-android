@@ -46,6 +46,7 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
+                        modifier = Modifier.size(width = 100.dp, height = 40.dp),
                         painter = painterResource(id = R.drawable.sosyal_text_logo),
                         contentDescription = "Sosyal text logo"
                     )
