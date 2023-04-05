@@ -12,14 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.sosyal.app.R
+import com.sosyal.app.domain.model.Post
 import com.sosyal.app.ui.theme.Grey
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PostItemCard() {
+fun PostItemCard(post: Post) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RectangleShape,
@@ -28,42 +32,44 @@ fun PostItemCard() {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(post.userAvatar)
+                        .build(),
                     contentDescription = "User profile picture"
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
-                        text = "George Zayvich",
+                        text = post.username,
                         style = MaterialTheme.typography.subtitle1
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "1 hour ago",
+                        text = post.date,
                         style = MaterialTheme.typography.caption.copy(color = Grey)
                     )
                 }
             }
             Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = "Bang kalau kita naik motor, motor yang bawa kita atau kita yang bawa motor?",
+                text = post.content,
                 style = MaterialTheme.typography.body1
             )
             Spacer(modifier = Modifier.height(15.dp))
             Row {
                 SmallCircleButton(
                     icon = Icons.Default.ThumbUp,
-                    text = "10 Likes",
+                    text = "${post.likes}",
                     onClick = {}
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 SmallCircleButton(
                     icon = Icons.Default.ChatBubble,
-                    text = "10 Comments",
+                    text = "${post.comments}",
                     onClick = {}
                 )
             }

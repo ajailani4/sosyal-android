@@ -2,6 +2,8 @@ package com.sosyal.app.ui.screen.home
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,12 +17,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
+import com.sosyal.app.ui.common.UIState
+import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.screen.home.component.PostItemCard
 import com.sosyal.app.ui.theme.SosyalTheme
 import com.sosyal.app.ui.theme.backgroundGrey
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = koinViewModel()
+) {
+    val homeState = homeViewModel.homeState
+    val posts = homeViewModel.posts.reversed()
+
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -68,16 +78,34 @@ fun HomeScreen() {
             }
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
         ) {
-            (1..10).forEach { _ ->
-                PostItemCard()
-                Spacer(modifier = Modifier.height(10.dp))
+            when (homeState.uiState) {
+                UIState.Loading -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 170.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+
+                is UIState.Success -> {
+                    items(posts) { post ->
+                        PostItemCard(post)
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
+                else -> {}
             }
         }
     }
