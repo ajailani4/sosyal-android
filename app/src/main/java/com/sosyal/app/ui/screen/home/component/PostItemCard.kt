@@ -1,11 +1,9 @@
 package com.sosyal.app.ui.screen.home.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.runtime.Composable
@@ -13,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -64,21 +61,19 @@ fun PostItemCard(post: Post) {
             Row {
                 SmallCircleButton(
                     icon = Icons.Default.ThumbUp,
-                    text = if (post.likes > 1) {
-                        stringResource(id = R.string.likes, post.likes)
-                    } else {
-                        stringResource(id = R.string.like, post.likes)
-                    },
+                    text = stringResource(
+                        id = if (post.likes > 1) R.string.likes else R.string.like,
+                        post.likes
+                    ),
                     onClick = {}
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 SmallCircleButton(
                     icon = Icons.Default.ChatBubble,
-                    text = if (post.comments > 1) {
-                        stringResource(id = R.string.comments, post.comments)
-                    } else {
-                        stringResource(id = R.string.comment, post.comments)
-                    },
+                    text = stringResource(
+                        id = if (post.comments > 1) R.string.comments else R.string.comment,
+                        post.comments
+                    ),
                     onClick = {}
                 )
             }
