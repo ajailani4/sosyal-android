@@ -7,6 +7,8 @@ import com.sosyal.app.data.remote.dto.PostDto
 import com.sosyal.app.domain.model.Post
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
+import io.ktor.http.*
+import io.ktor.http.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +34,7 @@ class PostService(
 
     private fun connect() {
         CoroutineScope(ioDispatcher).launch {
-            httpClient.webSocket(urlString = BuildConfig.WS_BASE_URL) {
+            httpClient.webSocket(path = "/post") {
                 webSocketSession = this
 
                 try {
