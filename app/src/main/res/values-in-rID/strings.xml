@@ -23,4 +23,12 @@
     <string name="comment">%s komentar</string>
     <string name="likes">%s suka</string>
     <string name="comments">%s komentar</string>
+
+    <string name="second_ago">%d d yang lalu</string>
+    <string name="seconds_ago">%d d yang lalu</string>
+    <string name="minute_ago">%d m yang lalu</string>
+    <string name="minutes_ago">%d m yang lalu</string>
+    <string name="hour_ago">%d j yang lalu</string>
+    <string name="hours_ago">%d j yang lalu</string>
+    <string name="yesterday">Kemarin</string>
 </resources>

@@ -18,6 +18,7 @@ import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.ui.theme.Grey
+import com.sosyal.app.util.Formatter
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,7 +48,34 @@ fun PostItemCard(post: Post) {
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = post.date,
+                        text = Formatter.convertToDateOrTime(post.date).run {
+                            when {
+                                seconds in (0..59) -> {
+                                    stringResource(
+                                        id = if (seconds > 1L) R.string.seconds_ago else R.string.second_ago,
+                                        seconds
+                                    )
+                                }
+
+                                minutes in (0..59) -> {
+                                    stringResource(
+                                        id = if (minutes > 1L) R.string.minutes_ago else R.string.minute_ago,
+                                        minutes
+                                    )
+                                }
+
+                                hours in (0..23) -> {
+                                    stringResource(
+                                        id = if (hours > 1L) R.string.hours_ago else R.string.hour_ago,
+                                        hours
+                                    )
+                                }
+
+                                days == 1L -> stringResource(id = R.string.yesterday)
+
+                                else -> date
+                            }
+                        },
                         style = MaterialTheme.typography.caption.copy(color = Grey)
                     )
                 }
