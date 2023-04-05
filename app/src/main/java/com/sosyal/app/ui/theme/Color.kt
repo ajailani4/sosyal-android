@@ -22,5 +22,5 @@ val Colors.backgroundGrey: Color
     get() = Color(0xFFE4E5E7)
 
 val Grey = Color(0xFF656D76)
-val Grey2 = Color(0xFFC6CACE)
-val Grey3 = Color(0xFF8C959D)
+val Grey2 = Color(0xFFE4E5E7)
+val Grey3 = Color(0xFFB6BABD)

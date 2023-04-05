@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -37,7 +38,7 @@ fun PostItemCard(post: Post) {
                         .size(40.dp)
                         .clip(CircleShape),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(post.userAvatar)
+                        .data(post.userAvatar ?: R.drawable.img_default_ava)
                         .build(),
                     contentDescription = "User profile picture"
                 )
@@ -63,13 +64,21 @@ fun PostItemCard(post: Post) {
             Row {
                 SmallCircleButton(
                     icon = Icons.Default.ThumbUp,
-                    text = "${post.likes}",
+                    text = if (post.likes > 1) {
+                        stringResource(id = R.string.likes, post.likes)
+                    } else {
+                        stringResource(id = R.string.like, post.likes)
+                    },
                     onClick = {}
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 SmallCircleButton(
                     icon = Icons.Default.ChatBubble,
-                    text = "${post.comments}",
+                    text = if (post.comments > 1) {
+                        stringResource(id = R.string.comments, post.comments)
+                    } else {
+                        stringResource(id = R.string.comment, post.comments)
+                    },
                     onClick = {}
                 )
             }

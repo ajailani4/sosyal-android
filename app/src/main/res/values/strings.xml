@@ -17,4 +17,9 @@
 
     <string name="something_wrong_happened">Sorry, something wrong happened</string>
     <string name="server_is_error">Server is error</string>
+
+    <string name="like">%s like</string>
+    <string name="comment">%s comment</string>
+    <string name="likes">%s likes</string>
+    <string name="comments">%s comments</string>
 </resources>

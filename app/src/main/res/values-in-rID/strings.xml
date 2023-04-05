@@ -18,4 +18,9 @@
 
     <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
     <string name="server_is_error">Server bermasalah</string>
+
+    <string name="like">%s suka</string>
+    <string name="comment">%s komentar</string>
+    <string name="likes">%s suka</string>
+    <string name="comments">%s komentar</string>
 </resources>
