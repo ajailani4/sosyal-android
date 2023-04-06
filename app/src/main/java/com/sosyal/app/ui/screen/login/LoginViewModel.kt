@@ -16,49 +16,50 @@ class LoginViewModel(
     private val loginAccountUseCase: LoginAccountUseCase,
     private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ) : ViewModel() {
-    var loginState by mutableStateOf(LoginState())
+    var loginState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
+    var username by mutableStateOf("")
+        private set
+
+    var password by mutableStateOf("")
+        private set
+
+    var passwordVisibility by mutableStateOf(false)
         private set
 
     fun onEvent(event: LoginEvent) {
         when (event) {
             LoginEvent.Login -> login()
 
-            is LoginEvent.OnUsernameChanged -> {
-                loginState = loginState.copy(username = event.username)
-            }
+            is LoginEvent.OnUsernameChanged -> username = event.username
 
-            is LoginEvent.OnPasswordChanged -> {
-                loginState = loginState.copy(password = event.password)
-            }
+            is LoginEvent.OnPasswordChanged -> password = event.password
 
-            LoginEvent.OnPasswordVisibilityChanged -> {
-                loginState = loginState.copy(passwordVisibility = !loginState.passwordVisibility)
-            }
+            LoginEvent.OnPasswordVisibilityChanged -> passwordVisibility = !passwordVisibility
         }
     }
 
     private fun login() {
-        loginState = loginState.copy(uiState = UIState.Loading)
+        loginState = UIState.Loading
 
         viewModelScope.launch {
             loginAccountUseCase(
-                username = loginState.username,
-                password = loginState.password
+                username = username,
+                password = password
             ).catch {
-                loginState = loginState.copy(uiState = UIState.Error(it.message))
+                loginState = UIState.Error(it.message)
             }.collect {
                 loginState = when (it) {
                     is Resource.Success -> {
-                        it.data?.accessToken?.let {  accessToken ->
+                        it.data?.accessToken?.let { accessToken ->
                             saveAccessTokenUseCase(accessToken)
                         }
 
-                        loginState.copy(uiState = UIState.Success(null))
+                        UIState.Success(null)
                     }
 
-                    is Resource.Error -> {
-                        loginState.copy(uiState = UIState.Error(it.message))
-                    }
+                    is Resource.Error -> UIState.Error(it.message)
                 }
             }
         }

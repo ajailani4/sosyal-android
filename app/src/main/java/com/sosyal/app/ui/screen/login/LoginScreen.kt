@@ -39,6 +39,9 @@ fun LoginScreen(
 ) {
     val onEvent = loginViewModel::onEvent
     val loginState = loginViewModel.loginState
+    val username = loginViewModel.username
+    val password = loginViewModel.password
+    val passwordVisibility = loginViewModel.passwordVisibility
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -74,7 +77,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(50.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = loginState.username,
+                    value = username,
                     onValueChange = { onEvent(LoginEvent.OnUsernameChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.username))
@@ -90,7 +93,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = loginState.password,
+                    value = password,
                     onValueChange = { onEvent(LoginEvent.OnPasswordChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.password))
@@ -104,7 +107,7 @@ fun LoginScreen(
                     trailingIcon = {
                         IconButton(onClick = { onEvent(LoginEvent.OnPasswordVisibilityChanged) }) {
                             Icon(
-                                imageVector = if (loginState.passwordVisibility) {
+                                imageVector = if (passwordVisibility) {
                                     Icons.Default.VisibilityOff
                                 } else {
                                     Icons.Default.Visibility
@@ -117,7 +120,7 @@ fun LoginScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
-                    visualTransformation = if (loginState.passwordVisibility) {
+                    visualTransformation = if (passwordVisibility) {
                         VisualTransformation.None
                     } else {
                         PasswordVisualTransformation()
@@ -128,16 +131,14 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.medium,
                     onClick = {
-                        loginState.apply {
-                            if (username.isNotEmpty() && password.isNotEmpty()
-                            ) {
-                                onEvent(LoginEvent.Login)
-                            } else {
-                                coroutineScope.launch {
-                                    scaffoldState.snackbarHostState.showSnackbar(
-                                        context.getString(R.string.fill_the_form)
-                                    )
-                                }
+                        if (username.isNotEmpty() && password.isNotEmpty()
+                        ) {
+                            onEvent(LoginEvent.Login)
+                        } else {
+                            coroutineScope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    context.getString(R.string.fill_the_form)
+                                )
                             }
                         }
                     }
@@ -170,7 +171,7 @@ fun LoginScreen(
             }
         }
 
-        when (loginState.uiState) {
+        when (loginState) {
             UIState.Loading -> ProgressBarWithBackground()
 
             is UIState.Success -> {
@@ -179,7 +180,7 @@ fun LoginScreen(
 
             is UIState.Error -> {
                 LaunchedEffect(scaffoldState) {
-                    loginState.uiState.message?.let {
+                    loginState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
                     }
                 }
