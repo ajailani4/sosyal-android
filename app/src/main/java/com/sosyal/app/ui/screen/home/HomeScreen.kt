@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.screen.home.component.PostItemCard
 import com.sosyal.app.ui.theme.SosyalTheme
 import com.sosyal.app.ui.theme.backgroundGrey
@@ -28,7 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel()
 ) {
-    val homeState = homeViewModel.homeState
+    val postsState = homeViewModel.postsState
     val posts = homeViewModel.posts.reversed()
 
     val scaffoldState = rememberScaffoldState()
@@ -85,7 +84,7 @@ fun HomeScreen(
                 .background(color = MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
         ) {
-            when (homeState.uiState) {
+            when (postsState) {
                 UIState.Loading -> {
                     item {
                         Box(

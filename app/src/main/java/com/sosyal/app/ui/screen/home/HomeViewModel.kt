@@ -9,13 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.use_case.post.GetPostUseCase
 import com.sosyal.app.ui.common.UIState
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getPostUseCase: GetPostUseCase
 ) : ViewModel() {
-    var homeState by mutableStateOf(HomeState())
+    var postsState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
     var posts = mutableStateListOf<Post>()
@@ -26,13 +25,13 @@ class HomeViewModel(
     }
 
     private fun getPosts() {
-        homeState = homeState.copy(uiState = UIState.Loading)
+        postsState = UIState.Loading
 
         viewModelScope.launch {
             getPostUseCase().collect { post ->
-                homeState = homeState.copy(uiState = UIState.Success(null))
+                postsState = UIState.Success(null)
 
-                homeState.apply {
+                postsState.apply {
                     val existedPost = posts.find { it.id == post.id }
 
                     if (existedPost == null) {
