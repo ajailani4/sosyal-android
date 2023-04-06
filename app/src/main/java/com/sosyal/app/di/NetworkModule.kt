@@ -36,7 +36,6 @@ val networkModule = module {
             install(ContentNegotiation) {
                 json(Json {
                     prettyPrint = true
-                    isLenient = true
                     ignoreUnknownKeys = true
                     encodeDefaults = true
                 })
@@ -67,15 +66,12 @@ val networkModule = module {
             install(ContentNegotiation) {
                 json(Json {
                     prettyPrint = true
-                    isLenient = true
                     ignoreUnknownKeys = true
                     encodeDefaults = true
                 })
             }
 
-            install(WebSockets) {
-                contentConverter = KotlinxWebsocketSerializationConverter(Json)
-            }
+            install(WebSockets)
 
             defaultRequest {
                 url(BuildConfig.WS_BASE_URL)
