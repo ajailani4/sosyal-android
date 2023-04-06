@@ -16,37 +16,42 @@ class RegisterViewModel(
     private val registerAccountUseCase: RegisterAccountUseCase,
     private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ) : ViewModel() {
-    var registerState by mutableStateOf(RegisterState())
+    var registerState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
+    var name by mutableStateOf("")
+        private set
+
+    var email by mutableStateOf("")
+        private set
+
+    var username by mutableStateOf("")
+        private set
+
+    var password by mutableStateOf("")
+        private set
+
+    var passwordVisibility by mutableStateOf(false)
+        private set
 
     fun onEvent(event: RegisterEvent) {
         when (event) {
             RegisterEvent.Register -> register()
 
-            is RegisterEvent.OnNameChanged -> {
-                registerState = registerState.copy(name = event.name)
-            }
+            is RegisterEvent.OnNameChanged -> name = event.name
 
-            is RegisterEvent.OnEmailChanged -> {
-                registerState = registerState.copy(email = event.email)
-            }
+            is RegisterEvent.OnEmailChanged -> email = event.email
 
-            is RegisterEvent.OnUsernameChanged -> {
-                registerState = registerState.copy(username = event.username)
-            }
+            is RegisterEvent.OnUsernameChanged -> username = event.username
 
-            is RegisterEvent.OnPasswordChanged -> {
-                registerState = registerState.copy(password = event.password)
-            }
+            is RegisterEvent.OnPasswordChanged -> password = event.password
 
-            RegisterEvent.OnPasswordVisibilityChanged -> {
-                registerState =
-                    registerState.copy(passwordVisibility = !registerState.passwordVisibility)
-            }
+            RegisterEvent.OnPasswordVisibilityChanged -> passwordVisibility = !passwordVisibility
         }
     }
 
     private fun register() {
-        registerState = registerState.copy(uiState = UIState.Loading)
+        registerState = UIState.Loading
 
         viewModelScope.launch {
             registerState.apply {
@@ -56,7 +61,7 @@ class RegisterViewModel(
                     username = username,
                     password = password
                 ).catch {
-                    registerState = registerState.copy(uiState = UIState.Error(it.message))
+                    registerState = UIState.Error(it.message)
                 }.collect {
                     registerState = when (it) {
                         is Resource.Success -> {
@@ -64,12 +69,10 @@ class RegisterViewModel(
                                 saveAccessTokenUseCase(accessToken)
                             }
 
-                            registerState.copy(uiState = UIState.Success(null))
+                            UIState.Success(null)
                         }
 
-                        is Resource.Error -> {
-                            registerState.copy(uiState = UIState.Error(it.message))
-                        }
+                        is Resource.Error -> UIState.Error(it.message)
                     }
                 }
             }
