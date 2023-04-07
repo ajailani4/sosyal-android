@@ -25,7 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = koinViewModel()
+    homeViewModel: HomeViewModel = koinViewModel(),
+    onNavigateToUploadEditPost: () -> Unit
 ) {
     val postsState = homeViewModel.postsState
     val posts = homeViewModel.posts.reversed()
@@ -58,7 +59,7 @@ fun HomeScreen(
                             ),
                             colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
                             contentPadding = PaddingValues(0.dp),
-                            onClick = { }
+                            onClick = onNavigateToUploadEditPost
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -108,13 +109,5 @@ fun HomeScreen(
                 else -> {}
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewHomeScreen() {
-    SosyalTheme {
-        HomeScreen()
     }
 }

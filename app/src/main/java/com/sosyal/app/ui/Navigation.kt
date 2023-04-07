@@ -56,11 +56,19 @@ fun Navigation(
         }
 
         composable(route = Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                onNavigateToUploadEditPost = {
+                    navController.navigate(Screen.UploadEditPost.route)
+                }
+            )
         }
 
         composable(route = Screen.UploadEditPost.route) {
-            UploadEditPostScreen()
+            UploadEditPostScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

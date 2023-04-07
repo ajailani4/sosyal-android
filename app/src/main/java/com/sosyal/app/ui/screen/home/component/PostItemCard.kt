@@ -48,7 +48,7 @@ fun PostItemCard(post: Post) {
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = Formatter.convertToDateOrTime(post.date).run {
+                        text = Formatter.convertStringToDateOrTime(post.date).run {
                             when {
                                 seconds in (0..59) -> {
                                     stringResource(id = R.string.just_now)

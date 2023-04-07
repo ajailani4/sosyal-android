@@ -14,7 +14,7 @@ val Typography = Typography(
     ),
     h2 = TextStyle(
         fontFamily = manropeFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp
     ),
     h3 = TextStyle(
