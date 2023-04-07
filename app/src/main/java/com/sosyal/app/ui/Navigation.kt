@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.sosyal.app.ui.screen.home.HomeScreen
 import com.sosyal.app.ui.screen.login.LoginScreen
 import com.sosyal.app.ui.screen.register.RegisterScreen
+import com.sosyal.app.ui.screen.upload_edit_post.UploadEditPostScreen
 
 @Composable
 fun Navigation(
@@ -56,6 +57,10 @@ fun Navigation(
 
         composable(route = Screen.Home.route) {
             HomeScreen()
+        }
+
+        composable(route = Screen.UploadEditPost.route) {
+            UploadEditPostScreen()
         }
     }
 }
