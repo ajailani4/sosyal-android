@@ -51,20 +51,17 @@ fun PostItemCard(post: Post) {
                         text = Formatter.convertToDateOrTime(post.date).run {
                             when {
                                 seconds in (0..59) -> {
-                                    stringResource(
-                                        id = if (seconds > 1L) R.string.seconds_ago else R.string.second_ago,
-                                        seconds
-                                    )
+                                    stringResource(id = R.string.just_now)
                                 }
 
-                                minutes in (0..59) -> {
+                                minutes in (1..59) -> {
                                     stringResource(
                                         id = if (minutes > 1L) R.string.minutes_ago else R.string.minute_ago,
                                         minutes
                                     )
                                 }
 
-                                hours in (0..23) -> {
+                                hours in (1..23) -> {
                                     stringResource(
                                         id = if (hours > 1L) R.string.hours_ago else R.string.hour_ago,
                                         hours

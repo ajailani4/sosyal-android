@@ -23,8 +23,7 @@
     <string name="likes">%d likes</string>
     <string name="comments">%d comments</string>
 
-    <string name="second_ago">%d second ago</string>
-    <string name="seconds_ago">%d seconds ago</string>
+    <string name="just_now">Just now</string>
     <string name="minute_ago">%d minute ago</string>
     <string name="minutes_ago">%d minutes ago</string>
     <string name="hour_ago">%d hour ago</string>
@@ -32,5 +31,5 @@
     <string name="yesterday">Yesterday</string>
     
     <string name="upload_post">Upload Post</string>
-    <string name="write_something">Write something...</string>
+    <string name="write_something">Write something…</string>
 </resources>

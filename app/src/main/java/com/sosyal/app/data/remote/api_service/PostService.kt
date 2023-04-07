@@ -42,7 +42,7 @@ class PostService(
                         }
                     }
                 } catch (e: Exception) {
-                    Log.d("Get posts error", e.message!!)
+                    Log.e("Get posts error", e.message!!)
                 }
             }
         }
