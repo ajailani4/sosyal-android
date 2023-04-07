@@ -5,10 +5,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Formatter {
-    fun convertToDateOrTime(date: String): DateTimeInfo {
-        val localeID = Locale(Locale.getDefault().displayLanguage, "ID")
-        val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", localeID)
-        val dateFormatter = SimpleDateFormat("dd MMM yyyy", localeID)
+    fun convertStringToDateOrTime(date: String): DateTimeInfo {
+        val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
         val currentDate = Calendar.getInstance().time
         val postDate = dateTimeFormatter.parse(date)
@@ -27,5 +26,11 @@ object Formatter {
             days = days,
             date = formattedPostDate
         )
+    }
+
+    fun convertDateToString(date: Date): String {
+        val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+        return dateTimeFormatter.format(date)
     }
 }
