@@ -3,7 +3,6 @@ package com.sosyal.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -28,8 +27,8 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         lifecycleScope.launch {
-            splashViewModel.getAccessToken().first().let { accessToken ->
-                val startDestination = if (accessToken != "") {
+            splashViewModel.getUserCredential().first().let { userCredential ->
+                val startDestination = if (userCredential.accessToken != "") {
                     Screen.Home.route
                 } else {
                     Screen.Register.route

@@ -1,9 +1,8 @@
 package com.sosyal.app.domain.repository
 
+import com.sosyal.app.domain.model.UserCredential
 import kotlinx.coroutines.flow.Flow
 
 interface UserCredentialRepository {
-    suspend fun saveAccessToken(accessToken: String)
-
-    fun getAccessToken(): Flow<String>
+    fun getUserCredential(): Flow<UserCredential>
 }

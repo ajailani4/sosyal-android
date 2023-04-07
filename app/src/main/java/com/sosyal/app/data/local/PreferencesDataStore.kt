@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.sosyal.app.data.remote.dto.UserCredentialDto
+import com.sosyal.app.domain.model.UserCredential
 import com.sosyal.app.util.Constants
 import kotlinx.coroutines.flow.map
 
@@ -15,14 +17,23 @@ class PreferencesDataStore(private val context: Context) {
             Constants.DataStore.PREFERENCES_NAME
         )
         private val ACCESS_TOKEN = stringPreferencesKey(Constants.DataStore.ACCESS_TOKEN_KEY)
+        private val USERNAME = stringPreferencesKey(Constants.DataStore.USERNAME_KEY)
     }
 
-    suspend fun saveAccessToken(accessToken: String) {
+    suspend fun saveUserCredential(userCredential: UserCredential) {
         context.dataStore.edit {
-            it[ACCESS_TOKEN] = accessToken
+            userCredential.apply {
+                it[ACCESS_TOKEN] = accessToken
+                it[USERNAME] = username
+            }
         }
     }
 
-    fun getAccessToken() =
-        context.dataStore.data.map { it[ACCESS_TOKEN] ?: "" }
+    fun getUserCredential() =
+        context.dataStore.data.map {
+            UserCredential(
+                accessToken = it[ACCESS_TOKEN] ?: "",
+                username = it[USERNAME] ?: ""
+            )
+        }
 }

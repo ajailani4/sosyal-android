@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserCredentialDto(
-    val accessToken: String
+    val accessToken: String,
+    val username: String
 )

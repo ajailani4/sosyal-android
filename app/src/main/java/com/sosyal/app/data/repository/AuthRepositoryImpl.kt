@@ -2,6 +2,7 @@ package com.sosyal.app.data.repository
 
 import android.content.Context
 import com.sosyal.app.R
+import com.sosyal.app.data.local.PreferencesDataStore
 import com.sosyal.app.data.mapper.toUserCredential
 import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
 import com.sosyal.app.data.remote.dto.UserCredentialDto
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.flow
 
 class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource,
+    private val preferencesDataStore: PreferencesDataStore,
     private val context: Context
 ) : AuthRepository {
     override fun register(
@@ -39,6 +41,10 @@ class AuthRepositoryImpl(
             when (response.status) {
                 HttpStatusCode.Created -> {
                     val responseBody = response.body() as BaseResponse<UserCredentialDto>
+                    responseBody.data?.let {
+                        preferencesDataStore.saveUserCredential(it.toUserCredential())
+                    }
+
                     emit(Resource.Success(responseBody.data?.toUserCredential()))
                 }
 

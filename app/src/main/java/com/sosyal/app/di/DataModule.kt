@@ -32,7 +32,7 @@ val dataModule = module {
     single { PostRemoteDataSource(get()) }
 
     // Repository
-    single<AuthRepository> { AuthRepositoryImpl(get(), androidContext()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get(), androidContext()) }
     single<UserCredentialRepository> { UserCredentialRepositoryImpl(get()) }
     single<PostRepository> { PostRepositoryImpl(get()) }
 }
