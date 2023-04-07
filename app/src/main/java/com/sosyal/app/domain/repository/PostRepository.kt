@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.SharedFlow
 interface PostRepository {
     fun getPost(): SharedFlow<Post>
 
-    suspend fun submitPost(post: Post)
+    suspend fun uploadPost(post: Post)
 }

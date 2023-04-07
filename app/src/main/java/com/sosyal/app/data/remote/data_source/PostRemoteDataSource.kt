@@ -6,7 +6,7 @@ import com.sosyal.app.data.remote.dto.PostDto
 class PostRemoteDataSource(private val postService: PostService) {
     fun getPost() = postService.getPost()
 
-    suspend fun submitPost(postDto: PostDto) {
-        postService.submitPost(postDto)
+    suspend fun uploadPost(postDto: PostDto) {
+        postService.uploadPost(postDto)
     }
 }
