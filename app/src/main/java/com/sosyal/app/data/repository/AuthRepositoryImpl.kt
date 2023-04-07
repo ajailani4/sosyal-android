@@ -71,6 +71,10 @@ class AuthRepositoryImpl(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body() as BaseResponse<UserCredentialDto>
+                    responseBody.data?.let {
+                        preferencesDataStore.saveUserCredential(it.toUserCredential())
+                    }
+
                     emit(Resource.Success(responseBody.data?.toUserCredential()))
                 }
 
