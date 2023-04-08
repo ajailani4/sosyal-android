@@ -53,7 +53,9 @@ class HomeViewModel(
                     if (existedPost == null) {
                         posts.add(post)
                     } else {
-                        posts[posts.indexOf(existedPost)] = post
+                        if (post.isEdited == true) {
+                            posts[posts.indexOf(existedPost)] = post
+                        }
                     }
                 }
             }
