@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -103,6 +104,16 @@ fun HomeScreen(
                     items(posts) { post ->
                         PostItemCard(post)
                         Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
+                is UIState.Error -> {
+                    item {
+                        LaunchedEffect(scaffoldState) {
+                            postsState.message?.let {
+                                scaffoldState.snackbarHostState.showSnackbar(it)
+                            }
+                        }
                     }
                 }
 

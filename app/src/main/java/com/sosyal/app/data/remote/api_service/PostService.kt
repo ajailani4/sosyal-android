@@ -8,6 +8,7 @@ import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,12 +25,16 @@ class PostService(
     private val _post = MutableSharedFlow<Post>()
     private var webSocketSession: DefaultWebSocketSession? = null
 
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("Coroutine exception", throwable.message!!)
+    }
+
     init {
         connect()
     }
 
     private fun connect() {
-        CoroutineScope(ioDispatcher).launch {
+        CoroutineScope(ioDispatcher).launch(coroutineExceptionHandler) {
             httpClient.webSocket(path = "/post") {
                 webSocketSession = this
 
