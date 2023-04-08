@@ -50,7 +50,7 @@ class AuthRepositoryImpl(
 
                 HttpStatusCode.Conflict -> emit(Resource.Error(context.getString(R.string.username_already_exists)))
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_is_error)))
+                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
 
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
             }
@@ -80,7 +80,7 @@ class AuthRepositoryImpl(
 
                 HttpStatusCode.Unauthorized -> emit(Resource.Error(context.getString(R.string.incorrect_username_or_pass)))
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_is_error)))
+                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
 
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
             }

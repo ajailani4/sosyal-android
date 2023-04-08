@@ -16,7 +16,7 @@
     <string name="register_here">Register here</string>
 
     <string name="something_wrong_happened">Sorry, something wrong happened</string>
-    <string name="server_is_error">Server is error</string>
+    <string name="server_error">Server error</string>
 
     <string name="like">%d like</string>
     <string name="comment">%d comment</string>

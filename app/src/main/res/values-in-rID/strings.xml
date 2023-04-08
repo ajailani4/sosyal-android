@@ -17,7 +17,7 @@
     <string name="register_here">Daftar di sini</string>
 
     <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
-    <string name="server_is_error">Server bermasalah</string>
+    <string name="server_error">Server bermasalah</string>
 
     <string name="like">%s suka</string>
     <string name="comment">%s komentar</string>
