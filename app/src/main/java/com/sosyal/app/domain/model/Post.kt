@@ -7,5 +7,6 @@ data class Post(
     val content: String? = null,
     val likes: Int = 0,
     val comments: Int = 0,
-    val date: String? = null
+    val date: String? = null,
+    val isEdited: Boolean? = null
 )
