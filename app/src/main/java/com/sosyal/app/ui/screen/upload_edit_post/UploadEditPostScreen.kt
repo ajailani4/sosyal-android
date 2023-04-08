@@ -52,7 +52,10 @@ fun UploadEditPostScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { onEvent(UploadEditPostEvent.UploadPost) }) {
+                    IconButton(
+                        enabled = content.isNotEmpty(),
+                        onClick = { onEvent(UploadEditPostEvent.UploadPost) }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Check,
                             tint = MaterialTheme.colors.primary,
