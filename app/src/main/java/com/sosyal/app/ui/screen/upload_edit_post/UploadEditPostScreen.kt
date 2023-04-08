@@ -32,6 +32,7 @@ fun UploadEditPostScreen(
     val onEvent = uploadEditPostViewModel::onEvent
     val postId = uploadEditPostViewModel.postId
     val uploadPostState = uploadEditPostViewModel.uploadPostState
+    val editPostState = uploadEditPostViewModel.editPostState
     val postDetailState = uploadEditPostViewModel.postDetailState
     val content = uploadEditPostViewModel.content
     var isContentFocused by remember { mutableStateOf(false) }
@@ -61,7 +62,13 @@ fun UploadEditPostScreen(
                 actions = {
                     IconButton(
                         enabled = content.isNotEmpty(),
-                        onClick = { onEvent(UploadEditPostEvent.UploadPost) }
+                        onClick = {
+                            if (postId == null) {
+                                onEvent(UploadEditPostEvent.UploadPost)
+                            } else {
+                                onEvent(UploadEditPostEvent.EditPost)
+                            }
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
@@ -108,6 +115,7 @@ fun UploadEditPostScreen(
             }
         }
 
+        // Observe upload post state
         when (uploadPostState) {
             is UIState.Success -> {
                 onNavigateUp()
@@ -116,6 +124,16 @@ fun UploadEditPostScreen(
             else -> {}
         }
 
+        // Observe edit post state
+        when (editPostState) {
+            is UIState.Success -> {
+                onNavigateUp()
+            }
+
+            else -> {}
+        }
+
+        // Observe post detail state
         if (postId != null) {
             when (postDetailState) {
                 UIState.Loading -> ProgressBarWithBackground()

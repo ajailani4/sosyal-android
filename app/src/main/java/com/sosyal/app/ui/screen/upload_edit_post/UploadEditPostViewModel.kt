@@ -27,14 +27,24 @@ class UploadEditPostViewModel(
     var uploadPostState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
+    var editPostState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
     var postDetailState by mutableStateOf<UIState<Post>>(UIState.Idle)
         private set
 
     var content by mutableStateOf("")
         private set
 
+    private var username = ""
+    private var likes = 0
+    private var comments = 0
+    private var date = ""
+
     init {
         if (postId != null) getPostDetail()
+
+        getUserCredential()
     }
 
     fun onEvent(event: UploadEditPostEvent) {
@@ -43,7 +53,15 @@ class UploadEditPostViewModel(
 
             UploadEditPostEvent.UploadPost -> uploadPost()
 
+            UploadEditPostEvent.EditPost -> editPost()
+
             is UploadEditPostEvent.OnContentChanged -> content = event.content
+        }
+    }
+
+    private fun getUserCredential() {
+        viewModelScope.launch {
+            username = getUserCredentialUseCase().first().username
         }
     }
 
@@ -53,10 +71,8 @@ class UploadEditPostViewModel(
 
     private fun uploadPost() {
         viewModelScope.launch {
-            val userCredential = getUserCredentialUseCase().first()
-
             sendPostUseCase(
-                username = userCredential.username,
+                username = username,
                 content = content
             )
 
@@ -73,11 +89,39 @@ class UploadEditPostViewModel(
                     postDetailState = UIState.Error(it.message)
                 }.collect {
                     postDetailState = when (it) {
-                        is Resource.Success -> UIState.Success(it.data)
+                        is Resource.Success -> {
+                            it.data?.let { post ->
+                                likes = post.likes
+                                comments = post.comments
+                                date = post.date!!
+                            }
+
+                            UIState.Success(it.data)
+                        }
 
                         is Resource.Error -> UIState.Error(it.message)
                     }
                 }
+            }
+        }
+    }
+
+    private fun editPost() {
+        editPostState = UIState.Loading
+
+        viewModelScope.launch {
+            postId?.let { id ->
+                sendPostUseCase(
+                    id = id,
+                    username = username,
+                    content = content,
+                    likes = likes,
+                    comments = comments,
+                    date = date,
+                    isEdited = true
+                )
+
+                editPostState = UIState.Success(null)
             }
         }
     }

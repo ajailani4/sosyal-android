@@ -7,13 +7,22 @@ import java.util.*
 
 class SendPostUseCase(private val postRepository: PostRepository) {
     suspend operator fun invoke(
+        id: String? = null,
         username: String,
         content: String,
+        likes: Int = 0,
+        comments: Int = 0,
+        date: String? = null,
+        isEdited: Boolean? = null
     ) = postRepository.sendPost(
         Post(
+            id = id,
             username = username,
             content = content,
-            date = Formatter.convertDateToString(Date())
+            likes = likes,
+            comments = comments,
+            date = date ?: Formatter.convertDateToString(Date()),
+            isEdited = isEdited
         )
     )
 }
