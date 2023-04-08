@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        compose_ui_version = '1.4.0'
-        compose_material_version = '1.4.0'
+        compose_ui_version = '1.4.1'
+        compose_material_version = '1.4.1'
         ktor_version = '2.2.3'
         koin_version = '3.4.0'
     }
