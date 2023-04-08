@@ -10,5 +10,5 @@ interface PostRepository {
 
     suspend fun uploadPost(post: Post)
 
-    fun getPostDetail(): Flow<Resource<Post>>
+    fun getPostDetail(id: String): Flow<Resource<Post>>
 }
