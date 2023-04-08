@@ -36,5 +36,6 @@
     <string name="no_menus">Tidak ada menu</string>
 
     <string name="upload_post">Unggah Postingan</string>
+    <string name="edit_post">Edit Postingan</string>
     <string name="write_something">Tulis sesuatu…</string>
 </resources>

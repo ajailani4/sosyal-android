@@ -2,8 +2,10 @@ package com.sosyal.app.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.sosyal.app.ui.screen.home.HomeScreen
 import com.sosyal.app.ui.screen.login.LoginScreen
 import com.sosyal.app.ui.screen.register.RegisterScreen
@@ -57,13 +59,22 @@ fun Navigation(
 
         composable(route = Screen.Home.route) {
             HomeScreen(
-                onNavigateToUploadEditPost = {
-                    navController.navigate(Screen.UploadEditPost.route)
+                onNavigateToUploadEditPost = { postId ->
+                    navController.navigate(Screen.UploadEditPost.route + "?postId=$postId")
                 }
             )
         }
 
-        composable(route = Screen.UploadEditPost.route) {
+        composable(
+            route = Screen.UploadEditPost.route + "?postId={postId}",
+            arguments = listOf(
+                navArgument("postId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
             UploadEditPostScreen(
                 onNavigateUp = {
                     navController.navigateUp()

@@ -30,11 +30,16 @@ fun UploadEditPostScreen(
     onNavigateUp: () -> Unit
 ) {
     val onEvent = uploadEditPostViewModel::onEvent
+    val postId = uploadEditPostViewModel.postId
     val uploadPostState = uploadEditPostViewModel.uploadPostState
+    val postDetailState = uploadEditPostViewModel.postDetailState
     val content = uploadEditPostViewModel.content
     var isContentFocused by remember { mutableStateOf(false) }
 
+    val scaffoldState = rememberScaffoldState()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 navigationIcon = {
@@ -47,7 +52,9 @@ fun UploadEditPostScreen(
                 },
                 title = {
                     Text(
-                        text = stringResource(id = R.string.upload_post),
+                        text = stringResource(
+                            id = if (postId == null) R.string.upload_post else R.string.edit_post
+                        ),
                         style = MaterialTheme.typography.h2
                     )
                 },
@@ -107,6 +114,28 @@ fun UploadEditPostScreen(
             }
 
             else -> {}
+        }
+
+        if (postId != null) {
+            when (postDetailState) {
+                UIState.Loading -> ProgressBarWithBackground()
+
+                is UIState.Success -> {
+                    postDetailState.data?.let { post ->
+                        onEvent(UploadEditPostEvent.OnContentChanged(post.content!!))
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        postDetailState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
+            }
         }
     }
 }

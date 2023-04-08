@@ -2,6 +2,7 @@ package com.sosyal.app.di
 
 import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
+import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.UploadPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
@@ -13,4 +14,5 @@ val domainModule = module {
     single { GetUserCredentialUseCase(get()) }
     single { ReceivePostUseCase(get()) }
     single { UploadPostUseCase(get()) }
+    single { GetPostDetailUseCase(get()) }
 }

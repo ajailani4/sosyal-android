@@ -35,5 +35,6 @@
     <string name="no_menus">No menus</string>
 
     <string name="upload_post">Upload Post</string>
+    <string name="edit_post">Edit Post</string>
     <string name="write_something">Write something…</string>
 </resources>

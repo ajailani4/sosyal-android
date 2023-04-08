@@ -58,6 +58,8 @@ fun HomeScreen(
                             coroutineScope.launch {
                                 bottomSheetState.hide()
                             }
+
+                            onNavigateToUploadEditPost(selectedPost.id)
                         }
                     )
                     BottomSheetItem(
