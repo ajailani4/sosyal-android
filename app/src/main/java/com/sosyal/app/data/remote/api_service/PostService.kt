@@ -19,7 +19,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class PostService(
-    private val httpClient: HttpClient,
+    private val wsClient: HttpClient,
     private val ioDispatcher: CoroutineDispatcher
 ) {
     private val _post = MutableSharedFlow<Post>()
@@ -30,12 +30,12 @@ class PostService(
     }
 
     init {
-        connect()
+        connectToWebSocket()
     }
 
-    private fun connect() {
+    private fun connectToWebSocket() {
         CoroutineScope(ioDispatcher).launch(coroutineExceptionHandler) {
-            httpClient.webSocket(path = "/post") {
+            wsClient.webSocket(path = "/post") {
                 webSocketSession = this
 
                 try {
