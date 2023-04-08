@@ -25,7 +25,10 @@ import com.sosyal.app.util.Formatter
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PostItemCard(post: Post) {
+fun PostItemCard(
+    post: Post,
+    onMoreClicked: () -> Unit
+) {
     Card(
         shape = RectangleShape,
         elevation = 0.dp,
@@ -86,7 +89,7 @@ fun PostItemCard(post: Post) {
                 }
                 IconButton(
                     modifier = Modifier.size(24.dp),
-                    onClick = { /*TODO*/ }
+                    onClick = onMoreClicked
                 ) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
