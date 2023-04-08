@@ -53,7 +53,7 @@ class PostService(
         }
     }
 
-    fun getPost() = _post.asSharedFlow()
+    fun receivePost() = _post.asSharedFlow()
 
     suspend fun uploadPost(postDto: PostDto) {
         try {

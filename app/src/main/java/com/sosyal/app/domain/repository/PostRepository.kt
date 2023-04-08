@@ -9,6 +9,6 @@ interface PostRepository {
     fun receivePost(): SharedFlow<Post>
 
     suspend fun uploadPost(post: Post)
-    
+
     fun getPostDetail(): Flow<Resource<Post>>
 }
