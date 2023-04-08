@@ -8,7 +8,7 @@ import com.sosyal.app.domain.repository.PostRepository
 class PostRepositoryImpl(
     private val postRemoteDataSource: PostRemoteDataSource
 ) : PostRepository {
-    override fun getPost() = postRemoteDataSource.getPost()
+    override fun receivePost() = postRemoteDataSource.receivePost()
 
     override suspend fun uploadPost(post: Post) {
         postRemoteDataSource.uploadPost(post.toPostDto())

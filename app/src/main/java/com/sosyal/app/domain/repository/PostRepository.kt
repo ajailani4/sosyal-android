@@ -4,7 +4,7 @@ import com.sosyal.app.domain.model.Post
 import kotlinx.coroutines.flow.SharedFlow
 
 interface PostRepository {
-    fun getPost(): SharedFlow<Post>
+    fun receivePost(): SharedFlow<Post>
 
     suspend fun uploadPost(post: Post)
 }
