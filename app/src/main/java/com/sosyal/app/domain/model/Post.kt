@@ -2,10 +2,10 @@ package com.sosyal.app.domain.model
 
 data class Post(
     val id: String? = null,
-    val username: String,
+    val username: String? = null,
     val userAvatar: String? = null,
-    val content: String,
+    val content: String? = null,
     val likes: Int = 0,
     val comments: Int = 0,
-    val date: String
+    val date: String? = null
 )

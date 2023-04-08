@@ -17,9 +17,9 @@ fun PostDto.toPost() =
 fun Post.toPostDto() =
     PostDto(
         id = id,
-        username = username,
-        content = content,
+        username = username!!,
+        content = content!!,
         likes = likes,
         comments = comments,
-        date = date
+        date = date!!
     )

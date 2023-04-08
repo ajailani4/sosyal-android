@@ -20,13 +20,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.BottomSheetItem
 import com.sosyal.app.ui.screen.home.component.PostItemCard
-import com.sosyal.app.ui.theme.SosyalTheme
 import com.sosyal.app.ui.theme.backgroundGrey
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -35,13 +33,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel(),
-    onNavigateToUploadEditPost: () -> Unit
+    onNavigateToUploadEditPost: (String?) -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val postsState = homeViewModel.postsState
     val posts = homeViewModel.posts.reversed()
     val username = homeViewModel.username
-    val selectedPostUsername = homeViewModel.selectedPostUsername
+    val selectedPost = homeViewModel.selectedPost
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -51,7 +49,7 @@ fun HomeScreen(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
-            if (username == selectedPostUsername) {
+            if (username == selectedPost.username) {
                 Column(modifier = Modifier.padding(vertical = 10.dp)) {
                     BottomSheetItem(
                         icon = Icons.Default.Edit,
@@ -108,7 +106,7 @@ fun HomeScreen(
                                 ),
                                 colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
                                 contentPadding = PaddingValues(0.dp),
-                                onClick = onNavigateToUploadEditPost
+                                onClick = { onNavigateToUploadEditPost(null) }
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
@@ -153,7 +151,7 @@ fun HomeScreen(
                             PostItemCard(
                                 post = post,
                                 onMoreClicked = {
-                                    onEvent(HomeEvent.OnPostSelected(post.username))
+                                    onEvent(HomeEvent.OnPostSelected(post))
                                     
                                     coroutineScope.launch {
                                         bottomSheetState.show()

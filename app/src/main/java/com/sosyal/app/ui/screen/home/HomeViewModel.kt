@@ -26,7 +26,7 @@ class HomeViewModel(
     var username by mutableStateOf("")
         private set
 
-    var selectedPostUsername by mutableStateOf("")
+    var selectedPost by mutableStateOf(Post())
         private set
 
     init {
@@ -36,7 +36,7 @@ class HomeViewModel(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.OnPostSelected -> selectedPostUsername = event.username
+            is HomeEvent.OnPostSelected -> selectedPost = event.username
         }
     }
 

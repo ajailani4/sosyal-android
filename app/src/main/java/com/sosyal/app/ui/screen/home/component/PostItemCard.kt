@@ -53,12 +53,12 @@ fun PostItemCard(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            text = post.username,
+                            text = post.username!!,
                             style = MaterialTheme.typography.subtitle1
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = Formatter.convertStringToDateOrTime(post.date).run {
+                            text = Formatter.convertStringToDateOrTime(post.date!!).run {
                                 when {
                                     seconds in (0..59) -> {
                                         stringResource(id = R.string.just_now)
@@ -100,7 +100,7 @@ fun PostItemCard(
             }
             Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = post.content,
+                text = post.content!!,
                 style = MaterialTheme.typography.body1
             )
             Spacer(modifier = Modifier.height(15.dp))
