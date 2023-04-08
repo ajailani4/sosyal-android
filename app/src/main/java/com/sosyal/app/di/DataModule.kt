@@ -22,6 +22,7 @@ val dataModule = module {
     single {
         PostService(
             get(named(Constants.BaseUrl.WS)),
+            get(named(Constants.BaseUrl.HTTPS)),
             get(named(Constants.CoroutineDispatcher.IO_DISPATCHER))
         )
     }
@@ -34,5 +35,5 @@ val dataModule = module {
     // Repository
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), androidContext()) }
     single<UserCredentialRepository> { UserCredentialRepositoryImpl(get()) }
-    single<PostRepository> { PostRepositoryImpl(get()) }
+    single<PostRepository> { PostRepositoryImpl(get(), androidContext()) }
 }

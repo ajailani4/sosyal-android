@@ -9,4 +9,6 @@ class PostRemoteDataSource(private val postService: PostService) {
     suspend fun uploadPost(postDto: PostDto) {
         postService.uploadPost(postDto)
     }
+
+    suspend fun getPostDetail(id: String) = postService.getPostDetail(id)
 }

@@ -6,6 +6,7 @@ import com.sosyal.app.data.remote.dto.PostDto
 import com.sosyal.app.domain.model.Post
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
+import io.ktor.client.request.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -20,6 +21,7 @@ import kotlinx.serialization.json.Json
 
 class PostService(
     private val wsClient: HttpClient,
+    private val httpClient: HttpClient,
     private val ioDispatcher: CoroutineDispatcher
 ) {
     private val _post = MutableSharedFlow<Post>()
@@ -62,4 +64,6 @@ class PostService(
             Log.d("Upload post error", e.message!!)
         }
     }
+
+    suspend fun getPostDetail(id: String) = httpClient.get("/post/$id")
 }
