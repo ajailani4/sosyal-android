@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
-import com.sosyal.app.domain.use_case.post.UploadPostUseCase
+import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.util.Resource
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class UploadEditPostViewModel(
     savedStateHandle: SavedStateHandle,
-    private val uploadPostUseCase: UploadPostUseCase,
+    private val sendPostUseCase: SendPostUseCase,
     private val getUserCredentialUseCase: GetUserCredentialUseCase,
     private val getPostDetailUseCase: GetPostDetailUseCase
 ) : ViewModel() {
@@ -49,7 +49,7 @@ class UploadEditPostViewModel(
         viewModelScope.launch {
             val userCredential = getUserCredentialUseCase().first()
 
-            uploadPostUseCase(
+            sendPostUseCase(
                 username = userCredential.username,
                 content = content
             )

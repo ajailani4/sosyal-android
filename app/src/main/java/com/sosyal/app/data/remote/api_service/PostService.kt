@@ -57,7 +57,7 @@ class PostService(
 
     fun receivePost() = _post.asSharedFlow()
 
-    suspend fun uploadPost(postDto: PostDto) {
+    suspend fun sendPost(postDto: PostDto) {
         try {
             webSocketSession?.send(Json.encodeToString(postDto))
         } catch (e: Exception) {

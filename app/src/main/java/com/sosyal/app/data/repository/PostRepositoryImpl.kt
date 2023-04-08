@@ -12,7 +12,6 @@ import com.sosyal.app.domain.repository.PostRepository
 import com.sosyal.app.util.Resource
 import io.ktor.client.call.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class PostRepositoryImpl(
@@ -21,8 +20,8 @@ class PostRepositoryImpl(
 ) : PostRepository {
     override fun receivePost() = postRemoteDataSource.receivePost()
 
-    override suspend fun uploadPost(post: Post) {
-        postRemoteDataSource.uploadPost(post.toPostDto())
+    override suspend fun sendPost(post: Post) {
+        postRemoteDataSource.sendPost(post.toPostDto())
     }
 
     override fun getPostDetail(id: String) =

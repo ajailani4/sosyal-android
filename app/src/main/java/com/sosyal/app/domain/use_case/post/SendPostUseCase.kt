@@ -5,11 +5,11 @@ import com.sosyal.app.domain.repository.PostRepository
 import com.sosyal.app.util.Formatter
 import java.util.*
 
-class UploadPostUseCase(private val postRepository: PostRepository) {
+class SendPostUseCase(private val postRepository: PostRepository) {
     suspend operator fun invoke(
         username: String,
         content: String,
-    ) = postRepository.uploadPost(
+    ) = postRepository.sendPost(
         Post(
             username = username,
             content = content,

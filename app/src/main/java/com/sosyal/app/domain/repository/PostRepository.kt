@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 interface PostRepository {
     fun receivePost(): SharedFlow<Post>
 
-    suspend fun uploadPost(post: Post)
+    suspend fun sendPost(post: Post)
 
     fun getPostDetail(id: String): Flow<Resource<Post>>
 }
