@@ -124,6 +124,8 @@ fun UploadEditPostScreen(
                     postDetailState.data?.let { post ->
                         onEvent(UploadEditPostEvent.OnContentChanged(post.content!!))
                     }
+
+                    onEvent(UploadEditPostEvent.Idle)
                 }
 
                 is UIState.Error -> {

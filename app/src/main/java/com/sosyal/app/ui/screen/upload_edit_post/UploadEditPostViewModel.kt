@@ -39,10 +39,16 @@ class UploadEditPostViewModel(
 
     fun onEvent(event: UploadEditPostEvent) {
         when (event) {
+            UploadEditPostEvent.Idle -> idle()
+
             UploadEditPostEvent.UploadPost -> uploadPost()
 
             is UploadEditPostEvent.OnContentChanged -> content = event.content
         }
+    }
+
+    private fun idle() {
+        postDetailState = UIState.Idle
     }
 
     private fun uploadPost() {
