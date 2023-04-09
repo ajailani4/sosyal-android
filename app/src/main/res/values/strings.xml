@@ -33,6 +33,10 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="no_menus">No menus</string>
+    <string name="delete_post">Delete Post</string>
+    <string name="delete_post_confirm_msg">Are you sure to delete this post?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="upload_post">Upload Post</string>
     <string name="edit_post">Edit Post</string>

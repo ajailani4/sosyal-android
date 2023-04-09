@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.BottomSheetItem
+import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.screen.home.component.PostItemCard
 import com.sosyal.app.ui.theme.backgroundGrey
 import kotlinx.coroutines.launch
@@ -37,11 +38,14 @@ fun HomeScreen(
 ) {
     val onEvent = homeViewModel::onEvent
     val postsState = homeViewModel.postsState
+    val deletePostState = homeViewModel.deletePostState
     val posts = homeViewModel.posts.reversed()
     val username = homeViewModel.username
     val selectedPost = homeViewModel.selectedPost
+    val deletePostDialogVis = homeViewModel.deletePostDialogVis
 
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
@@ -69,6 +73,8 @@ fun HomeScreen(
                             coroutineScope.launch {
                                 bottomSheetState.hide()
                             }
+
+                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(true))
                         }
                     )
                 }
@@ -154,7 +160,7 @@ fun HomeScreen(
                                 post = post,
                                 onMoreClicked = {
                                     onEvent(HomeEvent.OnPostSelected(post))
-                                    
+
                                     coroutineScope.launch {
                                         bottomSheetState.show()
                                     }
@@ -177,6 +183,43 @@ fun HomeScreen(
                     else -> {}
                 }
             }
+
+            // Observe delete post state
+            when (deletePostState) {
+                UIState.Loading -> ProgressBarWithBackground()
+
+                else -> {}
+            }
+        }
+
+        // Delete post confirmation dialog
+        if (deletePostDialogVis) {
+            AlertDialog(
+                onDismissRequest = {
+                    onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                },
+                title = { Text(text = stringResource(id = R.string.delete_post)) },
+                text = { Text(text = stringResource(id = R.string.delete_post_confirm_msg)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onEvent(HomeEvent.DeletePost)
+                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.yes))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.no))
+                    }
+                }
+            )
         }
     }
 }

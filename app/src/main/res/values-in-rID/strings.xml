@@ -34,6 +34,10 @@
     <string name="edit">Edit</string>
     <string name="delete">Hapus</string>
     <string name="no_menus">Tidak ada menu</string>
+    <string name="delete_post">Hapus Postingan</string>
+    <string name="delete_post_confirm_msg">Apakah kamu yakin ingin menghapus postingan ini?</string>
+    <string name="yes">Iya</string>
+    <string name="no">Tidak</string>
 
     <string name="upload_post">Unggah Postingan</string>
     <string name="edit_post">Edit Postingan</string>
