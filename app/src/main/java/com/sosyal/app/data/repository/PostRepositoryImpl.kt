@@ -14,6 +14,7 @@ import io.ktor.client.call.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.json.JsonObject
 
 class PostRepositoryImpl(
     private val postRemoteDataSource: PostRemoteDataSource,
@@ -47,7 +48,7 @@ class PostRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body() as BaseResponse<Any>
+                    val responseBody = response.body() as BaseResponse<JsonObject>
                     emit(Resource.Success(responseBody.data))
                 }
 
