@@ -11,4 +11,6 @@ interface PostRepository {
     suspend fun sendPost(post: Post)
 
     fun getPostDetail(id: String): Flow<Resource<Post>>
+
+    fun deletePost(id: String): Flow<Resource<Any>>
 }
