@@ -12,6 +12,7 @@ import com.sosyal.app.domain.repository.PostRepository
 import com.sosyal.app.util.Resource
 import io.ktor.client.call.*
 import io.ktor.http.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class PostRepositoryImpl(
@@ -32,6 +33,22 @@ class PostRepositoryImpl(
                 HttpStatusCode.OK -> {
                     val responseBody = response.body() as BaseResponse<PostDto>
                     emit(Resource.Success(responseBody.data?.toPost()))
+                }
+
+                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
+
+    override fun deletePost(id: String) =
+        flow {
+            val response = postRemoteDataSource.deletePost(id)
+
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    val responseBody = response.body() as BaseResponse<Any>
+                    emit(Resource.Success(responseBody.data))
                 }
 
                 HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))

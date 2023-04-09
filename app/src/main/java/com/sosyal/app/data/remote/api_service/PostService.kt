@@ -66,4 +66,6 @@ class PostService(
     }
 
     suspend fun getPostDetail(id: String) = httpClient.get("/posts/$id")
+
+    suspend fun deletePost(id: String) = httpClient.delete("/posts/$id")
 }
