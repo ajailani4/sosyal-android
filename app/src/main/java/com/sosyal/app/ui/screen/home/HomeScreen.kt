@@ -34,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel(),
-    onNavigateToUploadEditPost: (String?) -> Unit
+    onNavigateToUploadEditPost: (String?) -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val postsState = homeViewModel.postsState
@@ -125,7 +126,8 @@ fun HomeScreen(
                             Image(
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .clip(CircleShape),
+                                    .clip(CircleShape)
+                                    .clickable { onNavigateToProfile() },
                                 painter = painterResource(id = R.drawable.ic_launcher_background),
                                 contentDescription = "Profile picture"
                             )

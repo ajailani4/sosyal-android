@@ -21,7 +21,9 @@ import com.sosyal.app.ui.theme.Grey3
 import com.sosyal.app.ui.theme.SosyalTheme
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onNavigateUp: () -> Unit
+) {
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -40,7 +42,7 @@ fun ProfileScreen() {
                     Text(text = stringResource(id = R.string.profile))
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = onNavigateUp) {
                         Icon(
                             imageVector = Icons.Default.Logout,
                             tint = MaterialTheme.colors.primary,
@@ -108,13 +110,5 @@ fun ProfileScreen() {
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewProfileScreen() {
-    SosyalTheme {
-        ProfileScreen()
     }
 }

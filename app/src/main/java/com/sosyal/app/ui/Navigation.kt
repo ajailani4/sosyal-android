@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sosyal.app.ui.screen.home.HomeScreen
 import com.sosyal.app.ui.screen.login.LoginScreen
+import com.sosyal.app.ui.screen.profile.ProfileScreen
 import com.sosyal.app.ui.screen.register.RegisterScreen
 import com.sosyal.app.ui.screen.upload_edit_post.UploadEditPostScreen
 
@@ -61,6 +62,9 @@ fun Navigation(
             HomeScreen(
                 onNavigateToUploadEditPost = { postId ->
                     navController.navigate(Screen.UploadEditPost.route + "?postId=$postId")
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile.route)
                 }
             )
         }
@@ -76,6 +80,14 @@ fun Navigation(
             )
         ) {
             UploadEditPostScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        composable(route = Screen.Profile.route) {
+            ProfileScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 }
