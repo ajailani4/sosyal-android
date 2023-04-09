@@ -81,13 +81,13 @@ fun UploadEditPostScreen(
             )
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(15.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Column(modifier = Modifier.padding(15.dp)) {
                 BasicTextField(
                     modifier = Modifier
                         .fillMaxWidth()
