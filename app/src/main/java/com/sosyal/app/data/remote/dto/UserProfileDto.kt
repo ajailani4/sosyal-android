@@ -7,5 +7,6 @@ data class UserProfileDto(
     val id: String,
     val name: String,
     val email: String,
-    val username: String
+    val username: String,
+    val avatar: String? = null
 )

@@ -7,5 +7,6 @@ fun UserProfileDto.toUserProfile() =
     UserProfile(
         name = name,
         email = email,
-        username = username
+        username = username,
+        avatar = avatar
     )

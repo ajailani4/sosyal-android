@@ -3,5 +3,6 @@ package com.sosyal.app.domain.model
 data class UserProfile(
     val name: String,
     val email: String,
-    val username: String
+    val username: String,
+    val avatar: String? = null
 )
