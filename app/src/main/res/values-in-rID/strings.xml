@@ -42,4 +42,7 @@
     <string name="upload_post">Unggah Postingan</string>
     <string name="edit_post">Edit Postingan</string>
     <string name="write_something">Tulis sesuatu…</string>
+
+    <string name="profile">Profil</string>
+    <string name="edit_profile">Edit Profil</string>
 </resources>
