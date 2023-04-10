@@ -47,6 +47,7 @@ fun PostItemCard(
                             .clip(CircleShape),
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(post.userAvatar ?: R.drawable.img_default_ava)
+                            .placeholder(R.drawable.img_default_ava)
                             .build(),
                         contentDescription = "User profile picture"
                     )
