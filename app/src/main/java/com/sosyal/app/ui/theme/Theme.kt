@@ -22,18 +22,18 @@ private val LightColorPalette = lightColors(
 )
 
 private val DarkColorPalette = darkColors(
-    primary = light_primary,
-    onPrimary = light_onPrimary,
-    primaryVariant = light_primaryVariant,
-    secondary = light_secondary,
-    onSecondary = light_onSecondary,
-    secondaryVariant = light_secondaryVariant,
-    background = light_background,
-    onBackground = light_onBackground,
-    surface = light_surface,
-    onSurface = light_onSurface,
-    error = light_error,
-    onError = light_onError
+    primary = dark_primary,
+    onPrimary = dark_onPrimary,
+    primaryVariant = dark_primaryVariant,
+    secondary = dark_secondary,
+    onSecondary = dark_onSecondary,
+    secondaryVariant = dark_secondaryVariant,
+    background = dark_background,
+    onBackground = dark_onBackground,
+    surface = dark_surface,
+    onSurface = dark_onSurface,
+    error = dark_error,
+    onError = dark_onError
 )
 
 @Composable
