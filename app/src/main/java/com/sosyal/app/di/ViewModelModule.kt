@@ -13,7 +13,7 @@ val viewModelModule = module {
     viewModel { SplashViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { LoginViewModel(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
     viewModel { UploadEditPostViewModel(get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
 }

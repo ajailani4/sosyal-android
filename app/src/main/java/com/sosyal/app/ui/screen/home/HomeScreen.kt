@@ -186,6 +186,11 @@ fun HomeScreen(
                         items(posts) { post ->
                             PostItemCard(
                                 post = post,
+                                onLikeClicked = {
+                                    onEvent(HomeEvent.OnPostSelected(post))
+                                    onEvent(HomeEvent.LikeOrDislikePost)
+                                },
+                                onCommentClicked = {},
                                 onMoreClicked = {
                                     onEvent(HomeEvent.OnPostSelected(post))
 

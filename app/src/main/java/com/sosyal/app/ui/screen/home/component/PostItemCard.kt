@@ -27,6 +27,8 @@ import com.sosyal.app.util.Formatter
 @Composable
 fun PostItemCard(
     post: Post,
+    onLikeClicked: () -> Unit,
+    onCommentClicked: () -> Unit,
     onMoreClicked: () -> Unit
 ) {
     Card(
@@ -113,7 +115,7 @@ fun PostItemCard(
                         post.likes
                     ),
                     isActive = post.isLiked,
-                    onClick = {}
+                    onClick = onLikeClicked
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 SmallCircleButton(
@@ -122,7 +124,7 @@ fun PostItemCard(
                         id = if (post.comments > 1) R.string.comments else R.string.comment,
                         post.comments
                     ),
-                    onClick = {}
+                    onClick = onCommentClicked
                 )
             }
         }
