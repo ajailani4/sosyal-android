@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,13 +20,14 @@ import com.sosyal.app.ui.theme.Grey3
 fun SmallCircleButton(
     icon: ImageVector,
     text: String,
+    isActive: Boolean? = null,
     onClick: () -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(color = Grey2)
+                .background(color = if (isActive == true) MaterialTheme.colors.secondary else Grey2)
                 .clickable { onClick() }
         ) {
             Icon(
@@ -32,7 +35,7 @@ fun SmallCircleButton(
                     .size(30.dp)
                     .padding(7.dp),
                 imageVector = icon,
-                tint = Grey3,
+                tint = if (isActive == true) MaterialTheme.colors.onSecondary else Grey3,
                 contentDescription = "Like icon"
             )
         }

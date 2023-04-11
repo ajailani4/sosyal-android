@@ -112,6 +112,7 @@ fun PostItemCard(
                         id = if (post.likes > 1) R.string.likes else R.string.like,
                         post.likes
                     ),
+                    isActive = post.isLiked,
                     onClick = {}
                 )
                 Spacer(modifier = Modifier.width(20.dp))
