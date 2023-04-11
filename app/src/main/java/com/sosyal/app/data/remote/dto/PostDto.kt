@@ -11,5 +11,6 @@ data class PostDto(
     val likes: Int,
     val comments: Int,
     val date: String,
-    val isEdited: Boolean? = null
+    val isEdited: Boolean? = null,
+    val isLiked: Boolean? = null
 )

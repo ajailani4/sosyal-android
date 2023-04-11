@@ -8,5 +8,6 @@ data class Post(
     val likes: Int = 0,
     val comments: Int = 0,
     val date: String? = null,
-    val isEdited: Boolean? = null
+    val isEdited: Boolean? = null,
+    val isLiked: Boolean? = null
 )

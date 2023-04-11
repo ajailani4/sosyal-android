@@ -12,7 +12,8 @@ fun PostDto.toPost() =
         likes = likes,
         comments = comments,
         date = date,
-        isEdited = isEdited
+        isEdited = isEdited,
+        isLiked = isLiked
     )
 
 fun Post.toPostDto() =
@@ -23,5 +24,6 @@ fun Post.toPostDto() =
         likes = likes,
         comments = comments,
         date = date!!,
-        isEdited = isEdited
+        isEdited = isEdited,
+        isLiked = isLiked
     )
