@@ -92,7 +92,7 @@ fun ProfileScreen(
                                     .size(125.dp)
                                     .clip(CircleShape),
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data(userProfile.avatar)
+                                    .data(userProfile.avatar ?: R.drawable.img_default_ava)
                                     .placeholder(R.drawable.img_default_ava)
                                     .build(),
                                 contentDescription = "User profile avatar"

@@ -147,7 +147,7 @@ fun HomeScreen(
                                                 .clip(CircleShape)
                                                 .clickable { onNavigateToProfile() },
                                             model = ImageRequest.Builder(LocalContext.current)
-                                                .data(userProfile.avatar)
+                                                .data(userProfile.avatar ?: R.drawable.img_default_ava)
                                                 .placeholder(R.drawable.img_default_ava)
                                                 .build(),
                                             contentDescription = "User profile avatar"
