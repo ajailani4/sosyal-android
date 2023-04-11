@@ -99,19 +99,19 @@ fun ProfileScreen(
                             )
                             Spacer(modifier = Modifier.height(15.dp))
                             Text(
-                                text = "George Zayvich",
+                                text = userProfile.name,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.subtitle1
 
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "george_z",
+                                text = userProfile.username,
                                 textAlign = TextAlign.Center
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "george_zayvich@email.com",
+                                text = userProfile.email,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.body2.copy(
                                     color = Grey3
