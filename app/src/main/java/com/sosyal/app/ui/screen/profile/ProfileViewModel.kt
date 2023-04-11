@@ -19,10 +19,10 @@ class ProfileViewModel(
         private set
 
     init {
-        getProfile()
+        getUserProfile()
     }
 
-    private fun getProfile() {
+    private fun getUserProfile() {
         userProfileState = UIState.Loading
 
         viewModelScope.launch {

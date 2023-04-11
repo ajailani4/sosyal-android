@@ -5,5 +5,5 @@ import com.sosyal.app.domain.repository.UserProfileRepository
 class GetUserProfileUseCase(
     private val userProfileRepository: UserProfileRepository
 ) {
-    operator fun invoke() = userProfileRepository.getProfile()
+    operator fun invoke() = userProfileRepository.getUserProfile()
 }

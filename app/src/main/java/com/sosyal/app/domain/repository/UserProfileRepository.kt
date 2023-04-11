@@ -5,5 +5,5 @@ import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface UserProfileRepository {
-    fun getProfile(): Flow<Resource<UserProfile>>
+    fun getUserProfile(): Flow<Resource<UserProfile>>
 }

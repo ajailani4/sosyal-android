@@ -16,9 +16,9 @@ class UserProfileRepositoryImpl(
     private val userProfileRemoteDataSource: UserProfileRemoteDataSource,
     private val context: Context
 ) : UserProfileRepository {
-    override fun getProfile() =
+    override fun getUserProfile() =
         flow {
-            val response = userProfileRemoteDataSource.getProfile()
+            val response = userProfileRemoteDataSource.getUserProfile()
 
             when (response.status) {
                 HttpStatusCode.OK -> {
