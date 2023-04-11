@@ -7,9 +7,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.model.Post
+import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
+import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.catch
@@ -19,12 +21,17 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val receivePostUseCase: ReceivePostUseCase,
     private val getUserCredentialUseCase: GetUserCredentialUseCase,
-    private val deletePostUseCase: DeletePostUseCase
+    private val deletePostUseCase: DeletePostUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase
 ) : ViewModel() {
     var postsState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
     var deletePostState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
+    var userProfileState by mutableStateOf<UIState<UserProfile>>(UIState.Idle)
+        private set
 
     var posts = mutableStateListOf<Post>()
         private set
@@ -41,6 +48,7 @@ class HomeViewModel(
     init {
         receivePost()
         getUserCredential()
+        getUserProfile()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -97,6 +105,22 @@ class HomeViewModel(
 
                         is Resource.Error -> UIState.Error(it.message)
                     }
+                }
+            }
+        }
+    }
+
+    private fun getUserProfile() {
+        userProfileState = UIState.Loading
+
+        viewModelScope.launch {
+            getUserProfileUseCase().catch {
+                userProfileState = UIState.Error(it.message)
+            }.collect {
+                userProfileState = when (it) {
+                    is Resource.Success -> UIState.Success(it.data)
+
+                    is Resource.Error -> UIState.Error(it.message)
                 }
             }
         }

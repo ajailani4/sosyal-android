@@ -18,9 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.BottomSheetItem
@@ -40,6 +43,7 @@ fun HomeScreen(
     val onEvent = homeViewModel::onEvent
     val postsState = homeViewModel.postsState
     val deletePostState = homeViewModel.deletePostState
+    val userProfileState = homeViewModel.userProfileState
     val posts = homeViewModel.posts.reversed()
     val username = homeViewModel.username
     val selectedPost = homeViewModel.selectedPost
@@ -123,14 +127,36 @@ fun HomeScreen(
                                 )
                             }
                             Spacer(modifier = Modifier.width(15.dp))
-                            Image(
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                                    .clickable { onNavigateToProfile() },
-                                painter = painterResource(id = R.drawable.ic_launcher_background),
-                                contentDescription = "Profile picture"
-                            )
+
+                            when (userProfileState) {
+                                UIState.Loading -> {
+                                    Image(
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .clip(CircleShape),
+                                        painter = painterResource(id = R.drawable.img_default_ava),
+                                        contentDescription = "Profile picture"
+                                    )
+                                }
+
+                                is UIState.Success -> {
+                                    userProfileState.data?.let { userProfile ->
+                                        AsyncImage(
+                                            modifier = Modifier
+                                                .size(40.dp)
+                                                .clip(CircleShape)
+                                                .clickable { onNavigateToProfile() },
+                                            model = ImageRequest.Builder(LocalContext.current)
+                                                .data(userProfile.avatar)
+                                                .placeholder(R.drawable.img_default_ava)
+                                                .build(),
+                                            contentDescription = "User profile avatar"
+                                        )
+                                    }
+                                }
+
+                                else -> {}
+                            }
                         }
                     }
                 }
