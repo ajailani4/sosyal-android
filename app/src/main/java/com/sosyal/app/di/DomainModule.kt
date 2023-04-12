@@ -7,6 +7,7 @@ import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
+import com.sosyal.app.domain.use_case.user_profile.EditUserProfileUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import org.koin.dsl.module
 
@@ -26,4 +27,5 @@ val domainModule = module {
 
     // User Profile
     single { GetUserProfileUseCase(get()) }
+    single { EditUserProfileUseCase(get()) }
 }
