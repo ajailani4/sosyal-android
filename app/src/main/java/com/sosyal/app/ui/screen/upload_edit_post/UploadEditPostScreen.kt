@@ -138,14 +138,6 @@ fun UploadEditPostScreen(
             when (postDetailState) {
                 UIState.Loading -> ProgressBarWithBackground()
 
-                is UIState.Success -> {
-                    postDetailState.data?.let { post ->
-                        onEvent(UploadEditPostEvent.OnContentChanged(post.content!!))
-                    }
-
-                    onEvent(UploadEditPostEvent.Idle)
-                }
-
                 is UIState.Error -> {
                     LaunchedEffect(scaffoldState) {
                         postDetailState.message?.let {

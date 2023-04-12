@@ -30,16 +30,14 @@ class UploadEditPostViewModel(
     var editPostState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
-    var postDetailState by mutableStateOf<UIState<Post>>(UIState.Idle)
+    var postDetailState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
     var content by mutableStateOf("")
         private set
 
+    private var post = Post()
     private var username = ""
-    private var likes = 0
-    private var comments = 0
-    private var date = ""
 
     init {
         if (postId != null) getPostDetail()
@@ -87,19 +85,18 @@ class UploadEditPostViewModel(
             postId?.let { id ->
                 getPostDetailUseCase(id).catch {
                     postDetailState = UIState.Error(it.message)
-                }.collect {
-                    postDetailState = when (it) {
+                }.collect { resource ->
+                    postDetailState = when (resource) {
                         is Resource.Success -> {
-                            it.data?.let { post ->
-                                likes = post.likes
-                                comments = post.comments
-                                date = post.date!!
+                            resource.data?.let {
+                                post = it
+                                content = post.content!!
                             }
 
-                            UIState.Success(it.data)
+                            UIState.Success(null)
                         }
 
-                        is Resource.Error -> UIState.Error(it.message)
+                        is Resource.Error -> UIState.Error(resource.message)
                     }
                 }
             }
@@ -113,12 +110,13 @@ class UploadEditPostViewModel(
             postId?.let { id ->
                 sendPostUseCase(
                     id = id,
-                    username = username,
+                    username = post.username!!,
                     content = content,
-                    likes = likes,
-                    comments = comments,
-                    date = date,
-                    isEdited = true
+                    likes = post.likes,
+                    comments = post.comments,
+                    date = post.date,
+                    isEdited = true,
+                    isLiked = post.isLiked
                 )
 
                 editPostState = UIState.Success(null)
