@@ -98,23 +98,12 @@ fun EditProfileScreen(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(30.dp))
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = { },
-                    label = {
-                        Text(text = stringResource(id = R.string.username))
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Username icon"
-                        )
-                    },
-                    singleLine = true
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    text = "george_z",
+                    textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(30.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = "",
