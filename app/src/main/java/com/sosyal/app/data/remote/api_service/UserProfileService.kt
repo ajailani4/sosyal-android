@@ -22,6 +22,7 @@ class UserProfileService(private val httpClient: HttpClient) {
                 avatar?.readBytes()?.let {
                     append("avatar", it, Headers.build {
                         append(HttpHeaders.ContentType, "image/*")
+                        append(HttpHeaders.ContentDisposition, "filename=\"${avatar.name}\"")
                     })
                 }
             }

@@ -1,5 +1,6 @@
 package com.sosyal.app.di
 
+import com.sosyal.app.ui.screen.edit_profile.EditProfileViewModel
 import com.sosyal.app.ui.screen.home.HomeViewModel
 import com.sosyal.app.ui.screen.login.LoginViewModel
 import com.sosyal.app.ui.screen.profile.ProfileViewModel
@@ -16,4 +17,5 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
     viewModel { UploadEditPostViewModel(get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
+    viewModel { EditProfileViewModel(get(), get()) }
 }

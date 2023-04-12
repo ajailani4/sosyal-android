@@ -217,7 +217,6 @@ fun HomeScreen(
                 }
             }
 
-            // Observe delete post state
             when (deletePostState) {
                 UIState.Loading -> ProgressBarWithBackground()
 
@@ -225,7 +224,6 @@ fun HomeScreen(
             }
         }
 
-        // Delete post confirmation dialog
         if (deletePostDialogVis) {
             AlertDialog(
                 onDismissRequest = {
