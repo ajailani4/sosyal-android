@@ -91,6 +91,9 @@ fun Navigation(
             ProfileScreen(
                 onNavigateUp = {
                     navController.navigateUp()
+                },
+                onNavigateToEditProfile = {
+                    navController.navigate(Screen.EditProfile.route)
                 }
             )
         }

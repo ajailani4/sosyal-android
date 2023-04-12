@@ -27,7 +27,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = koinViewModel(),
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    onNavigateToEditProfile: () -> Unit
 ) {
     val userProfileState = profileViewModel.userProfileState
 
@@ -121,7 +122,7 @@ fun ProfileScreen(
                             Button(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = MaterialTheme.shapes.medium,
-                                onClick = { /*TODO*/ }
+                                onClick = onNavigateToEditProfile
                             ) {
                                 Text(
                                     modifier = Modifier.padding(5.dp),
