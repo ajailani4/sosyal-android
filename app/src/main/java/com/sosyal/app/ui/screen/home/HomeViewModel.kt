@@ -101,7 +101,16 @@ class HomeViewModel(
                         posts.add(post)
                     } else {
                         if (post.isEdited == true) {
-                            posts[posts.indexOf(existedPost)] = post
+                            post.apply {
+                                posts[posts.indexOf(existedPost)] = existedPost.copy(
+                                    id = id,
+                                    username = username,
+                                    userAvatar = userAvatar,
+                                    content = content,
+                                    likes = likes,
+                                    comments = comments
+                                )
+                            }
                         }
                     }
                 }
