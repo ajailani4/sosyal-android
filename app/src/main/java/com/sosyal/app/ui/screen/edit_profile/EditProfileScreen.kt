@@ -88,7 +88,10 @@ fun EditProfileScreen(
                     }
                 },
                 title = {
-                    Text(text = stringResource(id = R.string.edit_profile))
+                    Text(
+                        text = stringResource(id = R.string.edit_profile),
+                        style = MaterialTheme.typography.h2
+                    )
                 },
                 backgroundColor = MaterialTheme.colors.surface
             )

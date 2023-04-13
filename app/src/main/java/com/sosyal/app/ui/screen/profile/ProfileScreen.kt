@@ -47,7 +47,10 @@ fun ProfileScreen(
                     }
                 },
                 title = {
-                    Text(text = stringResource(id = R.string.profile))
+                    Text(
+                        text = stringResource(id = R.string.profile),
+                        style = MaterialTheme.typography.h2
+                    )
                 },
                 actions = {
                     IconButton(onClick = {}) {
