@@ -203,16 +203,6 @@ fun HomeScreen(
                         }
                     }
 
-                    is UIState.Error -> {
-                        item {
-                            LaunchedEffect(scaffoldState) {
-                                postsState.message?.let {
-                                    scaffoldState.snackbarHostState.showSnackbar(it)
-                                }
-                            }
-                        }
-                    }
-
                     else -> {}
                 }
             }
