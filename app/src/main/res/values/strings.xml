@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Sosyal</string>
 
+    <string name="welcome">Welcome</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="name">Name</string>

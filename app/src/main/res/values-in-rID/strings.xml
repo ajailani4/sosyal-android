@@ -24,6 +24,7 @@
     <string name="likes">%s suka</string>
     <string name="comments">%s komentar</string>
 
+    <string name="welcome">Selamat Datang</string>
     <string name="just_now">Baru saja</string>
     <string name="minute_ago">%d menit yang lalu</string>
     <string name="minutes_ago">%d menit yang lalu</string>

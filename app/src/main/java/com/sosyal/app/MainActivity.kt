@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 val startDestination = if (userCredential.accessToken != "") {
                     Screen.Home.route
                 } else {
-                    Screen.Register.route
+                    Screen.Welcome.route
                 }
 
                 setContent {

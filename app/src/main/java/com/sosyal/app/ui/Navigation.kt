@@ -12,6 +12,7 @@ import com.sosyal.app.ui.screen.login.LoginScreen
 import com.sosyal.app.ui.screen.profile.ProfileScreen
 import com.sosyal.app.ui.screen.register.RegisterScreen
 import com.sosyal.app.ui.screen.upload_edit_post.UploadEditPostScreen
+import com.sosyal.app.ui.screen.welcome.WelcomeScreen
 
 @Composable
 fun Navigation(
@@ -19,6 +20,17 @@ fun Navigation(
     startDestination: String
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
+        composable(route = Screen.Welcome.route) {
+            WelcomeScreen(
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route)
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
+            )
+        }
+
         composable(route = Screen.Register.route) {
             RegisterScreen(
                 onNavigateUp = {
@@ -31,7 +43,7 @@ fun Navigation(
                     navController.navigate(Screen.Home.route) {
                         launchSingleTop = true
 
-                        popUpTo(Screen.Register.route) {
+                        popUpTo(Screen.Welcome.route) {
                             inclusive = true
                         }
                     }
@@ -51,7 +63,7 @@ fun Navigation(
                     navController.navigate(Screen.Home.route) {
                         launchSingleTop = true
 
-                        popUpTo(Screen.Register.route) {
+                        popUpTo(Screen.Welcome.route) {
                             inclusive = true
                         }
                     }

@@ -37,6 +37,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 13.sp
     ),
+    button = TextStyle(
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp
+    ),
     caption = TextStyle(
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Normal,
