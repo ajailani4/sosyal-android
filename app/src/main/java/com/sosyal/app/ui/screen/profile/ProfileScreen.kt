@@ -8,6 +8,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -24,15 +27,25 @@ import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.theme.Grey3
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = koinViewModel(),
     onNavigateUp: () -> Unit,
     onNavigateToEditProfile: () -> Unit
 ) {
+    val onEvent = profileViewModel::onEvent
     val userProfileState = profileViewModel.userProfileState
+    val pullRefreshing = profileViewModel.pullRefreshing
 
     val scaffoldState = rememberScaffoldState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = pullRefreshing,
+        onRefresh = {
+            onEvent(ProfileEvent.OnPullRefresh(true))
+            onEvent(ProfileEvent.GetUserProfile)
+        }
+    )
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -69,6 +82,7 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .pullRefresh(pullRefreshState)
                 .verticalScroll(rememberScrollState())
         ) {
             when (userProfileState) {
@@ -84,6 +98,8 @@ fun ProfileScreen(
                 }
 
                 is UIState.Success -> {
+                    onEvent(ProfileEvent.OnPullRefresh(false))
+
                     userProfileState.data?.let { userProfile ->
                         Column(
                             modifier = Modifier
@@ -138,6 +154,8 @@ fun ProfileScreen(
                 }
 
                 is UIState.Error -> {
+                    onEvent(ProfileEvent.OnPullRefresh(false))
+
                     LaunchedEffect(scaffoldState) {
                         userProfileState.message?.let {
                             scaffoldState.snackbarHostState.showSnackbar(it)
@@ -147,6 +165,13 @@ fun ProfileScreen(
 
                 else -> {}
             }
+
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                refreshing = pullRefreshing,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colors.primary
+            )
         }
     }
 }

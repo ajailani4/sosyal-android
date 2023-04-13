@@ -18,8 +18,19 @@ class ProfileViewModel(
     var userProfileState by mutableStateOf<UIState<UserProfile>>(UIState.Idle)
         private set
 
+    var pullRefreshing by mutableStateOf(false)
+        private set
+
     init {
         getUserProfile()
+    }
+
+    fun onEvent(event: ProfileEvent) {
+        when (event) {
+            ProfileEvent.GetUserProfile -> getUserProfile()
+
+            is ProfileEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
+        }
     }
 
     private fun getUserProfile() {
