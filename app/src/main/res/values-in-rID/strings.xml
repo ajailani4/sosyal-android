@@ -32,6 +32,9 @@
     <string name="hours_ago">%d jam yang lalu</string>
     <string name="yesterday">Kemarin</string>
 
+    <string name="comments_title">Komentar</string>
+    <string name="write_comment">Tulis komentar</string>
+
     <string name="edit">Edit</string>
     <string name="delete">Hapus</string>
     <string name="no_menus">Tidak ada menu</string>

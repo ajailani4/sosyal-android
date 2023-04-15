@@ -1,7 +1,5 @@
 package com.sosyal.app.util
 
-import java.time.format.DateTimeFormatter
-
 class Constants {
     object DataStore {
         const val PREFERENCES_NAME = "sosyalPreferences"

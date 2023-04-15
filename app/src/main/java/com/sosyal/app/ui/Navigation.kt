@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.sosyal.app.ui.screen.comments.CommentsScreen
 import com.sosyal.app.ui.screen.edit_profile.EditProfileScreen
 import com.sosyal.app.ui.screen.home.HomeScreen
 import com.sosyal.app.ui.screen.login.LoginScreen
@@ -80,6 +81,10 @@ fun Navigation(
                     navController.navigate(Screen.Profile.route)
                 }
             )
+        }
+
+        composable(route = Screen.Comments.route) {
+            CommentsScreen()
         }
 
         composable(
