@@ -15,16 +15,18 @@ class SendPostUseCase(private val postRepository: PostRepository) {
         date: String? = null,
         isEdited: Boolean? = null,
         isLiked: Boolean? = null
-    ) = postRepository.sendPost(
-        Post(
-            id = id,
-            username = username,
-            content = content,
-            likes = likes,
-            comments = comments,
-            date = date ?: Formatter.convertDateToString(Date()),
-            isEdited = isEdited,
-            isLiked = isLiked
+    ) {
+        postRepository.sendPost(
+            Post(
+                id = id,
+                username = username,
+                content = content,
+                likes = likes,
+                comments = comments,
+                date = date ?: Formatter.convertDateToString(Date()),
+                isEdited = isEdited,
+                isLiked = isLiked
+            )
         )
-    )
+    }
 }
