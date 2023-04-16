@@ -2,9 +2,11 @@ package com.sosyal.app.di
 
 import com.sosyal.app.data.local.PreferencesDataStore
 import com.sosyal.app.data.remote.api_service.AuthService
+import com.sosyal.app.data.remote.api_service.CommentService
 import com.sosyal.app.data.remote.api_service.PostService
 import com.sosyal.app.data.remote.api_service.UserProfileService
 import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
+import com.sosyal.app.data.remote.data_source.CommentDataSource
 import com.sosyal.app.data.remote.data_source.PostRemoteDataSource
 import com.sosyal.app.data.remote.data_source.UserProfileRemoteDataSource
 import com.sosyal.app.data.repository.AuthRepositoryImpl
@@ -30,12 +32,19 @@ val dataModule = module {
             get(named(Constants.CoroutineDispatcher.IO_DISPATCHER))
         )
     }
+    single {
+        CommentService(
+            get(named(Constants.BaseUrl.WS)),
+            get(named(Constants.CoroutineDispatcher.IO_DISPATCHER))
+        )
+    }
     single { UserProfileService(get(named(Constants.BaseUrl.HTTPS))) }
 
     // DataSource
     single { PreferencesDataStore(androidContext()) }
     single { AuthRemoteDataSource(get()) }
     single { PostRemoteDataSource(get()) }
+    single { CommentDataSource(get()) }
     single { UserProfileRemoteDataSource(get()) }
 
     // Repository
