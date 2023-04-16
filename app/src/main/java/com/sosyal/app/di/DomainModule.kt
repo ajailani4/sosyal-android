@@ -2,6 +2,8 @@ package com.sosyal.app.di
 
 import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
+import com.sosyal.app.domain.use_case.comment.ReceiveCommentUseCase
+import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
@@ -24,6 +26,10 @@ val domainModule = module {
     single { SendPostUseCase(get()) }
     single { GetPostDetailUseCase(get()) }
     single { DeletePostUseCase(get()) }
+
+    // Comment
+    single { ReceiveCommentUseCase(get()) }
+    single { SendCommentUseCase(get()) }
 
     // User Profile
     single { GetUserProfileUseCase(get()) }

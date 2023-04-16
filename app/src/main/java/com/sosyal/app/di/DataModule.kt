@@ -9,14 +9,8 @@ import com.sosyal.app.data.remote.data_source.AuthRemoteDataSource
 import com.sosyal.app.data.remote.data_source.CommentDataSource
 import com.sosyal.app.data.remote.data_source.PostRemoteDataSource
 import com.sosyal.app.data.remote.data_source.UserProfileRemoteDataSource
-import com.sosyal.app.data.repository.AuthRepositoryImpl
-import com.sosyal.app.data.repository.PostRepositoryImpl
-import com.sosyal.app.data.repository.UserCredentialRepositoryImpl
-import com.sosyal.app.data.repository.UserProfileRepositoryImpl
-import com.sosyal.app.domain.repository.AuthRepository
-import com.sosyal.app.domain.repository.PostRepository
-import com.sosyal.app.domain.repository.UserCredentialRepository
-import com.sosyal.app.domain.repository.UserProfileRepository
+import com.sosyal.app.data.repository.*
+import com.sosyal.app.domain.repository.*
 import com.sosyal.app.util.Constants
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
@@ -51,5 +45,6 @@ val dataModule = module {
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), androidContext()) }
     single<UserCredentialRepository> { UserCredentialRepositoryImpl(get()) }
     single<PostRepository> { PostRepositoryImpl(get(), androidContext()) }
+    single<CommentRepository> { CommentRepositoryImpl(get()) }
     single<UserProfileRepository> { UserProfileRepositoryImpl(get(), androidContext()) }
 }
