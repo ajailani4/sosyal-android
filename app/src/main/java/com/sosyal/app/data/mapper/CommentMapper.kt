@@ -8,7 +8,6 @@ fun CommentDto.toComment() =
         id = id,
         postId = postId,
         username = username,
-        userAvatar = userAvatar,
         content = content
     )
 
@@ -17,6 +16,5 @@ fun Comment.toCommentDto() =
         id = id,
         postId = postId,
         username = username,
-        userAvatar = userAvatar,
         content = content
     )
