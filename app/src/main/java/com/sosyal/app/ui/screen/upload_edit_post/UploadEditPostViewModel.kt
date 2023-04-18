@@ -36,7 +36,13 @@ class UploadEditPostViewModel(
     var content by mutableStateOf("")
         private set
 
-    private var post = Post()
+    private var post = Post(
+        username = "",
+        content = "",
+        likes = 0,
+        comments = 0,
+        date = ""
+    )
     private var username = ""
 
     init {

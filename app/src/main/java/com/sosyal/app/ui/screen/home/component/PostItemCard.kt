@@ -27,6 +27,7 @@ import com.sosyal.app.util.Formatter
 @Composable
 fun PostItemCard(
     post: Post,
+    onCardClicked: () -> Unit,
     onLikeClicked: () -> Unit,
     onCommentClicked: () -> Unit,
     onMoreClicked: () -> Unit
@@ -34,7 +35,7 @@ fun PostItemCard(
     Card(
         shape = RectangleShape,
         elevation = 0.dp,
-        onClick = {}
+        onClick = onCardClicked
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -56,12 +57,12 @@ fun PostItemCard(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            text = post.username!!,
+                            text = post.username,
                             style = MaterialTheme.typography.subtitle1
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = Formatter.convertStringToDateOrTime(post.date!!).run {
+                            text = Formatter.convertStringToDateOrTime(post.date).run {
                                 when {
                                     seconds in (0..59) -> {
                                         stringResource(id = R.string.just_now)
@@ -103,7 +104,7 @@ fun PostItemCard(
             }
             Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = post.content!!,
+                text = post.content,
                 style = MaterialTheme.typography.body1
             )
             Spacer(modifier = Modifier.height(15.dp))

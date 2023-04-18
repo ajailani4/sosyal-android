@@ -5,7 +5,7 @@ import com.sosyal.app.domain.model.Post
 
 fun PostDto.toPost() =
     Post(
-        id = id!!,
+        id = id,
         username = username,
         userAvatar = userAvatar,
         content = content,
@@ -19,11 +19,11 @@ fun PostDto.toPost() =
 fun Post.toPostDto() =
     PostDto(
         id = id,
-        username = username!!,
-        content = content!!,
+        username = username,
+        content = content,
         likes = likes,
         comments = comments,
-        date = date!!,
+        date = date,
         isEdited = isEdited,
         isLiked = isLiked
     )
