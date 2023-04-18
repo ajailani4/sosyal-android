@@ -96,7 +96,7 @@ class UploadEditPostViewModel(
                         is Resource.Success -> {
                             resource.data?.let {
                                 post = it
-                                content = post.content!!
+                                content = post.content
                             }
 
                             UIState.Success(null)
@@ -116,7 +116,7 @@ class UploadEditPostViewModel(
             postId?.let { id ->
                 sendPostUseCase(
                     id = id,
-                    username = post.username!!,
+                    username = post.username,
                     content = content,
                     likes = post.likes,
                     comments = post.comments,
