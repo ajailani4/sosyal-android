@@ -41,7 +41,15 @@ class HomeViewModel(
     var username by mutableStateOf("")
         private set
 
-    var selectedPost by mutableStateOf(Post())
+    var selectedPost by mutableStateOf(
+        Post(
+            username = "",
+            content = "",
+            likes = 0,
+            comments = 0,
+            date = ""
+        )
+    )
         private set
 
     var deletePostDialogVis by mutableStateOf(false)
@@ -94,8 +102,8 @@ class HomeViewModel(
             receivePostUseCase().collect { post ->
                 postsState = UIState.Success(null)
 
-                postsState.apply {
-                    val existedPost = posts.find { it.id == post.id }
+                post.id?.let { postId ->
+                    val existedPost = posts.find { it.id == postId }
 
                     if (existedPost == null) {
                         posts.add(post)
@@ -125,8 +133,8 @@ class HomeViewModel(
             selectedPost.apply {
                 sendPostUseCase(
                     id = id,
-                    username = username!!,
-                    content = content!!,
+                    username = username,
+                    content = content,
                     likes = likes,
                     comments = comments,
                     date = date,
