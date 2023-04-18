@@ -74,6 +74,9 @@ fun Navigation(
 
         composable(route = Screen.Home.route) {
             HomeScreen(
+                onNavigateToComment = { postId ->
+                    navController.navigate(Screen.Comments.route + "?postId=$postId")
+                },
                 onNavigateToUploadEditPost = { postId ->
                     navController.navigate(Screen.UploadEditPost.route + "?postId=$postId")
                 },
@@ -83,8 +86,21 @@ fun Navigation(
             )
         }
 
-        composable(route = Screen.Comments.route) {
-            CommentsScreen()
+        composable(
+            route = Screen.Comments.route + "?postId={postId}",
+            arguments = listOf(
+                navArgument("postId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
+            CommentsScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
         }
 
         composable(

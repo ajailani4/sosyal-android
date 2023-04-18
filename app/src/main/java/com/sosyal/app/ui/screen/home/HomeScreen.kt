@@ -37,6 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel(),
+    onNavigateToComment: (String?) -> Unit,
     onNavigateToUploadEditPost: (String?) -> Unit,
     onNavigateToProfile: () -> Unit
 ) {
@@ -186,6 +187,7 @@ fun HomeScreen(
                         items(posts) { post ->
                             PostItemCard(
                                 post = post,
+                                onCardClicked = { onNavigateToComment(post.id) },
                                 onLikeClicked = {
                                     onEvent(HomeEvent.OnPostSelected(post))
                                     onEvent(HomeEvent.LikeOrDislikePost)
