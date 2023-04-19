@@ -23,8 +23,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https:///2ec7-103-241-5-114.ngrok.io\"")
-            buildConfigField("String", "WS_BASE_URL", "\"ws:///2ec7-103-241-5-114.ngrok.io\"")
+            buildConfigField("String", "BASE_URL", "\"https:///1cdf-104-28-221-103.ngrok.io\"")
+            buildConfigField("String", "WS_BASE_URL", "\"ws:///1cdf-104-28-221-103.ngrok.io\"")
         }
 
         release {
@@ -85,10 +85,7 @@ dependencies {
 
     // Unit Test
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.mockito:mockito-core:4.3.1"
-    testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.3.1'
     testImplementation 'org.mockito:mockito-inline:3.0.0'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
 
