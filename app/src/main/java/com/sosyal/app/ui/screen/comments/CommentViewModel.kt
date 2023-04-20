@@ -40,10 +40,7 @@ class CommentViewModel(
     var commentContent by mutableStateOf("")
         private set
 
-    private var username = ""
-
     init {
-        getUserCredential()
         getPostDetail()
         receiveComment()
     }
@@ -53,12 +50,6 @@ class CommentViewModel(
             CommentEvent.UploadComment -> uploadComment()
 
             is CommentEvent.OnCommentContentChanged -> commentContent = event.content
-        }
-    }
-
-    private fun getUserCredential() {
-        viewModelScope.launch {
-            username = getUserCredentialUseCase().first().username
         }
     }
 
@@ -89,7 +80,7 @@ class CommentViewModel(
                     commentsState = UIState.Success(null)
 
                     if (comment.postId.isNotEmpty()) {
-                        val existedComment = comments.find { it.id == id }
+                        val existedComment = comments.find { it.id == comment.id }
 
                         if (existedComment == null) {
                             comments.add(comment)
@@ -104,6 +95,8 @@ class CommentViewModel(
 
     private fun uploadComment() {
         viewModelScope.launch {
+            val username = getUserCredentialUseCase().first().username
+
             postId?.let { id ->
                 sendCommentUseCase(
                     postId = id,
