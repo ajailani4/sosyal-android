@@ -56,9 +56,9 @@ class HomeViewModel(
         private set
 
     init {
-        receivePost()
         getUserCredential()
         getUserProfile()
+        receivePost()
     }
 
     fun onEvent(event: HomeEvent) {
