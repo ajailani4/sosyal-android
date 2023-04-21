@@ -1,23 +1,20 @@
 package com.sosyal.app.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import com.sosyal.app.domain.model.Comment
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.use_case.comment.ReceiveCommentUseCase
 import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.ui.screen.comments.CommentEvent
 import com.sosyal.app.ui.screen.comments.CommentViewModel
 import com.sosyal.app.util.Resource
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.comment
 import com.sosyal.app.util.post
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.junit.Assert.*
 import org.junit.Before
@@ -111,10 +108,8 @@ class CommentViewModelTest {
     @Test
     fun `Receive comment should be success`() {
         testCoroutineRule.runTest {
-            val commentSharedFlow = flowOf(comment).shareIn(
-                scope = this,
-                started = SharingStarted.Eagerly
-            )
+            val _commentSharedFlow = MutableSharedFlow<Comment>()
+            val commentSharedFlow = _commentSharedFlow.asSharedFlow()
 
             doReturn(commentSharedFlow).`when`(receiveCommentUseCase)(anyString())
 
@@ -127,12 +122,14 @@ class CommentViewModelTest {
             )
 
             val job = launch {
-                commentSharedFlow.collect {
-                    val comments = commentViewModel.comments
-
-                    assertEquals("Comments size should be 1", 1, comments.size)
-                }
+                commentSharedFlow.collect()
             }
+
+            _commentSharedFlow.emit(comment)
+
+            val comments = commentViewModel.comments
+
+            assertEquals("Comments size should be 1", 1, comments.size)
 
             job.cancel()
         }
