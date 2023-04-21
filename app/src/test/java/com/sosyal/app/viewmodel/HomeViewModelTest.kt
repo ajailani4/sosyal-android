@@ -1,5 +1,6 @@
 package com.sosyal.app.viewmodel
 
+import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
@@ -13,9 +14,7 @@ import com.sosyal.app.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -122,10 +121,8 @@ class HomeViewModelTest {
     @Test
     fun `Receive post should be success`() {
         testCoroutineRule.runTest {
-            val postSharedFlow = flowOf(post).shareIn(
-                scope = this,
-                started = SharingStarted.Eagerly
-            )
+            val _postSharedFlow = MutableSharedFlow<Post>()
+            val postSharedFlow = _postSharedFlow.asSharedFlow()
 
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
             doReturn(postSharedFlow).`when`(receivePostUseCase)()
@@ -139,12 +136,14 @@ class HomeViewModelTest {
             )
 
             val job = launch {
-                postSharedFlow.collect {
-                    val posts = homeViewModel.posts
-
-                    assertEquals("Posts size should be 1", 1, posts.size)
-                }
+                postSharedFlow.collect()
             }
+
+            _postSharedFlow.emit(post)
+
+            val posts = homeViewModel.posts
+
+            assertEquals("Posts size should be 1", 1, posts.size)
 
             job.cancel()
         }
