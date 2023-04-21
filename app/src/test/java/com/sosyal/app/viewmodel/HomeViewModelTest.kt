@@ -49,8 +49,6 @@ class HomeViewModelTest {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    private lateinit var onEvent: (HomeEvent) -> Unit
-
     @Test
     fun `Get user credential should be success`() {
         testCoroutineRule.runTest {
@@ -167,7 +165,7 @@ class HomeViewModelTest {
                 deletePostUseCase
             )
 
-            onEvent = homeViewModel::onEvent
+            val onEvent = homeViewModel::onEvent
             onEvent(HomeEvent.OnPostSelected(post))
             onEvent(HomeEvent.DeletePost)
 
@@ -196,7 +194,7 @@ class HomeViewModelTest {
                 deletePostUseCase
             )
 
-            onEvent = homeViewModel::onEvent
+            val onEvent = homeViewModel::onEvent
             onEvent(HomeEvent.OnPostSelected(post))
             onEvent(HomeEvent.DeletePost)
 
