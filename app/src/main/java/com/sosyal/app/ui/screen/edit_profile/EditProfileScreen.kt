@@ -45,7 +45,7 @@ fun EditProfileScreen(
 ) {
     val onEvent = editProfileViewModel::onEvent
     val userProfileState = editProfileViewModel.userProfileState
-    val editProfileState = editProfileViewModel.editProfileState
+    val editUserProfileState = editProfileViewModel.editUserProfileState
     val username = editProfileViewModel.username
     val name = editProfileViewModel.name
     val email = editProfileViewModel.email
@@ -223,7 +223,7 @@ fun EditProfileScreen(
             }
         }
 
-        when (editProfileState) {
+        when (editUserProfileState) {
             UIState.Loading -> ProgressBarWithBackground()
 
             is UIState.Success -> {
@@ -234,7 +234,7 @@ fun EditProfileScreen(
 
             is UIState.Error -> {
                 LaunchedEffect(scaffoldState) {
-                    editProfileState.message?.let {
+                    editUserProfileState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
                     }
                 }

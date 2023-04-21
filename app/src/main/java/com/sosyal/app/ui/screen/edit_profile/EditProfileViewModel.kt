@@ -5,14 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.use_case.user_profile.EditUserProfileUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.ui.screen.register.RegisterEvent
 import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -23,7 +20,7 @@ class EditProfileViewModel(
     var userProfileState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
-    var editProfileState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+    var editUserProfileState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
     var name by mutableStateOf("")
@@ -48,7 +45,7 @@ class EditProfileViewModel(
 
     fun onEvent(event: EditProfileEvent) {
         when (event) {
-            EditProfileEvent.EditProfile -> editProfile()
+            EditProfileEvent.EditProfile -> editUserProfile()
 
             is EditProfileEvent.OnNameChanged -> name = event.name
 
@@ -83,8 +80,8 @@ class EditProfileViewModel(
         }
 }
 
-    private fun editProfile() {
-        editProfileState = UIState.Loading
+    private fun editUserProfile() {
+        editUserProfileState = UIState.Loading
 
         viewModelScope.launch {
             editUserProfileUseCase(
@@ -92,9 +89,9 @@ class EditProfileViewModel(
                 email = email,
                 avatar = if (avatar is File) avatar as File else null
             ).catch {
-                editProfileState = UIState.Error(it.message)
+                editUserProfileState = UIState.Error(it.message)
             }.collect {
-                editProfileState = when (it) {
+                editUserProfileState = when (it) {
                     is Resource.Success -> UIState.Success(null)
 
                     is Resource.Error -> UIState.Error(it.message)
