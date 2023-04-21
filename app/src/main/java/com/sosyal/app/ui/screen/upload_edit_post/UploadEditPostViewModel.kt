@@ -43,12 +43,9 @@ class UploadEditPostViewModel(
         comments = 0,
         date = ""
     )
-    private var username = ""
 
     init {
         if (postId != null) getPostDetail()
-
-        getUserCredential()
     }
 
     fun onEvent(event: UploadEditPostEvent) {
@@ -63,18 +60,14 @@ class UploadEditPostViewModel(
         }
     }
 
-    private fun getUserCredential() {
-        viewModelScope.launch {
-            username = getUserCredentialUseCase().first().username
-        }
-    }
-
     private fun idle() {
         postDetailState = UIState.Idle
     }
 
     private fun uploadPost() {
         viewModelScope.launch {
+            val username = getUserCredentialUseCase().first().username
+
             sendPostUseCase(
                 username = username,
                 content = content
@@ -110,8 +103,6 @@ class UploadEditPostViewModel(
     }
 
     private fun editPost() {
-        editPostState = UIState.Loading
-
         viewModelScope.launch {
             postId?.let { id ->
                 sendPostUseCase(
