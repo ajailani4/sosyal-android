@@ -1,6 +1,7 @@
 package com.sosyal.app.util
 
 import com.sosyal.app.data.remote.dto.UserCredentialDto
+import com.sosyal.app.domain.model.Comment
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.model.UserCredential
 import com.sosyal.app.domain.model.UserProfile
@@ -29,4 +30,11 @@ val post = Post(
     likes = 0,
     comments = 0,
     date = "2023-04-19 08:00"
+)
+
+val comment = Comment(
+    id = "1",
+    postId = "1",
+    username = "george_z",
+    content = "Hello"
 )
