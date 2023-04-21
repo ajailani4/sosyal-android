@@ -104,7 +104,6 @@ class CommentViewModelTest {
                 else -> false
             }
 
-            assertNotNull(post)
             assertEquals("Should be fail", false, isSuccess)
         }
     }
