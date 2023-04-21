@@ -233,6 +233,7 @@ fun CommentsScreen(
                 Spacer(modifier = Modifier.width(10.dp))
                 IconButton(
                     modifier = Modifier.size(24.dp),
+                    enabled = commentContent.isNotEmpty(),
                     onClick = {
                         onEvent(CommentEvent.UploadComment)
                         onEvent(CommentEvent.OnCommentContentChanged(""))
