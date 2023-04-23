@@ -14,7 +14,7 @@ val Typography = Typography(
     ),
     h2 = TextStyle(
         fontFamily = manropeFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp
     ),
     h3 = TextStyle(
@@ -24,7 +24,7 @@ val Typography = Typography(
     ),
     subtitle1 = TextStyle(
         fontFamily = manropeFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     ),
     body1 = TextStyle(
@@ -36,6 +36,11 @@ val Typography = Typography(
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 13.sp
+    ),
+    button = TextStyle(
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp
     ),
     caption = TextStyle(
         fontFamily = manropeFamily,

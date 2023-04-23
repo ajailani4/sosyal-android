@@ -1,4 +1,4 @@
-package com.sosyal.app.data
+package com.sosyal.app.util
 
 sealed class Resource<T> {
     data class Success<T>(val data: T? = null) : Resource<T>()

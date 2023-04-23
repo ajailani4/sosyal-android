@@ -1,6 +1,9 @@
 package com.sosyal.app.data.remote.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UserCredentialDto(
-    val username: String,
-    val accessToken: String
+    val accessToken: String,
+    val username: String
 )

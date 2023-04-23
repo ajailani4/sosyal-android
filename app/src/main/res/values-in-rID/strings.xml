@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sosyal</string>
+
+    <string name="register">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="name">Nama</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Kata Sandi</string>
+    <string name="have_account">Sudah punya akun?</string>
+    <string name="login_here">Masuk di sini</string>
+    <string name="fill_the_form">Mohon isi form dengan lengkap</string>
+    <string name="username_already_exists">Username sudah ada. Coba yang lain</string>
+    <string name="incorrect_username_or_pass">Username atau password salah</string>
+    <string name="have_no_account">Belum punya akun?</string>
+    <string name="register_here">Daftar di sini</string>
+
+    <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
+    <string name="server_error">Server bermasalah</string>
+
+    <string name="like">%s suka</string>
+    <string name="comment">%s komentar</string>
+    <string name="likes">%s suka</string>
+    <string name="comments">%s komentar</string>
+
+    <string name="welcome">Selamat Datang</string>
+    <string name="just_now">Baru saja</string>
+    <string name="minute_ago">%d menit yang lalu</string>
+    <string name="minutes_ago">%d menit yang lalu</string>
+    <string name="hour_ago">%d jam yang lalu</string>
+    <string name="hours_ago">%d jam yang lalu</string>
+    <string name="yesterday">Kemarin</string>
+
+    <string name="comments_title">Komentar</string>
+    <string name="write_comment">Tulis komentar</string>
+
+    <string name="edit">Edit</string>
+    <string name="delete">Hapus</string>
+    <string name="no_menus">Tidak ada menu</string>
+    <string name="delete_post">Hapus Postingan</string>
+    <string name="delete_post_confirm_msg">Apakah kamu yakin ingin menghapus postingan ini?</string>
+    <string name="yes">Iya</string>
+    <string name="no">Tidak</string>
+
+    <string name="upload_post">Unggah Postingan</string>
+    <string name="edit_post">Edit Postingan</string>
+    <string name="write_something">Tulis sesuatu…</string>
+
+    <string name="profile">Profil</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="save">Simpan</string>
+</resources>
