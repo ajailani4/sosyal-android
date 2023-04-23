@@ -66,7 +66,7 @@ class EditProfileViewModelTest {
     @Test
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<UserProfile>(null))
+            val resource = flowOf(Resource.Error<UserProfile>())
 
             doReturn(resource).`when`(getUserProfileUseCase)()
 
@@ -88,7 +88,7 @@ class EditProfileViewModelTest {
     @Test
     fun `Edit user profile should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success<JsonObject>(null))
+            val resource = flowOf(Resource.Success<JsonObject>())
 
             doReturn(resource).`when`(editUserProfileUseCase)(
                 name = anyString(),
@@ -116,7 +116,7 @@ class EditProfileViewModelTest {
     @Test
     fun `Edit user profile should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<JsonObject>(null))
+            val resource = flowOf(Resource.Error<JsonObject>())
 
             doReturn(resource).`when`(editUserProfileUseCase)(
                 name = anyString(),

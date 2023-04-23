@@ -152,7 +152,7 @@ class HomeViewModelTest {
     @Test
     fun `Delete post should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success<JsonObject>(null))
+            val resource = flowOf(Resource.Success<JsonObject>())
 
             doReturn(resource).`when`(deletePostUseCase)(anyString())
 
@@ -181,7 +181,7 @@ class HomeViewModelTest {
     @Test
     fun `Delete post should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<JsonObject>(null))
+            val resource = flowOf(Resource.Error<JsonObject>())
 
             doReturn(resource).`when`(deletePostUseCase)(anyString())
 

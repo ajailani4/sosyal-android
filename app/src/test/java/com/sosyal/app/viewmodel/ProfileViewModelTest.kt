@@ -62,7 +62,7 @@ class ProfileViewModelTest {
     @Test
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<UserProfile>(null))
+            val resource = flowOf(Resource.Error<UserProfile>())
 
             doReturn(resource).`when`(getUserProfileUseCase)()
 

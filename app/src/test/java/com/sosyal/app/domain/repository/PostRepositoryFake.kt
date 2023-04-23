@@ -22,14 +22,14 @@ class PostRepositoryFake : PostRepository {
         when (resourceType) {
             ResourceType.Success -> flowOf(Resource.Success(post))
 
-            ResourceType.Error -> flowOf(Resource.Error(null))
+            ResourceType.Error -> flowOf(Resource.Error())
         }
 
     override fun deletePost(id: String): Flow<Resource<JsonObject>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Resource.Success(null))
+            ResourceType.Success -> flowOf(Resource.Success())
 
-            ResourceType.Error -> flowOf(Resource.Error(null))
+            ResourceType.Error -> flowOf(Resource.Error())
         }
 
     fun setResourceType(type: ResourceType) {

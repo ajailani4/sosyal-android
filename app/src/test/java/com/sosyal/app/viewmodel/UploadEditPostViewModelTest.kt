@@ -73,7 +73,7 @@ class UploadEditPostViewModelTest {
     @Test
     fun `Get post detail should be error`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<Post>(null))
+            val resource = flowOf(Resource.Error<Post>())
 
             doReturn(resource).`when`(getPostDetailUseCase)(anyString())
 

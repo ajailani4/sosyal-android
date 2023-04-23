@@ -19,7 +19,7 @@ class AuthRepositoryFake : AuthRepository {
         when (resourceType) {
             ResourceType.Success -> flowOf(Resource.Success(userCredential))
 
-            ResourceType.Error -> flowOf(Resource.Error(null))
+            ResourceType.Error -> flowOf(Resource.Error())
         }
 
     override fun login(
@@ -29,7 +29,7 @@ class AuthRepositoryFake : AuthRepository {
         when (resourceType) {
             ResourceType.Success -> flowOf(Resource.Success(userCredential))
 
-            ResourceType.Error -> flowOf(Resource.Error(null))
+            ResourceType.Error -> flowOf(Resource.Error())
         }
 
     fun setResourceType(type: ResourceType) {
