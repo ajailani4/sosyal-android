@@ -18,8 +18,8 @@ This app implements Clean Architecture which has three main layers, UI/Presentat
 
 ## Features
 1. Login and register
-2. Read, upload, and edit a post
-3. Read and upload a comment
+2. View, upload, and edit a post
+3. View and upload a comment
 4. Profile
 
 # Preview
