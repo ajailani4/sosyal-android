@@ -24,6 +24,6 @@ This app implements Clean Architecture which has three main layers, UI/Presentat
 
 # Preview
 **Demo Video**<br/>
-https://github.com/ajailani4/sosyal-android/assets/32035123/c8417872-9fa6-4b9c-a3d5-8c40968c0560
+[Demo Video](https://github-production-user-asset-6210df.s3.amazonaws.com/32035123/246394773-c8417872-9fa6-4b9c-a3d5-8c40968c0560.mp4)
 
 
