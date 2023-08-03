@@ -32,7 +32,7 @@ class CommentService(
 
     private fun connectToWebSocket(postId: String) {
         CoroutineScope(ioDispatcher).launch(coroutineExceptionHandler) {
-            wsClient.webSocket(path = "comment?postId=$postId") {
+            wsClient.wss(path = "comment?postId=$postId") {
                 webSocketSession = this
 
                 try {
