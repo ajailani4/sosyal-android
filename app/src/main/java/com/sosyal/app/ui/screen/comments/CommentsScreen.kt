@@ -1,17 +1,41 @@
 package com.sosyal.app.ui.screen.comments
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.runtime.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +50,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.domain.model.Comment
+import com.sosyal.app.domain.model.DateTimeInfo
 import com.sosyal.app.ui.common.UIState
+import com.sosyal.app.ui.common.component.formattedDateTime
 import com.sosyal.app.ui.screen.comments.component.CommentItemCard
 import com.sosyal.app.ui.theme.Grey
 import com.sosyal.app.ui.theme.Grey3
@@ -127,40 +153,9 @@ fun CommentsScreen(
                                                 )
                                                 Spacer(modifier = Modifier.height(4.dp))
                                                 Text(
-                                                    text = Formatter.convertStringToDateOrTime(post.date)
-                                                        .run {
-                                                            when {
-                                                                seconds in (0..59) -> {
-                                                                    stringResource(id = R.string.just_now)
-                                                                }
-
-                                                                minutes in (1..59) -> {
-                                                                    stringResource(
-                                                                        id = if (minutes > 1L) {
-                                                                            R.string.minutes_ago
-                                                                        } else {
-                                                                            R.string.minute_ago
-                                                                        },
-                                                                        minutes
-                                                                    )
-                                                                }
-
-                                                                hours in (1..23) -> {
-                                                                    stringResource(
-                                                                        id = if (hours > 1L) {
-                                                                            R.string.hours_ago
-                                                                        } else {
-                                                                            R.string.hour_ago
-                                                                        },
-                                                                        hours
-                                                                    )
-                                                                }
-
-                                                                days == 1L -> stringResource(id = R.string.yesterday)
-
-                                                                else -> date
-                                                            }
-                                                        },
+                                                    text = formattedDateTime(
+                                                        Formatter.convertStringToDateOrTime(post.date)
+                                                    ),
                                                     style = MaterialTheme.typography.caption.copy(
                                                         color = Grey
                                                     )

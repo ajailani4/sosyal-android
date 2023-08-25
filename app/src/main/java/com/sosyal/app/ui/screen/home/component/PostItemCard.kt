@@ -19,6 +19,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.domain.model.Post
+import com.sosyal.app.ui.common.component.formattedDateTime
 import com.sosyal.app.ui.theme.Grey
 import com.sosyal.app.ui.theme.Grey3
 import com.sosyal.app.util.Formatter
@@ -62,31 +63,9 @@ fun PostItemCard(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = Formatter.convertStringToDateOrTime(post.date).run {
-                                when {
-                                    seconds in (0..59) -> {
-                                        stringResource(id = R.string.just_now)
-                                    }
-
-                                    minutes in (1..59) -> {
-                                        stringResource(
-                                            id = if (minutes > 1L) R.string.minutes_ago else R.string.minute_ago,
-                                            minutes
-                                        )
-                                    }
-
-                                    hours in (1..23) -> {
-                                        stringResource(
-                                            id = if (hours > 1L) R.string.hours_ago else R.string.hour_ago,
-                                            hours
-                                        )
-                                    }
-
-                                    days == 1L -> stringResource(id = R.string.yesterday)
-
-                                    else -> date
-                                }
-                            },
+                            text = formattedDateTime(
+                                Formatter.convertStringToDateOrTime(post.date)
+                            ),
                             style = MaterialTheme.typography.caption.copy(color = Grey)
                         )
                     }

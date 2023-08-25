@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,11 +24,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
+import com.sosyal.app.domain.model.Post
+import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.BottomSheetItem
 import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.screen.home.component.PostItemCard
 import com.sosyal.app.ui.theme.backgroundGrey
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -59,39 +61,14 @@ fun HomeScreen(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
-            if (username == selectedPost.username) {
-                Column(modifier = Modifier.padding(vertical = 10.dp)) {
-                    BottomSheetItem(
-                        icon = Icons.Default.Edit,
-                        title = stringResource(id = R.string.edit),
-                        onClick = {
-                            coroutineScope.launch {
-                                bottomSheetState.hide()
-                            }
-
-                            onNavigateToUploadEditPost(selectedPost.id)
-                        }
-                    )
-                    BottomSheetItem(
-                        icon = Icons.Default.Delete,
-                        title = stringResource(id = R.string.delete),
-                        onClick = {
-                            coroutineScope.launch {
-                                bottomSheetState.hide()
-                            }
-
-                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(true))
-                        }
-                    )
-                }
-            } else {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text(
-                        text = stringResource(id = R.string.no_menus),
-                        style = MaterialTheme.typography.subtitle1
-                    )
-                }
-            }
+            SheetContent(
+                onEvent = onEvent,
+                username = username,
+                selectedPost = selectedPost,
+                coroutineScope = coroutineScope,
+                bottomSheetState = bottomSheetState,
+                onNavigateToUploadEditPost = onNavigateToUploadEditPost
+            )
         }
     ) {
         Scaffold(
@@ -129,35 +106,10 @@ fun HomeScreen(
                             }
                             Spacer(modifier = Modifier.width(15.dp))
 
-                            when (userProfileState) {
-                                UIState.Loading -> {
-                                    Image(
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .clip(CircleShape),
-                                        painter = painterResource(id = R.drawable.img_default_ava),
-                                        contentDescription = "Profile picture"
-                                    )
-                                }
-
-                                is UIState.Success -> {
-                                    userProfileState.data?.let { userProfile ->
-                                        AsyncImage(
-                                            modifier = Modifier
-                                                .size(40.dp)
-                                                .clip(CircleShape)
-                                                .clickable { onNavigateToProfile() },
-                                            model = ImageRequest.Builder(LocalContext.current)
-                                                .data(userProfile.avatar ?: R.drawable.img_default_ava)
-                                                .placeholder(R.drawable.img_default_ava)
-                                                .build(),
-                                            contentDescription = "User profile avatar"
-                                        )
-                                    }
-                                }
-
-                                else -> {}
-                            }
+                            UserAvatar(
+                                userProfileState = userProfileState,
+                                onNavigateToProfile = onNavigateToProfile
+                            )
                         }
                     }
                 }
@@ -214,35 +166,116 @@ fun HomeScreen(
 
                 else -> {}
             }
-        }
 
-        if (deletePostDialogVis) {
-            AlertDialog(
-                onDismissRequest = {
-                    onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
-                },
-                title = { Text(text = stringResource(id = R.string.delete_post)) },
-                text = { Text(text = stringResource(id = R.string.delete_post_confirm_msg)) },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            onEvent(HomeEvent.DeletePost)
-                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+            if (deletePostDialogVis) {
+                AlertDialog(
+                    onDismissRequest = {
+                        onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                    },
+                    title = { Text(text = stringResource(id = R.string.delete_post)) },
+                    text = { Text(text = stringResource(id = R.string.delete_post_confirm_msg)) },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                onEvent(HomeEvent.DeletePost)
+                                onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.yes))
                         }
-                    ) {
-                        Text(text = stringResource(id = R.string.yes))
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.no))
                         }
-                    ) {
-                        Text(text = stringResource(id = R.string.no))
                     }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun SheetContent(
+    onEvent: (HomeEvent) -> Unit,
+    username: String,
+    selectedPost: Post,
+    coroutineScope: CoroutineScope,
+    bottomSheetState: ModalBottomSheetState,
+    onNavigateToUploadEditPost: (String?) -> Unit
+) {
+    if (username == selectedPost.username) {
+        Column(modifier = Modifier.padding(vertical = 10.dp)) {
+            BottomSheetItem(
+                icon = Icons.Default.Edit,
+                title = stringResource(id = R.string.edit),
+                onClick = {
+                    coroutineScope.launch {
+                        bottomSheetState.hide()
+                    }
+
+                    onNavigateToUploadEditPost(selectedPost.id)
+                }
+            )
+            BottomSheetItem(
+                icon = Icons.Default.Delete,
+                title = stringResource(id = R.string.delete),
+                onClick = {
+                    coroutineScope.launch {
+                        bottomSheetState.hide()
+                    }
+
+                    onEvent(HomeEvent.OnDeletePostDialogVisChanged(true))
                 }
             )
         }
+    } else {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = stringResource(id = R.string.no_menus),
+                style = MaterialTheme.typography.subtitle1
+            )
+        }
+    }
+}
+
+@Composable
+private fun UserAvatar(
+    userProfileState: UIState<UserProfile>,
+    onNavigateToProfile: () -> Unit
+) {
+    when (userProfileState) {
+        UIState.Loading -> {
+            Image(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape),
+                painter = painterResource(id = R.drawable.img_default_ava),
+                contentDescription = "Profile picture"
+            )
+        }
+
+        is UIState.Success -> {
+            userProfileState.data?.let { userProfile ->
+                AsyncImage(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .clickable { onNavigateToProfile() },
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(userProfile.avatar ?: R.drawable.img_default_ava)
+                        .placeholder(R.drawable.img_default_ava)
+                        .build(),
+                    contentDescription = "User profile avatar"
+                )
+            }
+        }
+
+        else -> {}
     }
 }

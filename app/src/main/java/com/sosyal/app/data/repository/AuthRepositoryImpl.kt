@@ -9,12 +9,10 @@ import com.sosyal.app.data.remote.dto.UserCredentialDto
 import com.sosyal.app.data.remote.dto.request.LoginRequest
 import com.sosyal.app.data.remote.dto.request.RegisterRequest
 import com.sosyal.app.data.remote.dto.response.BaseResponse
-import com.sosyal.app.domain.model.UserCredential
 import com.sosyal.app.domain.repository.AuthRepository
 import com.sosyal.app.util.Resource
 import io.ktor.client.call.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class AuthRepositoryImpl(

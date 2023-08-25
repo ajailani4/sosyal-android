@@ -22,7 +22,7 @@ class UploadEditPostViewModel(
     private val getUserCredentialUseCase: GetUserCredentialUseCase,
     private val getPostDetailUseCase: GetPostDetailUseCase
 ) : ViewModel() {
-    val postId = savedStateHandle.get<String>("postId")
+    val postId: String? = savedStateHandle["postId"]
 
     var uploadPostState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set

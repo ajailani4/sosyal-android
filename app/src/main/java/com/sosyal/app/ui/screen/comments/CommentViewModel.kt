@@ -26,7 +26,7 @@ class CommentViewModel(
     private val receiveCommentUseCase: ReceiveCommentUseCase,
     private val sendCommentUseCase: SendCommentUseCase
 ) : ViewModel() {
-    val postId = savedStateHandle.get<String>("postId")
+    val postId: String? = savedStateHandle["postId"]
 
     var postDetailState by mutableStateOf<UIState<Post>>(UIState.Idle)
         private set

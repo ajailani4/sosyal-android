@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.sosyal.app.data.remote.dto.UserCredentialDto
 import com.sosyal.app.domain.model.UserCredential
 import com.sosyal.app.util.Constants
 import kotlinx.coroutines.flow.map

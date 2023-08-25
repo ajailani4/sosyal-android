@@ -10,7 +10,6 @@ import com.sosyal.app.domain.repository.UserProfileRepository
 import com.sosyal.app.util.Resource
 import io.ktor.client.call.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.JsonObject
 import java.io.File

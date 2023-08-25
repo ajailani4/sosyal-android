@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.sosyal.app.R
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.ProgressBarWithBackground
-import com.sosyal.app.ui.screen.register.RegisterEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
