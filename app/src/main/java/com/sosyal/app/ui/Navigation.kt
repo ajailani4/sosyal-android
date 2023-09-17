@@ -127,6 +127,15 @@ fun Navigation(
                 },
                 onNavigateToEditProfile = {
                     navController.navigate(Screen.EditProfile.route)
+                },
+                onNavigateToWelcome ={
+                    navController.navigate(Screen.Welcome.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.Home.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

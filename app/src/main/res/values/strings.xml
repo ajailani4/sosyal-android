@@ -49,4 +49,6 @@
     <string name="profile">Profile</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="save">Save</string>
+    <string name="logout">Logout</string>
+    <string name="logout_confirm_msg">Are you sure to logout?</string>
 </resources>

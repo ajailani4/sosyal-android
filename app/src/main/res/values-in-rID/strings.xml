@@ -50,4 +50,6 @@
     <string name="profile">Profil</string>
     <string name="edit_profile">Edit Profil</string>
     <string name="save">Simpan</string>
+    <string name="logout">Keluar</string>
+    <string name="logout_confirm_msg">Apakah kamu yakin ingin keluar?</string>
 </resources>

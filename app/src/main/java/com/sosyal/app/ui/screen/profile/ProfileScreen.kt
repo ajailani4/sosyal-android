@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.ui.common.UIState
+import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.theme.Grey3
 import org.koin.androidx.compose.koinViewModel
 
@@ -32,11 +33,14 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = koinViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToEditProfile: () -> Unit
+    onNavigateToEditProfile: () -> Unit,
+    onNavigateToWelcome: () -> Unit
 ) {
     val onEvent = profileViewModel::onEvent
     val userProfileState = profileViewModel.userProfileState
+    val logoutState = profileViewModel.logoutState
     val pullRefreshing = profileViewModel.pullRefreshing
+    val logoutDialogVisibility = profileViewModel.logoutDialogVisibility
 
     val scaffoldState = rememberScaffoldState()
     val pullRefreshState = rememberPullRefreshState(
@@ -66,7 +70,9 @@ fun ProfileScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        onEvent(ProfileEvent.OnLogoutDialogVisChanged(true))
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Logout,
                             tint = MaterialTheme.colors.primary,
@@ -173,5 +179,56 @@ fun ProfileScreen(
                 contentColor = MaterialTheme.colors.primary
             )
         }
+
+        // Observe logout state
+        when (logoutState) {
+            UIState.Loading -> ProgressBarWithBackground()
+
+            is UIState.Success -> onNavigateToWelcome()
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    logoutState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            else -> {}
+        }
+    }
+
+    if (logoutDialogVisibility) {
+        AlertDialog(
+            onDismissRequest = {
+                onEvent(ProfileEvent.OnLogoutDialogVisChanged(false))
+            },
+            title = {
+                Text(text = stringResource(id = R.string.logout))
+            },
+            text = {
+                Text(text = stringResource(id = R.string.logout_confirm_msg))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onEvent(ProfileEvent.Logout)
+                        onEvent(ProfileEvent.OnLogoutDialogVisChanged(false))
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.yes))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        onEvent(ProfileEvent.OnLogoutDialogVisChanged(false))
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.no))
+                }
+            }
+        )
+
     }
 }
