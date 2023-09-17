@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.sosyal.app'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.sosyal.app"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
 
@@ -23,14 +23,17 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https:///14e0-104-28-253-103.ngrok.io\"")
-            buildConfigField("String", "WS_BASE_URL", "\"ws:///14e0-104-28-253-103.ngrok.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://sosyal-backend.fly.dev\"")
+            buildConfigField("String", "WS_BASE_URL", "\"wss://sosyal-backend.fly.dev\"")
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://2376-114-79-5-213.ngrok.io\"")
+
+            buildConfigField("String", "BASE_URL", "\"https://sosyal-backend.fly.dev\"")
+            buildConfigField("String", "WS_BASE_URL", "\"wss://sosyal-backend.fly.dev\"")
         }
     }
     compileOptions {
@@ -41,10 +44,11 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        buildConfig true
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.4'
+        kotlinCompilerExtensionVersion '1.4.6'
     }
     packagingOptions {
         resources {
@@ -54,18 +58,18 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
 
     // UI Components
-    implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation 'androidx.activity:activity-compose:1.7.2'
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     implementation "androidx.compose.material:material:$compose_material_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_material_version"
-    implementation 'androidx.navigation:navigation-compose:2.6.0-alpha09'
-    implementation 'androidx.core:core-splashscreen:1.0.0'
-    implementation 'io.coil-kt:coil-compose:2.1.0'
+    implementation 'androidx.navigation:navigation-compose:2.7.0-rc01'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'io.coil-kt:coil-compose:2.4.0'
 
     // Koin
     implementation "io.insert-koin:koin-android:$koin_version"
@@ -78,15 +82,15 @@ dependencies {
     implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
     implementation "io.ktor:ktor-client-websockets:$ktor_version"
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 
     // Preferences DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Unit Test
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-    testImplementation 'org.mockito:mockito-inline:3.0.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
 
     // Instrumentation Test

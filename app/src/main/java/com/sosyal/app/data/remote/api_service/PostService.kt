@@ -37,7 +37,7 @@ class PostService(
 
     private fun connectToWebSocket() {
         CoroutineScope(ioDispatcher).launch(coroutineExceptionHandler) {
-            wsClient.webSocket(path = "/post") {
+            wsClient.wss(path = "/post") {
                 webSocketSession = this
 
                 try {

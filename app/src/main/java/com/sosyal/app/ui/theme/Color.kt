@@ -35,6 +35,6 @@ val dark_onError = Color(0xFFFFFFFF)
 val Colors.backgroundGrey: Color
     get() = if (isLight) Color(0xFFE4E5E7) else Color(0xFF121212)
 
-val Grey = Color(0xFF656D76)
+val Grey = Color(0xFFA7ADB4)
 val Grey2 = Color(0xFFE4E5E7)
 val Grey3 = Color(0xFFB6BABD)
