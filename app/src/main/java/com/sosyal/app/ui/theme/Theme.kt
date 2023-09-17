@@ -4,7 +4,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.Color
 
 private val LightColorPalette = lightColors(
     primary = light_primary,
@@ -35,6 +39,20 @@ private val DarkColorPalette = darkColors(
     error = dark_error,
     onError = dark_onError
 )
+
+@Immutable
+object NoRippleTheme : RippleTheme {
+    @Composable
+    override fun defaultColor() = Color.Unspecified
+
+    @Composable
+    override fun rippleAlpha() = RippleAlpha(
+        pressedAlpha = 0f,
+        focusedAlpha = 0f,
+        draggedAlpha = 0f,
+        hoveredAlpha = 0f
+    )
+}
 
 @Composable
 fun SosyalTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
