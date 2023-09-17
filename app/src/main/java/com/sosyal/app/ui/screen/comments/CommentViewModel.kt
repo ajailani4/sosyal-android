@@ -99,9 +99,11 @@ class CommentViewModel(
 
             postId?.let { id ->
                 sendCommentUseCase(
-                    postId = id,
-                    username = username,
-                    content = commentContent
+                    Comment(
+                        postId = id,
+                        username = username,
+                        content = commentContent
+                    )
                 )
             }
         }
