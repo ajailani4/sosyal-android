@@ -88,29 +88,10 @@ fun HomeScreen(
                             painter = painterResource(id = R.drawable.sosyal_text_logo),
                             contentDescription = "Sosyal text logo"
                         )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            OutlinedButton(
-                                modifier = Modifier.size(width = 35.dp, height = 35.dp),
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = MaterialTheme.colors.primary
-                                ),
-                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
-                                contentPadding = PaddingValues(0.dp),
-                                onClick = { onNavigateToUploadEditPost(null) }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = "Add post icon"
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            UserAvatar(
-                                userProfileState = userProfileState,
-                                onNavigateToProfile = onNavigateToProfile
-                            )
-                        }
+                        UserAvatar(
+                            userProfileState = userProfileState,
+                            onNavigateToProfile = onNavigateToProfile
+                        )
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.sosyal.app.ui
+package com.sosyal.app.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -72,20 +72,6 @@ fun Navigation(
             )
         }
 
-        composable(route = Screen.Home.route) {
-            HomeScreen(
-                onNavigateToComment = { postId ->
-                    navController.navigate(Screen.Comments.route + "?postId=$postId")
-                },
-                onNavigateToUploadEditPost = { postId ->
-                    navController.navigate(Screen.UploadEditPost.route + "?postId=$postId")
-                },
-                onNavigateToProfile = {
-                    navController.navigate(Screen.Profile.route)
-                }
-            )
-        }
-
         composable(
             route = Screen.Comments.route + "?postId={postId}",
             arguments = listOf(
@@ -97,23 +83,6 @@ fun Navigation(
             )
         ) {
             CommentsScreen(
-                onNavigateUp = {
-                    navController.navigateUp()
-                }
-            )
-        }
-
-        composable(
-            route = Screen.UploadEditPost.route + "?postId={postId}",
-            arguments = listOf(
-                navArgument("postId") {
-                    type = NavType.StringType
-                    nullable = true
-                    defaultValue = null
-                }
-            )
-        ) {
-            UploadEditPostScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 }
@@ -146,6 +115,42 @@ fun Navigation(
                     navController.navigateUp()
                 }
             )
+        }
+
+        // Bottom Nav Menu
+        composable(route = Screen.Home.route) {
+            HomeScreen(
+                onNavigateToComment = { postId ->
+                    navController.navigate(Screen.Comments.route + "?postId=$postId")
+                },
+                onNavigateToUploadEditPost = { postId ->
+                    navController.navigate(Screen.UploadEditPost.route + "?postId=$postId")
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile.route)
+                }
+            )
+        }
+
+        composable(
+            route = Screen.UploadEditPost.route + "?postId={postId}",
+            arguments = listOf(
+                navArgument("postId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
+            UploadEditPostScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        composable(Screen.Chats.route) {
+
         }
     }
 }
