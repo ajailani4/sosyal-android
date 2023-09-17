@@ -14,10 +14,12 @@ import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
+import com.sosyal.app.util.Formatter
 import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class HomeViewModel(
     private val getUserCredentialUseCase: GetUserCredentialUseCase,
@@ -130,16 +132,18 @@ class HomeViewModel(
         posts[posts.indexOf(selectedPost)] = selectedPost.copy(isLiked = !selectedPost.isLiked!!)
 
         viewModelScope.launch {
-            selectedPost.apply {
+            with(selectedPost) {
                 sendPostUseCase(
-                    id = id,
-                    username = username,
-                    content = content,
-                    likes = likes,
-                    comments = comments,
-                    date = date,
-                    isEdited = true,
-                    isLiked = !isLiked!!
+                    Post(
+                        id = id,
+                        username = username,
+                        content = content,
+                        likes = likes,
+                        comments = comments,
+                        date = date,
+                        isEdited = true,
+                        isLiked = !isLiked!!
+                    )
                 )
             }
         }

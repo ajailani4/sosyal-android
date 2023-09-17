@@ -11,10 +11,12 @@ import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
+import com.sosyal.app.util.Formatter
 import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class UploadEditPostViewModel(
     savedStateHandle: SavedStateHandle,
@@ -64,19 +66,6 @@ class UploadEditPostViewModel(
         postDetailState = UIState.Idle
     }
 
-    private fun uploadPost() {
-        viewModelScope.launch {
-            val username = getUserCredentialUseCase().first().username
-
-            sendPostUseCase(
-                username = username,
-                content = content
-            )
-
-            uploadPostState = UIState.Success(null)
-        }
-    }
-
     private fun getPostDetail() {
         postDetailState = UIState.Loading
 
@@ -102,18 +91,38 @@ class UploadEditPostViewModel(
         }
     }
 
+    private fun uploadPost() {
+        viewModelScope.launch {
+            val username = getUserCredentialUseCase().first().username
+
+            sendPostUseCase(
+                Post(
+                    username = username,
+                    content = content,
+                    likes = 0,
+                    comments = 0,
+                    date = Formatter.convertDateToString(Date())
+                )
+            )
+
+            uploadPostState = UIState.Success(null)
+        }
+    }
+
     private fun editPost() {
         viewModelScope.launch {
             postId?.let { id ->
                 sendPostUseCase(
-                    id = id,
-                    username = post.username,
-                    content = content,
-                    likes = post.likes,
-                    comments = post.comments,
-                    date = post.date,
-                    isEdited = true,
-                    isLiked = post.isLiked
+                    Post(
+                        id = id,
+                        username = post.username,
+                        content = content,
+                        likes = post.likes,
+                        comments = post.comments,
+                        date = post.date,
+                        isEdited = true,
+                        isLiked = post.isLiked
+                    )
                 )
 
                 editPostState = UIState.Success(null)
