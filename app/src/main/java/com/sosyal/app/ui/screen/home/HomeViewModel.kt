@@ -111,7 +111,7 @@ class HomeViewModel(
                         posts.add(post)
                     } else {
                         if (post.isEdited == true) {
-                            post.apply {
+                            with(post) {
                                 posts[posts.indexOf(existedPost)] = existedPost.copy(
                                     id = id,
                                     username = username,
@@ -129,7 +129,7 @@ class HomeViewModel(
     }
 
     private fun likeOrDislikePost() {
-        posts[posts.indexOf(selectedPost)] = selectedPost.copy(isLiked = !selectedPost.isLiked!!)
+        posts[posts.indexOf(selectedPost)] = selectedPost.copy(isLiked = selectedPost.isLiked?.not())
 
         viewModelScope.launch {
             with(selectedPost) {
@@ -142,7 +142,7 @@ class HomeViewModel(
                         comments = comments,
                         date = date,
                         isEdited = true,
-                        isLiked = !isLiked!!
+                        isLiked = isLiked?.not()
                     )
                 )
             }
