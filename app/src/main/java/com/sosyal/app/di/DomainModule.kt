@@ -8,6 +8,7 @@ import com.sosyal.app.domain.use_case.post.DeletePostUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
+import com.sosyal.app.domain.use_case.user_credential.DeleteUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.EditUserProfileUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
@@ -20,6 +21,7 @@ val domainModule = module {
 
     // User Credential
     single { GetUserCredentialUseCase(get()) }
+    single { DeleteUserCredentialUseCase(get()) }
 
     // Post
     single { ReceivePostUseCase(get()) }

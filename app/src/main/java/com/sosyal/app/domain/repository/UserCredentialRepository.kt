@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserCredentialRepository {
     fun getUserCredential(): Flow<UserCredential>
+
+    suspend fun deleteUserCredential()
 }
