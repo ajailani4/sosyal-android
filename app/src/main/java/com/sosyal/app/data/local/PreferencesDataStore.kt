@@ -35,4 +35,11 @@ class PreferencesDataStore(private val context: Context) {
                 username = it[USERNAME] ?: ""
             )
         }
+
+    suspend fun deleteUserCredential() {
+        context.dataStore.edit {
+            it.remove(ACCESS_TOKEN)
+            it.remove(USERNAME)
+        }
+    }
 }

@@ -7,4 +7,8 @@ class UserCredentialRepositoryImpl(
     private val preferencesDataStore: PreferencesDataStore
 ) : UserCredentialRepository {
     override fun getUserCredential() = preferencesDataStore.getUserCredential()
+
+    override suspend fun deleteUserCredential() {
+        preferencesDataStore.deleteUserCredential()
+    }
 }
