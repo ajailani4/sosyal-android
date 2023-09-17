@@ -19,7 +19,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.domain.model.Post
-import com.sosyal.app.ui.common.component.formattedDateTime
+import com.sosyal.app.ui.common.component.formatDateTime
 import com.sosyal.app.ui.theme.Grey
 import com.sosyal.app.ui.theme.Grey3
 import com.sosyal.app.util.Formatter
@@ -63,7 +63,7 @@ fun PostItemCard(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = formattedDateTime(
+                            text = formatDateTime(
                                 Formatter.convertStringToDateOrTime(post.date)
                             ),
                             style = MaterialTheme.typography.caption.copy(color = Grey)

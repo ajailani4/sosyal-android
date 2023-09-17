@@ -6,7 +6,7 @@ import com.sosyal.app.R
 import com.sosyal.app.domain.model.DateTimeInfo
 
 @Composable
-fun formattedDateTime(dateTimeInfo: DateTimeInfo): String {
+fun formatDateTime(dateTimeInfo: DateTimeInfo): String {
     return dateTimeInfo.run {
         when {
             seconds in (0..59) -> {
