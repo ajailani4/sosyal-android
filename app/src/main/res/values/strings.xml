@@ -51,4 +51,6 @@
     <string name="save">Save</string>
     <string name="logout">Logout</string>
     <string name="logout_confirm_msg">Are you sure to logout?</string>
+
+    <string name="chat">Chats</string>
 </resources>

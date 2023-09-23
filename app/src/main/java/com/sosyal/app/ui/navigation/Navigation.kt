@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.sosyal.app.ui.screen.chats.ChatsScreen
 import com.sosyal.app.ui.screen.comments.CommentsScreen
 import com.sosyal.app.ui.screen.edit_profile.EditProfileScreen
 import com.sosyal.app.ui.screen.home.HomeScreen
@@ -150,7 +151,7 @@ fun Navigation(
         }
 
         composable(Screen.Chats.route) {
-
+            ChatsScreen()
         }
     }
 }

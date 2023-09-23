@@ -38,3 +38,4 @@ val Colors.backgroundGrey: Color
 val Grey = Color(0xFFA7ADB4)
 val Grey2 = Color(0xFFE4E5E7)
 val Grey3 = Color(0xFFB6BABD)
+val Grey4 = Color(0xFF7B7F81)
