@@ -4,6 +4,8 @@ import com.sosyal.app.data.remote.api_service.PostService
 import com.sosyal.app.data.remote.dto.PostDto
 
 class PostRemoteDataSource(private val postService: PostService) {
+    fun refreshPost() = postService.refreshPost()
+
     fun receivePost() = postService.receivePost()
 
     suspend fun sendPost(postDto: PostDto) {

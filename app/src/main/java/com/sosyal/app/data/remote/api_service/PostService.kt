@@ -54,6 +54,10 @@ class PostService(
         }
     }
 
+    fun refreshPost() {
+        connectToWebSocket()
+    }
+
     fun receivePost() = _post.asSharedFlow()
 
     suspend fun sendPost(postDto: PostDto) {

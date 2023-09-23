@@ -9,6 +9,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -51,9 +54,17 @@ fun HomeScreen(
     val username = homeViewModel.username
     val selectedPost = homeViewModel.selectedPost
     val deletePostDialogVis = homeViewModel.deletePostDialogVis
+    val pullRefreshing = homeViewModel.pullRefreshing
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = pullRefreshing,
+        onRefresh = {
+            onEvent(HomeEvent.OnPullRefresh(true))
+            onEvent(HomeEvent.RefreshPost)
+        }
+    )
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -80,50 +91,61 @@ fun HomeScreen(
             }
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colors.backgroundGrey)
-                .padding(innerPadding)
-        ) {
-            when (postsState) {
-                UIState.Loading -> {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 180.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
+        Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colors.backgroundGrey)
+                    .padding(innerPadding)
+            ) {
+                when (postsState) {
+                    UIState.Loading -> {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 180.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
                     }
-                }
 
-                is UIState.Success -> {
-                    items(posts) { post ->
-                        PostItemCard(
-                            post = post,
-                            onCardClicked = { onNavigateToComment(post.id) },
-                            onLikeClicked = {
-                                onEvent(HomeEvent.OnPostSelected(post))
-                                onEvent(HomeEvent.LikeOrDislikePost)
-                            },
-                            onCommentClicked = {},
-                            onMoreClicked = {
-                                onEvent(HomeEvent.OnPostSelected(post))
+                    is UIState.Success -> {
+                        onEvent(HomeEvent.OnPullRefresh(false))
 
-                                coroutineScope.launch {
-                                    bottomSheetState.show()
+                        items(posts) { post ->
+                            PostItemCard(
+                                post = post,
+                                onCardClicked = { onNavigateToComment(post.id) },
+                                onLikeClicked = {
+                                    onEvent(HomeEvent.OnPostSelected(post))
+                                    onEvent(HomeEvent.LikeOrDislikePost)
+                                },
+                                onCommentClicked = {},
+                                onMoreClicked = {
+                                    onEvent(HomeEvent.OnPostSelected(post))
+
+                                    coroutineScope.launch {
+                                        bottomSheetState.show()
+                                    }
                                 }
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
                     }
-                }
 
-                else -> {}
+                    else -> {}
+                }
             }
+
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                refreshing = pullRefreshing,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colors.primary
+            )
         }
 
         when (deletePostState) {

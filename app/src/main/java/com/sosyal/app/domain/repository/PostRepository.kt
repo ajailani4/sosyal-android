@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.json.JsonObject
 
 interface PostRepository {
+    fun refreshPost()
+
     fun receivePost(): SharedFlow<Post>
 
     suspend fun sendPost(post: Post)

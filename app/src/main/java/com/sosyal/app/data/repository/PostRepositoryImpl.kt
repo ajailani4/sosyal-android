@@ -19,6 +19,10 @@ class PostRepositoryImpl(
     private val postRemoteDataSource: PostRemoteDataSource,
     private val context: Context
 ) : PostRepository {
+    override fun refreshPost() {
+        postRemoteDataSource.refreshPost()
+    }
+
     override fun receivePost() = postRemoteDataSource.receivePost()
 
     override suspend fun sendPost(post: Post) {
