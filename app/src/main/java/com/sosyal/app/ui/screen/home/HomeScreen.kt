@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
@@ -16,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +36,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel(),
+    bottomSheetState: ModalBottomSheetState,
+    onBottomSheetOpened: (content: @Composable ColumnScope.() -> Unit) -> Unit,
     onNavigateToComment: (String?) -> Unit,
     onNavigateToUploadEditPost: (String?) -> Unit,
     onNavigateToProfile: () -> Unit
@@ -52,137 +51,131 @@ fun HomeScreen(
     val selectedPost = homeViewModel.selectedPost
     val deletePostDialogVis = homeViewModel.deletePostDialogVis
 
-    val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        sheetContent = {
-            SheetContent(
-                onEvent = onEvent,
-                username = username,
-                selectedPost = selectedPost,
-                coroutineScope = coroutineScope,
-                bottomSheetState = bottomSheetState,
-                onNavigateToUploadEditPost = onNavigateToUploadEditPost
-            )
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            Surface(elevation = 4.dp) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colors.surface)
+                        .padding(horizontal = 15.dp, vertical = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier.size(width = 100.dp, height = 40.dp),
+                        painter = painterResource(id = R.drawable.sosyal_text_logo),
+                        contentDescription = "Sosyal text logo"
+                    )
+                    UserAvatar(
+                        userProfileState = userProfileState,
+                        onNavigateToProfile = onNavigateToProfile
+                    )
+                }
+            }
         }
-    ) {
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
-                Surface(elevation = 4.dp) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(color = MaterialTheme.colors.surface)
-                            .padding(horizontal = 15.dp, vertical = 10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            modifier = Modifier.size(width = 100.dp, height = 40.dp),
-                            painter = painterResource(id = R.drawable.sosyal_text_logo),
-                            contentDescription = "Sosyal text logo"
-                        )
-                        UserAvatar(
-                            userProfileState = userProfileState,
-                            onNavigateToProfile = onNavigateToProfile
-                        )
-                    }
-                }
-            }
-        ) { innerPadding ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = MaterialTheme.colors.backgroundGrey)
-                    .padding(innerPadding)
-            ) {
-                when (postsState) {
-                    UIState.Loading -> {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 180.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colors.backgroundGrey)
+                .padding(innerPadding)
+        ) {
+            when (postsState) {
+                UIState.Loading -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 180.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
                     }
+                }
 
-                    is UIState.Success -> {
-                        items(posts) { post ->
-                            PostItemCard(
-                                post = post,
-                                onCardClicked = { onNavigateToComment(post.id) },
-                                onLikeClicked = {
-                                    onEvent(HomeEvent.OnPostSelected(post))
-                                    onEvent(HomeEvent.LikeOrDislikePost)
-                                },
-                                onCommentClicked = {},
-                                onMoreClicked = {
-                                    onEvent(HomeEvent.OnPostSelected(post))
+                is UIState.Success -> {
+                    items(posts) { post ->
+                        PostItemCard(
+                            post = post,
+                            onCardClicked = { onNavigateToComment(post.id) },
+                            onLikeClicked = {
+                                onEvent(HomeEvent.OnPostSelected(post))
+                                onEvent(HomeEvent.LikeOrDislikePost)
+                            },
+                            onCommentClicked = {},
+                            onMoreClicked = {
+                                onEvent(HomeEvent.OnPostSelected(post))
 
-                                    coroutineScope.launch {
-                                        bottomSheetState.show()
-                                    }
+                                coroutineScope.launch {
+                                    bottomSheetState.show()
                                 }
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        }
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
                     }
-
-                    else -> {}
                 }
-            }
-
-            when (deletePostState) {
-                UIState.Loading -> ProgressBarWithBackground()
 
                 else -> {}
             }
-
-            if (deletePostDialogVis) {
-                AlertDialog(
-                    onDismissRequest = {
-                        onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
-                    },
-                    title = { Text(text = stringResource(id = R.string.delete_post)) },
-                    text = { Text(text = stringResource(id = R.string.delete_post_confirm_msg)) },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                onEvent(HomeEvent.DeletePost)
-                                onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
-                            }
-                        ) {
-                            Text(text = stringResource(id = R.string.yes))
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
-                            onClick = {
-                                onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
-                            }
-                        ) {
-                            Text(text = stringResource(id = R.string.no))
-                        }
-                    }
-                )
-            }
         }
+
+        when (deletePostState) {
+            UIState.Loading -> ProgressBarWithBackground()
+
+            else -> {}
+        }
+
+        if (deletePostDialogVis) {
+            AlertDialog(
+                onDismissRequest = {
+                    onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                },
+                title = { Text(text = stringResource(id = R.string.delete_post)) },
+                text = { Text(text = stringResource(id = R.string.delete_post_confirm_msg)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onEvent(HomeEvent.DeletePost)
+                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.yes))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.no))
+                    }
+                }
+            )
+        }
+    }
+
+    onBottomSheetOpened {
+        BottomSheetContent(
+            onEvent = onEvent,
+            username = username,
+            selectedPost = selectedPost,
+            coroutineScope = coroutineScope,
+            bottomSheetState = bottomSheetState,
+            onNavigateToUploadEditPost = onNavigateToUploadEditPost
+        )
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun SheetContent(
+private fun BottomSheetContent(
     onEvent: (HomeEvent) -> Unit,
     username: String,
     selectedPost: Post,

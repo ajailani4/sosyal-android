@@ -1,5 +1,8 @@
 package com.sosyal.app.ui.navigation
 
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -16,10 +19,13 @@ import com.sosyal.app.ui.screen.register.RegisterScreen
 import com.sosyal.app.ui.screen.upload_edit_post.UploadEditPostScreen
 import com.sosyal.app.ui.screen.welcome.WelcomeScreen
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Navigation(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    bottomSheetState: ModalBottomSheetState,
+    onBottomSheetOpened: (content: @Composable ColumnScope.() -> Unit) -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.Welcome.route) {
@@ -121,6 +127,8 @@ fun Navigation(
         // Bottom Nav Menu
         composable(route = Screen.Home.route) {
             HomeScreen(
+                bottomSheetState = bottomSheetState,
+                onBottomSheetOpened = onBottomSheetOpened,
                 onNavigateToComment = { postId ->
                     navController.navigate(Screen.Comments.route + "?postId=$postId")
                 },
