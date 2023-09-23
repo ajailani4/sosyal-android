@@ -33,7 +33,7 @@ fun ChatItem() {
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(40.dp)
+                .size(50.dp)
                 .clip(CircleShape),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(R.drawable.img_default_ava)
@@ -42,7 +42,7 @@ fun ChatItem() {
             contentScale = ContentScale.Crop,
             contentDescription = "User profile picture"
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(13.dp))
         Column {
             Text(
                 text = "Username",
