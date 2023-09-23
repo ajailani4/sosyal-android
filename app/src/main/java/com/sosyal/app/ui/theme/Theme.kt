@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
-private val LightColorPalette = lightColors(
+private val lightColorPalette = lightColors(
     primary = light_primary,
     onPrimary = light_onPrimary,
     primaryVariant = light_primaryVariant,
@@ -25,7 +25,7 @@ private val LightColorPalette = lightColors(
     onError = light_onError
 )
 
-private val DarkColorPalette = darkColors(
+private val darkColorPalette = darkColors(
     primary = dark_primary,
     onPrimary = dark_onPrimary,
     primaryVariant = dark_primaryVariant,
@@ -57,9 +57,9 @@ object NoRippleTheme : RippleTheme {
 @Composable
 fun SosyalTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        darkColorPalette
     } else {
-        LightColorPalette
+        lightColorPalette
     }
 
     MaterialTheme(
