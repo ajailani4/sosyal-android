@@ -52,7 +52,7 @@ import com.sosyal.app.R
 import com.sosyal.app.domain.model.Comment
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.formatDateTime
-import com.sosyal.app.ui.screen.comments.component.CommentItemCard
+import com.sosyal.app.ui.screen.comments.component.CommentItem
 import com.sosyal.app.ui.theme.Grey
 import com.sosyal.app.ui.theme.Grey3
 import com.sosyal.app.util.Formatter
@@ -264,7 +264,7 @@ private fun LazyListScope.commentsSection(
 
         is UIState.Success -> {
             items(comments) { comment ->
-                CommentItemCard(comment)
+                CommentItem(comment)
             }
         }
 
