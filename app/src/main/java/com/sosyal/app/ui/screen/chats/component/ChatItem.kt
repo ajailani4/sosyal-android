@@ -15,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -38,6 +39,7 @@ fun ChatItem() {
                 .data(R.drawable.img_default_ava)
                 .placeholder(R.drawable.img_default_ava)
                 .build(),
+            contentScale = ContentScale.Crop,
             contentDescription = "User profile picture"
         )
         Spacer(modifier = Modifier.width(10.dp))

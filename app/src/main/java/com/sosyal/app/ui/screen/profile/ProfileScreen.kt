@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -121,6 +122,7 @@ fun ProfileScreen(
                                     .data(userProfile.avatar ?: R.drawable.img_default_ava)
                                     .placeholder(R.drawable.img_default_ava)
                                     .build(),
+                                contentScale = ContentScale.Crop,
                                 contentDescription = "User profile avatar"
                             )
                             Spacer(modifier = Modifier.height(15.dp))
