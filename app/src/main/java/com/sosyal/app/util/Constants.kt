@@ -11,7 +11,7 @@ class Constants {
         const val IO_DISPATCHER = "IODispatcher"
     }
 
-    object BaseUrl {
+    object Protocol {
         const val HTTPS = "HTTPS"
         const val WS = "WS"
     }
