@@ -34,8 +34,7 @@ class CommentViewModel(
     var commentsState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
-    var comments = mutableStateListOf<Comment>()
-        private set
+    val comments = mutableStateListOf<Comment>()
 
     var commentContent by mutableStateOf("")
         private set

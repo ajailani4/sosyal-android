@@ -37,8 +37,7 @@ class HomeViewModel(
     var userProfileState by mutableStateOf<UIState<UserProfile>>(UIState.Idle)
         private set
 
-    var posts = mutableStateListOf<Post>()
-        private set
+    val posts = mutableStateListOf<Post>()
 
     var username by mutableStateOf("")
         private set
