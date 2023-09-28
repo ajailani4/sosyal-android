@@ -38,7 +38,7 @@ class AuthRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.Created -> {
-                    val responseBody = response.body() as BaseResponse<UserCredentialDto>
+                    val responseBody = response.body<BaseResponse<UserCredentialDto>>()
                     responseBody.data?.let {
                         preferencesDataStore.saveUserCredential(it.toUserCredential())
                     }
@@ -68,7 +68,7 @@ class AuthRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body() as BaseResponse<UserCredentialDto>
+                    val responseBody = response.body<BaseResponse<UserCredentialDto>>()
                     responseBody.data?.let {
                         preferencesDataStore.saveUserCredential(it.toUserCredential())
                     }

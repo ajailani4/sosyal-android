@@ -35,7 +35,7 @@ class PostRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body() as BaseResponse<PostDto>
+                    val responseBody = response.body<BaseResponse<PostDto>>()
                     emit(Resource.Success(responseBody.data?.toPost()))
                 }
 
@@ -51,7 +51,7 @@ class PostRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body() as BaseResponse<JsonObject>
+                    val responseBody = response.body<BaseResponse<JsonObject>>()
                     emit(Resource.Success(responseBody.data))
                 }
 

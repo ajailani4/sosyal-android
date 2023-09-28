@@ -24,7 +24,7 @@ class UserProfileRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body() as BaseResponse<UserProfileDto>
+                    val responseBody = response.body<BaseResponse<UserProfileDto>>()
                     emit(Resource.Success(responseBody.data?.toUserProfile()))
                 }
 
@@ -48,7 +48,7 @@ class UserProfileRepositoryImpl(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body() as BaseResponse<JsonObject>
+                    val responseBody = response.body<BaseResponse<JsonObject>>()
                     emit(Resource.Success(responseBody.data))
                 }
 
