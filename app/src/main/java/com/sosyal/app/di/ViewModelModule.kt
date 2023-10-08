@@ -1,5 +1,6 @@
 package com.sosyal.app.di
 
+import com.sosyal.app.ui.screen.chats.ChatsViewModel
 import com.sosyal.app.ui.screen.comments.CommentViewModel
 import com.sosyal.app.ui.screen.edit_profile.EditProfileViewModel
 import com.sosyal.app.ui.screen.home.HomeViewModel
@@ -20,4 +21,5 @@ val viewModelModule = module {
     viewModel { UploadEditPostViewModel(get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
     viewModel { EditProfileViewModel(get(), get()) }
+    viewModel { ChatsViewModel(get()) }
 }

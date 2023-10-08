@@ -12,6 +12,7 @@ import com.sosyal.app.domain.repository.PostRepository
 import com.sosyal.app.util.Resource
 import io.ktor.client.call.*
 import io.ktor.http.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.JsonObject
 
@@ -19,9 +20,21 @@ class PostRepositoryImpl(
     private val postRemoteDataSource: PostRemoteDataSource,
     private val context: Context
 ) : PostRepository {
-    override fun refreshPost() {
-        postRemoteDataSource.refreshPost()
-    }
+    override fun getPosts() =
+        flow {
+            val response = postRemoteDataSource.getPosts()
+
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    val responseBody = response.body<BaseResponse<List<PostDto>>>()
+                    emit(Resource.Success(responseBody.data?.map { postDto -> postDto.toPost() }))
+                }
+
+                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
 
     override fun receivePost() = postRemoteDataSource.receivePost()
 

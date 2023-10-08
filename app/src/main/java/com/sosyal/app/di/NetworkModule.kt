@@ -15,6 +15,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import java.util.concurrent.TimeUnit
 
 val networkModule = module {
     single(named(Protocol.HTTPS)) {
@@ -22,6 +23,7 @@ val networkModule = module {
             engine {
                 config {
                     addInterceptor(AuthInterceptor(get()))
+                    readTimeout(0, TimeUnit.SECONDS)
                 }
             }
 

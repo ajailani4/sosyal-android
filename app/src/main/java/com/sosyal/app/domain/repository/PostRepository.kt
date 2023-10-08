@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.json.JsonObject
 
 interface PostRepository {
-    fun refreshPost()
+    fun getPosts(): Flow<Resource<List<Post>>>
 
     fun receivePost(): SharedFlow<Post>
 

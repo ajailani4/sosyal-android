@@ -7,8 +7,8 @@ import com.sosyal.app.domain.use_case.comment.ReceiveCommentUseCase
 import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
+import com.sosyal.app.domain.use_case.post.GetPostsUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
-import com.sosyal.app.domain.use_case.post.RefreshPostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.DeleteUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
@@ -26,7 +26,7 @@ val domainModule = module {
     single { DeleteUserCredentialUseCase(get()) }
 
     // Post
-    single { RefreshPostUseCase(get()) }
+    single { GetPostsUseCase(get()) }
     single { ReceivePostUseCase(get()) }
     single { SendPostUseCase(get()) }
     single { GetPostDetailUseCase(get()) }

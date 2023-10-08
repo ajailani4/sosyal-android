@@ -4,15 +4,20 @@ import android.util.Log
 import com.sosyal.app.data.mapper.toPost
 import com.sosyal.app.data.remote.dto.PostDto
 import com.sosyal.app.domain.model.Post
-import io.ktor.client.*
-import io.ktor.client.plugins.websocket.*
-import io.ktor.client.request.*
-import io.ktor.websocket.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.wss
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
+import io.ktor.websocket.DefaultWebSocketSession
+import io.ktor.websocket.Frame
+import io.ktor.websocket.readText
+import io.ktor.websocket.send
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
@@ -28,10 +33,6 @@ class PostService(
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e("Coroutine exception", throwable.message!!)
-    }
-
-    init {
-        connectToWebSocket()
     }
 
     private fun connectToWebSocket() {
@@ -54,11 +55,12 @@ class PostService(
         }
     }
 
-    fun refreshPost() {
-        connectToWebSocket()
-    }
+    suspend fun getPosts() = httpClient.get("/posts")
 
-    fun receivePost() = _post.asSharedFlow()
+    fun receivePost(): SharedFlow<Post> {
+        connectToWebSocket()
+        return _post.asSharedFlow()
+    }
 
     suspend fun sendPost(postDto: PostDto) {
         try {
