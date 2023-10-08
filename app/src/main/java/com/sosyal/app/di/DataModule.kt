@@ -33,6 +33,7 @@ val dataModule = module {
     single {
         CommentService(
             get(named(Protocol.WS)),
+            get(named(Protocol.HTTPS)),
             get(named(CoroutineDispatcher.IO_DISPATCHER))
         )
     }
@@ -51,7 +52,7 @@ val dataModule = module {
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), androidContext()) }
     single<UserCredentialRepository> { UserCredentialRepositoryImpl(get()) }
     single<PostRepository> { PostRepositoryImpl(get(), androidContext()) }
-    single<CommentRepository> { CommentRepositoryImpl(get()) }
+    single<CommentRepository> { CommentRepositoryImpl(get(), androidContext()) }
     single<UserProfileRepository> { UserProfileRepositoryImpl(get(), androidContext()) }
     single<ChatRepository> { ChatRepositoryImpl(get(), androidContext()) }
 }

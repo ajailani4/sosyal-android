@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.model.Comment
 import com.sosyal.app.domain.model.Post
+import com.sosyal.app.domain.use_case.comment.GetCommentsUseCase
 import com.sosyal.app.domain.use_case.comment.ReceiveCommentUseCase
 import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
@@ -16,6 +17,7 @@ import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.util.Resource
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -23,6 +25,7 @@ class CommentViewModel(
     savedStateHandle: SavedStateHandle,
     private val getPostDetailUseCase: GetPostDetailUseCase,
     private val getUserCredentialUseCase: GetUserCredentialUseCase,
+    private val getCommentsUseCase: GetCommentsUseCase,
     private val receiveCommentUseCase: ReceiveCommentUseCase,
     private val sendCommentUseCase: SendCommentUseCase
 ) : ViewModel() {
@@ -41,7 +44,7 @@ class CommentViewModel(
 
     init {
         getPostDetail()
-        receiveComment()
+        getComments()
     }
 
     fun onEvent(event: CommentEvent) {
@@ -70,22 +73,42 @@ class CommentViewModel(
         }
     }
 
-    private fun receiveComment() {
+    private fun getComments() {
         commentsState = UIState.Loading
 
         viewModelScope.launch {
             postId?.let { id ->
-                receiveCommentUseCase(id).collect { comment ->
-                    commentsState = UIState.Success(null)
+                getCommentsUseCase(id).catch {
+                    commentsState = UIState.Error(it.message)
+                }.collect {
+                    when (it) {
+                        is Resource.Success -> {
+                            if (it.data != null) {
+                                comments.addAll(it.data)
+                            }
 
-                    if (comment.postId.isNotEmpty()) {
-                        val existedComment = comments.find { it.id == comment.id }
+                            commentsState = UIState.Success(null)
 
-                        if (existedComment == null) {
-                            comments.add(comment)
-                        } else {
-                            comments[comments.indexOf(existedComment)] = comment
+                            receiveComment()
                         }
+
+                        is Resource.Error -> commentsState = UIState.Error(it.message)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun receiveComment() {
+        postId?.let { id ->
+            receiveCommentUseCase(id).collect { comment ->
+                if (comment.postId.isNotEmpty()) {
+                    val existedComment = comments.find { it.id == comment.id }
+
+                    if (existedComment == null) {
+                        comments.add(comment)
+                    } else {
+                        comments[comments.indexOf(existedComment)] = comment
                     }
                 }
             }

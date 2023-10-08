@@ -6,6 +6,7 @@ import com.sosyal.app.data.remote.dto.CommentDto
 import com.sosyal.app.domain.model.Comment
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
+import io.ktor.client.request.get
 import io.ktor.websocket.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -21,6 +22,7 @@ import kotlinx.serialization.json.Json
 
 class CommentService(
     private val wsClient: HttpClient,
+    private val httpClient: HttpClient,
     private val ioDispatcher: CoroutineDispatcher
 ) {
     private val _comment = MutableSharedFlow<Comment>()
@@ -49,6 +51,8 @@ class CommentService(
             }
         }
     }
+
+    suspend fun getComments(postId: String) = httpClient.get("comments/$postId")
 
     fun receiveComment(postId: String): SharedFlow<Comment> {
         connectToWebSocket(postId)

@@ -3,6 +3,7 @@ package com.sosyal.app.di
 import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
 import com.sosyal.app.domain.use_case.chat.GetChatsUseCase
+import com.sosyal.app.domain.use_case.comment.GetCommentsUseCase
 import com.sosyal.app.domain.use_case.comment.ReceiveCommentUseCase
 import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
@@ -33,6 +34,7 @@ val domainModule = module {
     single { DeletePostUseCase(get()) }
 
     // Comment
+    single { GetCommentsUseCase(get()) }
     single { ReceiveCommentUseCase(get()) }
     single { SendCommentUseCase(get()) }
 
