@@ -1,22 +1,18 @@
 package com.sosyal.app.ui.screen.home
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.model.Post
-import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
 import com.sosyal.app.domain.use_case.post.GetPostsUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
-import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.util.Resource
-import kotlinx.coroutines.flow.catch
+import com.sosyal.app.util.observeUseCaseResult
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -28,35 +24,7 @@ class HomeViewModel(
     private val sendPostUseCase: SendPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : ViewModel() {
-    var postsState by mutableStateOf<UIState<List<Nothing>>>(UIState.Idle)
-        private set
-
-    var deletePostState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
-        private set
-
-    var userProfileState by mutableStateOf<UIState<UserProfile>>(UIState.Idle)
-        private set
-
-    val posts = mutableStateListOf<Post>()
-
-    var username by mutableStateOf("")
-        private set
-
-    var selectedPost by mutableStateOf(
-        Post(
-            username = "",
-            content = "",
-            likes = 0,
-            comments = 0,
-            date = ""
-        )
-    )
-        private set
-
-    var deletePostDialogVis by mutableStateOf(false)
-        private set
-
-    var pullRefreshing by mutableStateOf(false)
+    var uiState by mutableStateOf(HomeUiState())
         private set
 
     init {
@@ -68,7 +36,7 @@ class HomeViewModel(
     fun onEvent(event: HomeEvent) {
         when (event) {
             HomeEvent.RefreshPost -> {
-                posts.clear()
+                uiState.posts.clear()
                 getPosts()
             }
 
@@ -76,71 +44,67 @@ class HomeViewModel(
 
             HomeEvent.LikeOrDislikePost -> likeOrDislikePost()
 
-            is HomeEvent.OnPostSelected -> selectedPost = event.post
+            is HomeEvent.OnPostSelected -> uiState = uiState.copy(selectedPost = event.post)
 
-            is HomeEvent.OnDeletePostDialogVisChanged -> deletePostDialogVis = event.isVisible
-
-            is HomeEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
+            is HomeEvent.OnPullRefresh -> {
+                uiState = uiState.copy(
+                    isRefreshing = true,
+                    errorMessage = null
+                )
+            }
         }
     }
 
     private fun getUserCredential() {
         viewModelScope.launch {
-            username = getUserCredentialUseCase().first().username
+            uiState = uiState.copy(username = getUserCredentialUseCase().first().username)
         }
     }
 
     private fun getUserProfile() {
-        userProfileState = UIState.Loading
-
-        viewModelScope.launch {
-            getUserProfileUseCase().catch {
-                userProfileState = UIState.Error(it.message)
-            }.collect {
-                userProfileState = when (it) {
-                    is Resource.Success -> UIState.Success(it.data)
-
-                    is Resource.Error -> UIState.Error(it.message)
-                }
-            }
-        }
+        viewModelScope.observeUseCaseResult(
+            useCase = getUserProfileUseCase(),
+            onLoading = { uiState = uiState.copy(isUserProfileLoading = true) },
+            onSuccess = {
+                uiState = uiState.copy(
+                    isUserProfileLoading = false,
+                    userProfile = it
+                )
+            },
+            onError = { uiState = uiState.copy(isUserProfileLoading = false) }
+        )
     }
 
     private fun getPosts() {
-        postsState = UIState.Loading
-
-        viewModelScope.launch {
-            getPostsUseCase().catch {
-                postsState = UIState.Error(it.message)
-            }.collect {
-                when (it) {
-                    is Resource.Success -> {
-                        if (it.data != null) {
-                            posts.addAll(it.data)
-                        }
-
-                        postsState = UIState.Success(null)
-
-                        receivePost()
-                    }
-
-                    is Resource.Error -> postsState = UIState.Error(it.message)
+        viewModelScope.observeUseCaseResult(
+            useCase = getPostsUseCase(),
+            onLoading = { uiState = uiState.copy(isPostsLoading = true) },
+            onSuccess = {
+                if (it != null) {
+                    uiState = uiState.copy(
+                        isRefreshing = false,
+                        isPostsLoading = false
+                    )
+                    uiState.posts.addAll(it)
                 }
-            }
-        }
+
+                receivePost()
+            },
+            onError = { uiState = uiState.copy(isPostsLoading = false, errorMessage = it) }
+        )
     }
 
     private suspend fun receivePost() {
         receivePostUseCase().collect { post ->
             post.id?.let { postId ->
-                val existedPost = posts.find { it.id == postId }
+                val existingPost = uiState.posts.find { it.id == postId }
 
-                if (existedPost == null) {
-                    posts.add(post)
+                if (existingPost == null) {
+                    uiState.posts.add(post)
                 } else {
                     if (post.isEdited == true) {
                         with(post) {
-                            posts[posts.indexOf(existedPost)] = existedPost.copy(
+                            uiState.posts[uiState.posts.indexOf(existingPost)] = existingPost.copy(
                                 id = id,
                                 username = username,
                                 userAvatar = userAvatar,
@@ -156,10 +120,10 @@ class HomeViewModel(
     }
 
     private fun likeOrDislikePost() {
-        posts[posts.indexOf(selectedPost)] = selectedPost.copy(isLiked = selectedPost.isLiked?.not())
+        with(uiState.selectedPost) {
+            uiState.posts[uiState.posts.indexOf(this)] = this.copy(isLiked = this.isLiked?.not())
 
-        viewModelScope.launch {
-            with(selectedPost) {
+            viewModelScope.launch {
                 sendPostUseCase(
                     Post(
                         id = id,
@@ -177,23 +141,17 @@ class HomeViewModel(
     }
 
     private fun deletePost() {
-        deletePostState = UIState.Loading
+        uiState.selectedPost.id?.let { id ->
+            viewModelScope.observeUseCaseResult(
+                useCase = deletePostUseCase(id),
+                onLoading = { uiState = uiState.copy(isPostDeleting = true) },
+                onSuccess = {
+                    uiState.posts.remove(uiState.selectedPost)
 
-        viewModelScope.launch {
-            selectedPost.id?.let { id ->
-                deletePostUseCase(id).catch {
-                    deletePostState = UIState.Error(it.message)
-                }.collect {
-                    deletePostState = when (it) {
-                        is Resource.Success -> {
-                            posts.remove(selectedPost)
-                            UIState.Success(null)
-                        }
-
-                        is Resource.Error -> UIState.Error(it.message)
-                    }
-                }
-            }
+                    uiState = uiState.copy(isPostDeleting = false)
+                },
+                onError = { uiState = uiState.copy(errorMessage = it) }
+            )
         }
     }
 }

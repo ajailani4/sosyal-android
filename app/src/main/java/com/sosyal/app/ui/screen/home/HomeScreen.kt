@@ -13,6 +13,9 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,8 +29,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
 import com.sosyal.app.domain.model.Post
-import com.sosyal.app.domain.model.UserProfile
-import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.common.component.BottomSheetItem
 import com.sosyal.app.ui.common.component.ProgressBarWithBackground
 import com.sosyal.app.ui.screen.home.component.PostItemCard
@@ -47,21 +48,15 @@ fun HomeScreen(
     onNavigateToProfile: () -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
-    val postsState = homeViewModel.postsState
-    val deletePostState = homeViewModel.deletePostState
-    val userProfileState = homeViewModel.userProfileState
-    val posts = homeViewModel.posts.reversed()
-    val username = homeViewModel.username
-    val selectedPost = homeViewModel.selectedPost
-    val deletePostDialogVis = homeViewModel.deletePostDialogVis
-    val pullRefreshing = homeViewModel.pullRefreshing
+    val uiState = homeViewModel.uiState
+    val (showDeletePostDialog, setShowDeletePostDialog) = remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = pullRefreshing,
+        refreshing = uiState.isRefreshing,
         onRefresh = {
-            onEvent(HomeEvent.OnPullRefresh(true))
+            onEvent(HomeEvent.OnPullRefresh)
             onEvent(HomeEvent.RefreshPost)
         }
     )
@@ -69,26 +64,10 @@ fun HomeScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            Surface(elevation = 4.dp) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colors.surface)
-                        .padding(horizontal = 15.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        modifier = Modifier.size(width = 100.dp, height = 40.dp),
-                        painter = painterResource(id = R.drawable.sosyal_text_logo),
-                        contentDescription = "Sosyal text logo"
-                    )
-                    UserAvatar(
-                        userProfileState = userProfileState,
-                        onNavigateToProfile = onNavigateToProfile
-                    )
-                }
-            }
+            HeaderSection(
+                uiState = uiState,
+                onNavigateToProfile = onNavigateToProfile
+            )
         }
     ) { innerPadding ->
         Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
@@ -98,8 +77,8 @@ fun HomeScreen(
                     .background(color = MaterialTheme.colors.backgroundGrey)
                     .padding(innerPadding)
             ) {
-                when (postsState) {
-                    UIState.Loading -> {
+                when (uiState.isPostsLoading) {
+                    true -> {
                         item {
                             Box(
                                 modifier = Modifier
@@ -112,10 +91,8 @@ fun HomeScreen(
                         }
                     }
 
-                    is UIState.Success -> {
-                        onEvent(HomeEvent.OnPullRefresh(false))
-
-                        items(posts) { post ->
+                    false -> {
+                        items(uiState.posts.reversed()) { post ->
                             PostItemCard(
                                 post = post,
                                 onCardClicked = { onNavigateToComment(post.id) },
@@ -136,36 +113,30 @@ fun HomeScreen(
                         }
                     }
 
-                    else -> {}
+                    else -> Unit
                 }
             }
 
             PullRefreshIndicator(
                 modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = pullRefreshing,
+                refreshing = uiState.isRefreshing,
                 state = pullRefreshState,
                 contentColor = MaterialTheme.colors.primary
             )
         }
 
-        when (deletePostState) {
-            UIState.Loading -> ProgressBarWithBackground()
+        if (uiState.isPostDeleting) ProgressBarWithBackground()
 
-            else -> {}
-        }
-
-        if (deletePostDialogVis) {
+        if (showDeletePostDialog) {
             AlertDialog(
-                onDismissRequest = {
-                    onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
-                },
+                onDismissRequest = { setShowDeletePostDialog(false) },
                 title = { Text(text = stringResource(id = R.string.delete_post)) },
                 text = { Text(text = stringResource(id = R.string.delete_post_confirm_msg)) },
                 confirmButton = {
                     TextButton(
                         onClick = {
                             onEvent(HomeEvent.DeletePost)
-                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
+                            setShowDeletePostDialog(false)
                         }
                     ) {
                         Text(text = stringResource(id = R.string.yes))
@@ -173,37 +144,93 @@ fun HomeScreen(
                 },
                 dismissButton = {
                     TextButton(
-                        onClick = {
-                            onEvent(HomeEvent.OnDeletePostDialogVisChanged(false))
-                        }
+                        onClick = { setShowDeletePostDialog(false) }
                     ) {
                         Text(text = stringResource(id = R.string.no))
                     }
                 }
             )
         }
+
+        uiState.errorMessage?.let {
+            LaunchedEffect(scaffoldState) {
+                scaffoldState.snackbarHostState.showSnackbar(it)
+            }
+        }
     }
 
     onBottomSheetOpened {
         BottomSheetContent(
-            onEvent = onEvent,
-            username = username,
-            selectedPost = selectedPost,
+            username = uiState.username,
+            selectedPost = uiState.selectedPost,
             coroutineScope = coroutineScope,
             bottomSheetState = bottomSheetState,
+            setShowDeletePostDialog = setShowDeletePostDialog,
             onNavigateToUploadEditPost = onNavigateToUploadEditPost
         )
+    }
+}
+
+@Composable
+private fun HeaderSection(
+    uiState: HomeUiState,
+    onNavigateToProfile: () -> Unit
+) {
+    Surface(elevation = 4.dp) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colors.surface)
+                .padding(horizontal = 15.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier.size(width = 100.dp, height = 40.dp),
+                painter = painterResource(id = R.drawable.sosyal_text_logo),
+                contentDescription = "Sosyal text logo"
+            )
+
+            with(uiState) {
+                when {
+                    isUserProfileLoading -> {
+                        Image(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape),
+                            painter = painterResource(id = R.drawable.img_default_ava),
+                            contentDescription = "Profile picture"
+                        )
+                    }
+
+                    userProfile != null -> {
+                        AsyncImage(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .clickable { onNavigateToProfile() },
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(userProfile.avatar ?: R.drawable.img_default_ava)
+                                .placeholder(R.drawable.img_default_ava)
+                                .build(),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "User profile avatar"
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun BottomSheetContent(
-    onEvent: (HomeEvent) -> Unit,
     username: String,
     selectedPost: Post,
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
+    setShowDeletePostDialog: (Boolean) -> Unit,
     onNavigateToUploadEditPost: (String?) -> Unit
 ) {
     if (username == selectedPost.username) {
@@ -227,7 +254,7 @@ private fun BottomSheetContent(
                         bottomSheetState.hide()
                     }
 
-                    onEvent(HomeEvent.OnDeletePostDialogVisChanged(true))
+                    setShowDeletePostDialog(true)
                 }
             )
         }
@@ -238,42 +265,5 @@ private fun BottomSheetContent(
                 style = MaterialTheme.typography.subtitle1
             )
         }
-    }
-}
-
-@Composable
-private fun UserAvatar(
-    userProfileState: UIState<UserProfile>,
-    onNavigateToProfile: () -> Unit
-) {
-    when (userProfileState) {
-        UIState.Loading -> {
-            Image(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape),
-                painter = painterResource(id = R.drawable.img_default_ava),
-                contentDescription = "Profile picture"
-            )
-        }
-
-        is UIState.Success -> {
-            userProfileState.data?.let { userProfile ->
-                AsyncImage(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .clickable { onNavigateToProfile() },
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(userProfile.avatar ?: R.drawable.img_default_ava)
-                        .placeholder(R.drawable.img_default_ava)
-                        .build(),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "User profile avatar"
-                )
-            }
-        }
-
-        else -> {}
     }
 }

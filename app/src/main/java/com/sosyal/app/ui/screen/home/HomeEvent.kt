@@ -7,6 +7,5 @@ sealed class HomeEvent {
     object DeletePost : HomeEvent()
     object LikeOrDislikePost : HomeEvent()
     data class OnPostSelected(val post: Post) : HomeEvent()
-    data class OnDeletePostDialogVisChanged(val isVisible: Boolean) : HomeEvent()
-    data class OnPullRefresh(val isRefreshing: Boolean) : HomeEvent()
+    object OnPullRefresh : HomeEvent()
 }
