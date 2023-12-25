@@ -9,7 +9,7 @@ import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.comments.CommentViewModel
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.comment
 import com.sosyal.app.util.post
@@ -57,9 +57,9 @@ class CommentViewModelTest {
     @Test
     fun `Get post detail should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(post))
+            val result = flowOf(Result.Success(post))
 
-            doReturn(resource).`when`(getPostDetailUseCase)(anyString())
+            doReturn(result).`when`(getPostDetailUseCase)(anyString())
 
             commentViewModel = CommentViewModel(
                 savedStateHandle,
@@ -83,9 +83,9 @@ class CommentViewModelTest {
     @Test
     fun `Get post detail should be error`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<Post>())
+            val result = flowOf(Result.Error<Post>())
 
-            doReturn(resource).`when`(getPostDetailUseCase)(anyString())
+            doReturn(result).`when`(getPostDetailUseCase)(anyString())
 
             commentViewModel = CommentViewModel(
                 savedStateHandle,

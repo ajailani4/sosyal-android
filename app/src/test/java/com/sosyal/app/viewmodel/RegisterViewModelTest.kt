@@ -5,7 +5,7 @@ import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.register.RegisterEvent
 import com.sosyal.app.ui.screen.register.RegisterViewModel
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.userCredential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,6 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -44,9 +43,9 @@ class RegisterViewModelTest {
     @Test
     fun `Register account should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(userCredential))
+            val result = flowOf(Result.Success(userCredential))
 
-            doReturn(resource).`when`(registerAccountUseCase)(
+            doReturn(result).`when`(registerAccountUseCase)(
                 name = anyString(),
                 email = anyString(),
                 username = anyString(),
@@ -68,9 +67,9 @@ class RegisterViewModelTest {
     @Test
     fun `Register account should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<UserCredential>())
+            val result = flowOf(Result.Error<UserCredential>())
 
-            doReturn(resource).`when`(registerAccountUseCase)(
+            doReturn(result).`when`(registerAccountUseCase)(
                 name = anyString(),
                 email = anyString(),
                 username = anyString(),

@@ -12,7 +12,7 @@ import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.util.Formatter
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -75,7 +75,7 @@ class UploadEditPostViewModel(
                     postDetailState = UIState.Error(it.message)
                 }.collect { resource ->
                     postDetailState = when (resource) {
-                        is Resource.Success -> {
+                        is Result.Success -> {
                             resource.data?.let {
                                 post = it
                                 content = post.content
@@ -84,7 +84,7 @@ class UploadEditPostViewModel(
                             UIState.Success(null)
                         }
 
-                        is Resource.Error -> UIState.Error(resource.message)
+                        is Result.Error -> UIState.Error(resource.message)
                     }
                 }
             }

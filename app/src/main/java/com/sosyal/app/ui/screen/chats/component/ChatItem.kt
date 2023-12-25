@@ -21,14 +21,18 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sosyal.app.R
+import com.sosyal.app.domain.model.Chat
 import com.sosyal.app.ui.theme.Grey4
 
 @Composable
-fun ChatItem() {
+fun ChatItem(
+    chat: Chat,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { }
+            .clickable { onClick() }
             .padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
         AsyncImage(

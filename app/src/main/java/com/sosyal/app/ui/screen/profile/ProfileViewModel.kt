@@ -9,7 +9,7 @@ import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.use_case.user_credential.DeleteUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -54,9 +54,9 @@ class ProfileViewModel(
                 userProfileState = UIState.Error(it.message)
             }.collect {
                 userProfileState = when (it) {
-                    is Resource.Success -> UIState.Success(it.data)
+                    is Result.Success -> UIState.Success(it.data)
 
-                    is Resource.Error -> UIState.Error(it.message)
+                    is Result.Error -> UIState.Error(it.message)
                 }
             }
         }

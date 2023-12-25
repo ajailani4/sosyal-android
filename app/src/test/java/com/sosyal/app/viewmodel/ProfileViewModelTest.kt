@@ -5,7 +5,7 @@ import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.profile.ProfileEvent
 import com.sosyal.app.ui.screen.profile.ProfileViewModel
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.userProfile
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,9 +42,9 @@ class ProfileViewModelTest {
     @Test
     fun `Get user profile should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(userProfile))
+            val result = flowOf(Result.Success(userProfile))
 
-            doReturn(resource).`when`(getUserProfileUseCase)()
+            doReturn(result).`when`(getUserProfileUseCase)()
 
             onEvent(ProfileEvent.GetUserProfile)
 
@@ -62,9 +62,9 @@ class ProfileViewModelTest {
     @Test
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<UserProfile>())
+            val result = flowOf(Result.Error<UserProfile>())
 
-            doReturn(resource).`when`(getUserProfileUseCase)()
+            doReturn(result).`when`(getUserProfileUseCase)()
 
             onEvent(ProfileEvent.GetUserProfile)
 

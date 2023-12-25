@@ -70,9 +70,9 @@ class HomeViewModelTest {
     @Test
     fun `Get user profile should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(userProfile))
+            val result = flowOf(Result.Success(userProfile))
 
-            doReturn(resource).`when`(getUserProfileUseCase)()
+            doReturn(result).`when`(getUserProfileUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -96,9 +96,9 @@ class HomeViewModelTest {
     @Test
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<UserProfile>())
+            val result = flowOf(Result.Error<UserProfile>())
 
-            doReturn(resource).`when`(getUserProfileUseCase)()
+            doReturn(result).`when`(getUserProfileUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -152,9 +152,9 @@ class HomeViewModelTest {
     @Test
     fun `Delete post should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success<JsonObject>())
+            val result = flowOf(Result.Success<JsonObject>())
 
-            doReturn(resource).`when`(deletePostUseCase)(anyString())
+            doReturn(result).`when`(deletePostUseCase)(anyString())
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -181,9 +181,9 @@ class HomeViewModelTest {
     @Test
     fun `Delete post should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<JsonObject>())
+            val result = flowOf(Result.Error<JsonObject>())
 
-            doReturn(resource).`when`(deletePostUseCase)(anyString())
+            doReturn(result).`when`(deletePostUseCase)(anyString())
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,

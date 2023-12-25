@@ -10,7 +10,7 @@ import com.sosyal.app.data.remote.dto.request.LoginRequest
 import com.sosyal.app.data.remote.dto.request.RegisterRequest
 import com.sosyal.app.data.remote.dto.response.BaseResponse
 import com.sosyal.app.domain.repository.AuthRepository
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import io.ktor.client.call.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.flow
@@ -43,14 +43,14 @@ class AuthRepositoryImpl(
                         preferencesDataStore.saveUserCredential(it.toUserCredential())
                     }
 
-                    emit(Resource.Success(responseBody.data?.toUserCredential()))
+                    emit(Result.Success(responseBody.data?.toUserCredential()))
                 }
 
-                HttpStatusCode.Conflict -> emit(Resource.Error(context.getString(R.string.username_already_exists)))
+                HttpStatusCode.Conflict -> emit(Result.Error(context.getString(R.string.username_already_exists)))
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+                HttpStatusCode.InternalServerError -> emit(Result.Error(context.getString(R.string.server_error)))
 
-                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+                else -> emit(Result.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
 
@@ -73,14 +73,14 @@ class AuthRepositoryImpl(
                         preferencesDataStore.saveUserCredential(it.toUserCredential())
                     }
 
-                    emit(Resource.Success(responseBody.data?.toUserCredential()))
+                    emit(Result.Success(responseBody.data?.toUserCredential()))
                 }
 
-                HttpStatusCode.Unauthorized -> emit(Resource.Error(context.getString(R.string.incorrect_username_or_pass)))
+                HttpStatusCode.Unauthorized -> emit(Result.Error(context.getString(R.string.incorrect_username_or_pass)))
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+                HttpStatusCode.InternalServerError -> emit(Result.Error(context.getString(R.string.server_error)))
 
-                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+                else -> emit(Result.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
 }

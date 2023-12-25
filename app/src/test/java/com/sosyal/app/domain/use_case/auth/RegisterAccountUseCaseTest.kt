@@ -1,9 +1,8 @@
 package com.sosyal.app.domain.use_case.auth
 
 import com.sosyal.app.domain.model.UserCredential
-import com.sosyal.app.domain.repository.AuthRepository
 import com.sosyal.app.domain.repository.AuthRepositoryFake
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.ResourceType
 import com.sosyal.app.util.userCredential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,7 +38,7 @@ class RegisterAccountUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success(userCredential),
+                Result.Success(userCredential),
                 actualResource
             )
         }
@@ -58,7 +57,7 @@ class RegisterAccountUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Error<UserCredential>(),
+                Result.Error<UserCredential>(),
                 actualResource
             )
         }

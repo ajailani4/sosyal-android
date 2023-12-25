@@ -5,8 +5,7 @@ import com.sosyal.app.domain.use_case.auth.LoginAccountUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.login.LoginEvent
 import com.sosyal.app.ui.screen.login.LoginViewModel
-import com.sosyal.app.ui.screen.register.RegisterEvent
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.userCredential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,9 +43,9 @@ class LoginViewModelTest {
     @Test
     fun `Register account should be success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(userCredential))
+            val result = flowOf(Result.Success(userCredential))
 
-            doReturn(resource).`when`(loginAccountUseCase)(
+            doReturn(result).`when`(loginAccountUseCase)(
                 username = anyString(),
                 password = anyString()
             )
@@ -66,9 +65,9 @@ class LoginViewModelTest {
     @Test
     fun `Register account should be fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<UserCredential>())
+            val result = flowOf(Result.Error<UserCredential>())
 
-            doReturn(resource).`when`(loginAccountUseCase)(
+            doReturn(result).`when`(loginAccountUseCase)(
                 username = anyString(),
                 password = anyString()
             )

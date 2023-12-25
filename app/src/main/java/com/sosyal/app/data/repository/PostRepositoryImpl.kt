@@ -9,10 +9,9 @@ import com.sosyal.app.data.remote.dto.PostDto
 import com.sosyal.app.data.remote.dto.response.BaseResponse
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.repository.PostRepository
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import io.ktor.client.call.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.JsonObject
 
@@ -27,12 +26,12 @@ class PostRepositoryImpl(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body<BaseResponse<List<PostDto>>>()
-                    emit(Resource.Success(responseBody.data?.map { postDto -> postDto.toPost() }))
+                    emit(Result.Success(responseBody.data?.map { postDto -> postDto.toPost() }))
                 }
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+                HttpStatusCode.InternalServerError -> emit(Result.Error(context.getString(R.string.server_error)))
 
-                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+                else -> emit(Result.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
 
@@ -49,12 +48,12 @@ class PostRepositoryImpl(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body<BaseResponse<PostDto>>()
-                    emit(Resource.Success(responseBody.data?.toPost()))
+                    emit(Result.Success(responseBody.data?.toPost()))
                 }
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+                HttpStatusCode.InternalServerError -> emit(Result.Error(context.getString(R.string.server_error)))
 
-                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+                else -> emit(Result.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
 
@@ -65,12 +64,12 @@ class PostRepositoryImpl(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body<BaseResponse<JsonObject>>()
-                    emit(Resource.Success(responseBody.data))
+                    emit(Result.Success(responseBody.data))
                 }
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+                HttpStatusCode.InternalServerError -> emit(Result.Error(context.getString(R.string.server_error)))
 
-                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+                else -> emit(Result.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
 }

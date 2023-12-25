@@ -2,7 +2,7 @@ package com.sosyal.app.domain.use_case.profile
 
 import com.sosyal.app.domain.repository.UserProfileRepositoryFake
 import com.sosyal.app.domain.use_case.user_profile.EditUserProfileUseCase
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.ResourceType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -37,7 +37,7 @@ class EditUserProfileUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success<JsonObject>(),
+                Result.Success<JsonObject>(),
                 actualResource
             )
         }
@@ -55,7 +55,7 @@ class EditUserProfileUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Error<JsonObject>(),
+                Result.Error<JsonObject>(),
                 actualResource
             )
         }

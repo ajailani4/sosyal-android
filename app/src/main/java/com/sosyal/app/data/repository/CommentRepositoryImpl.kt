@@ -9,10 +9,9 @@ import com.sosyal.app.data.remote.dto.CommentDto
 import com.sosyal.app.data.remote.dto.response.BaseResponse
 import com.sosyal.app.domain.model.Comment
 import com.sosyal.app.domain.repository.CommentRepository
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class CommentRepositoryImpl(
@@ -26,12 +25,12 @@ class CommentRepositoryImpl(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body<BaseResponse<List<CommentDto>>>()
-                    emit(Resource.Success(responseBody.data?.map { commentDto -> commentDto.toComment() }))
+                    emit(Result.Success(responseBody.data?.map { commentDto -> commentDto.toComment() }))
                 }
 
-                HttpStatusCode.InternalServerError -> emit(Resource.Error(context.getString(R.string.server_error)))
+                HttpStatusCode.InternalServerError -> emit(Result.Error(context.getString(R.string.server_error)))
 
-                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+                else -> emit(Result.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
 

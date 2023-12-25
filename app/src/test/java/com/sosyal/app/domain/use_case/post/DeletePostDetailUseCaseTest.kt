@@ -1,7 +1,7 @@
 package com.sosyal.app.domain.use_case.post
 
 import com.sosyal.app.domain.repository.PostRepositoryFake
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.ResourceType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -32,7 +32,7 @@ class DeletePostDetailUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success<JsonObject>(),
+                Result.Success<JsonObject>(),
                 actualResource
             )
         }
@@ -46,7 +46,7 @@ class DeletePostDetailUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Error<JsonObject>(),
+                Result.Error<JsonObject>(),
                 actualResource
             )
         }

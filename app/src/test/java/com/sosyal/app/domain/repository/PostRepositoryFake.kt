@@ -1,7 +1,7 @@
 package com.sosyal.app.domain.repository
 
 import com.sosyal.app.domain.model.Post
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import com.sosyal.app.util.ResourceType
 import com.sosyal.app.util.post
 import kotlinx.coroutines.flow.*
@@ -18,18 +18,18 @@ class PostRepositoryFake : PostRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getPostDetail(id: String): Flow<Resource<Post>> =
+    override fun getPostDetail(id: String): Flow<Result<Post>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Resource.Success(post))
+            ResourceType.Success -> flowOf(Result.Success(post))
 
-            ResourceType.Error -> flowOf(Resource.Error())
+            ResourceType.Error -> flowOf(Result.Error())
         }
 
-    override fun deletePost(id: String): Flow<Resource<JsonObject>> =
+    override fun deletePost(id: String): Flow<Result<JsonObject>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Resource.Success())
+            ResourceType.Success -> flowOf(Result.Success())
 
-            ResourceType.Error -> flowOf(Resource.Error())
+            ResourceType.Error -> flowOf(Result.Error())
         }
 
     fun setResourceType(type: ResourceType) {

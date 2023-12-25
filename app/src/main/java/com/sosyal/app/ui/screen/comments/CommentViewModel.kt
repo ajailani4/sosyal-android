@@ -15,9 +15,8 @@ import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.util.Resource
+import com.sosyal.app.util.Result
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -64,9 +63,9 @@ class CommentViewModel(
                     postDetailState = UIState.Error(it.message)
                 }.collect {
                     postDetailState = when (it) {
-                        is Resource.Success -> UIState.Success(it.data)
+                        is Result.Success -> UIState.Success(it.data)
 
-                        is Resource.Error -> UIState.Error(it.message)
+                        is Result.Error -> UIState.Error(it.message)
                     }
                 }
             }
@@ -82,7 +81,7 @@ class CommentViewModel(
                     commentsState = UIState.Error(it.message)
                 }.collect {
                     when (it) {
-                        is Resource.Success -> {
+                        is Result.Success -> {
                             if (it.data != null) {
                                 comments.addAll(it.data)
                             }
@@ -92,7 +91,7 @@ class CommentViewModel(
                             receiveComment()
                         }
 
-                        is Resource.Error -> commentsState = UIState.Error(it.message)
+                        is Result.Error -> commentsState = UIState.Error(it.message)
                     }
                 }
             }
