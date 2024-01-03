@@ -1,6 +1,7 @@
 package com.sosyal.app.viewmodel
 
 import com.sosyal.app.domain.model.UserProfile
+import com.sosyal.app.domain.use_case.user_credential.DeleteUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.profile.ProfileEvent
@@ -29,13 +30,16 @@ class ProfileViewModelTest {
     @Mock
     private lateinit var getUserProfileUseCase: GetUserProfileUseCase
 
+    @Mock
+    private lateinit var deleteUserCredentialUseCase: DeleteUserCredentialUseCase
+
     private lateinit var profileViewModel: ProfileViewModel
 
     private lateinit var onEvent: (ProfileEvent) -> Unit
 
     @Before
     fun setUp() {
-        profileViewModel = ProfileViewModel(getUserProfileUseCase)
+        profileViewModel = ProfileViewModel(getUserProfileUseCase, deleteUserCredentialUseCase)
         onEvent = profileViewModel::onEvent
     }
 

@@ -3,6 +3,7 @@ package com.sosyal.app.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import com.sosyal.app.domain.model.Comment
 import com.sosyal.app.domain.model.Post
+import com.sosyal.app.domain.use_case.comment.GetCommentsUseCase
 import com.sosyal.app.domain.use_case.comment.ReceiveCommentUseCase
 import com.sosyal.app.domain.use_case.comment.SendCommentUseCase
 import com.sosyal.app.domain.use_case.post.GetPostDetailUseCase
@@ -40,6 +41,9 @@ class CommentViewModelTest {
     private lateinit var getUserCredentialUseCase: GetUserCredentialUseCase
 
     @Mock
+    private lateinit var getCommentsUseCase: GetCommentsUseCase
+
+    @Mock
     private lateinit var receiveCommentUseCase: ReceiveCommentUseCase
 
     @Mock
@@ -65,6 +69,7 @@ class CommentViewModelTest {
                 savedStateHandle,
                 getPostDetailUseCase,
                 getUserCredentialUseCase,
+                getCommentsUseCase,
                 receiveCommentUseCase,
                 sendCommentUseCase
             )
@@ -91,6 +96,7 @@ class CommentViewModelTest {
                 savedStateHandle,
                 getPostDetailUseCase,
                 getUserCredentialUseCase,
+                getCommentsUseCase,
                 receiveCommentUseCase,
                 sendCommentUseCase
             )
@@ -117,6 +123,7 @@ class CommentViewModelTest {
                 savedStateHandle,
                 getPostDetailUseCase,
                 getUserCredentialUseCase,
+                getCommentsUseCase,
                 receiveCommentUseCase,
                 sendCommentUseCase
             )

@@ -24,12 +24,31 @@ val userProfile = UserProfile(
 )
 
 val post = Post(
-    id = "1",
-    username = "george_z",
+    id = "3",
+    username = "mike",
     content = "Hello",
     likes = 0,
     comments = 0,
     date = "2023-04-19 08:00"
+)
+
+val posts = listOf(
+    Post(
+        id = "1",
+        username = "george_z",
+        content = "Hello",
+        likes = 0,
+        comments = 0,
+        date = "2023-04-19 08:00"
+    ),
+    Post(
+        id = "2",
+        username = "test",
+        content = "Hi",
+        likes = 0,
+        comments = 0,
+        date = "2023-04-19 08:05"
+    )
 )
 
 val comment = Comment(

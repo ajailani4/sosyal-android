@@ -3,11 +3,11 @@ package com.sosyal.app.viewmodel
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.use_case.post.DeletePostUseCase
+import com.sosyal.app.domain.use_case.post.GetPostsUseCase
 import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
-import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.home.HomeEvent
 import com.sosyal.app.ui.screen.home.HomeViewModel
 import com.sosyal.app.util.*
@@ -38,6 +38,9 @@ class HomeViewModelTest {
     private lateinit var getUserProfileUseCase: GetUserProfileUseCase
 
     @Mock
+    private lateinit var getPostsUseCase: GetPostsUseCase
+
+    @Mock
     private lateinit var receivePostUseCase: ReceivePostUseCase
 
     @Mock
@@ -56,109 +59,136 @@ class HomeViewModelTest {
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
                 getUserProfileUseCase,
+                getPostsUseCase,
                 receivePostUseCase,
                 sendPostUseCase,
                 deletePostUseCase
             )
 
-            val username = homeViewModel.username
-
-            assertEquals("Username should be 'george_z'", "george_z", username)
+            assertEquals(
+                "Username should be 'george_z'",
+                "george_z",
+                homeViewModel.uiState.username
+            )
         }
     }
 
     @Test
     fun `Get user profile should be success`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Success(userProfile))
-
-            doReturn(result).`when`(getUserProfileUseCase)()
+            doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
+            doReturn(flowOf(Result.Success(userProfile))).`when`(getUserProfileUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
                 getUserProfileUseCase,
+                getPostsUseCase,
                 receivePostUseCase,
                 sendPostUseCase,
                 deletePostUseCase
             )
 
-            val userProfile = when (val userProfileState = homeViewModel.userProfileState) {
-                is UIState.Success -> userProfileState.data
-
-                else -> null
+            with(homeViewModel.uiState) {
+                assertNotNull(userProfile)
+                assertEquals(
+                    "User avatar should be 'avatar_url'",
+                    "avatar_url",
+                    userProfile?.avatar
+                )
             }
-
-            assertNotNull(userProfile)
-            assertEquals("User avatar should be 'avatar_url'", "avatar_url", userProfile?.avatar)
         }
     }
 
     @Test
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Error<UserProfile>())
-
-            doReturn(result).`when`(getUserProfileUseCase)()
+            doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
+            doReturn(flowOf(Result.Error<UserProfile>())).`when`(getUserProfileUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
                 getUserProfileUseCase,
+                getPostsUseCase,
                 receivePostUseCase,
                 sendPostUseCase,
                 deletePostUseCase
             )
 
-            val isSuccess = when (homeViewModel.userProfileState) {
-                is UIState.Success -> true
+            with(homeViewModel.uiState) {
+                val isSuccess = userProfile != null && errorMessage == null
 
-                else -> false
+                assertEquals("Should be fail", false, isSuccess)
             }
-
-            assertEquals("Should be fail", false, isSuccess)
         }
     }
 
     @Test
-    fun `Receive post should be success`() {
+    fun `Get and receive posts should be success`() {
         testCoroutineRule.runTest {
             val _postSharedFlow = MutableSharedFlow<Post>()
             val postSharedFlow = _postSharedFlow.asSharedFlow()
 
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
+            doReturn(flowOf(Result.Success(posts))).`when`(getPostsUseCase)()
             doReturn(postSharedFlow).`when`(receivePostUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
                 getUserProfileUseCase,
+                getPostsUseCase,
                 receivePostUseCase,
                 sendPostUseCase,
                 deletePostUseCase
             )
 
-            val job = launch {
-                postSharedFlow.collect()
+            with(homeViewModel.uiState) {
+                val job = launch {
+                    postSharedFlow.collect()
+                }
+
+                _postSharedFlow.emit(post)
+
+                assertEquals("Posts should not empty", posts.isNotEmpty(), true)
+                assertEquals("Posts size should be 1", 3, posts.size)
+
+                job.cancel()
             }
+        }
+    }
 
-            _postSharedFlow.emit(post)
+    @Test
+    fun `Get posts should be fail`() {
+        testCoroutineRule.runTest {
+            doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
+            doReturn(flowOf(Result.Error<List<Post>>())).`when`(getPostsUseCase)()
 
-            val posts = homeViewModel.posts
+            homeViewModel = HomeViewModel(
+                getUserCredentialUseCase,
+                getUserProfileUseCase,
+                getPostsUseCase,
+                receivePostUseCase,
+                sendPostUseCase,
+                deletePostUseCase
+            )
 
-            assertEquals("Posts size should be 1", 1, posts.size)
+            with(homeViewModel.uiState) {
+                val isFailed = isPostsLoading == false && errorMessage != null
 
-            job.cancel()
+                assertEquals("Should be failed", false, isFailed)
+            }
         }
     }
 
     @Test
     fun `Delete post should be success`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Success<JsonObject>())
-
-            doReturn(result).`when`(deletePostUseCase)(anyString())
+            doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
+            doReturn(flowOf(Result.Success<JsonObject>())).`when`(deletePostUseCase)(anyString())
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
                 getUserProfileUseCase,
+                getPostsUseCase,
                 receivePostUseCase,
                 sendPostUseCase,
                 deletePostUseCase
@@ -168,26 +198,24 @@ class HomeViewModelTest {
             onEvent(HomeEvent.OnPostSelected(post))
             onEvent(HomeEvent.DeletePost)
 
-            val isSuccess = when (homeViewModel.deletePostState) {
-                is UIState.Success -> true
+            with(homeViewModel.uiState) {
+                val isSuccess = isPostDeleting == false && errorMessage == null
 
-                else -> false
+                assertEquals("Should be success", true, isSuccess)
             }
-
-            assertEquals("Should be success", true, isSuccess)
         }
     }
 
     @Test
     fun `Delete post should be fail`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Error<JsonObject>())
-
-            doReturn(result).`when`(deletePostUseCase)(anyString())
+            doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
+            doReturn(flowOf(Result.Error<JsonObject>())).`when`(deletePostUseCase)(anyString())
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
                 getUserProfileUseCase,
+                getPostsUseCase,
                 receivePostUseCase,
                 sendPostUseCase,
                 deletePostUseCase
@@ -197,13 +225,11 @@ class HomeViewModelTest {
             onEvent(HomeEvent.OnPostSelected(post))
             onEvent(HomeEvent.DeletePost)
 
-            val isSuccess = when (homeViewModel.deletePostState) {
-                is UIState.Success -> true
+            with(homeViewModel.uiState) {
+                val isFailed = isPostDeleting == false && errorMessage != null
 
-                else -> false
+                assertEquals("Should be failed", false, isFailed)
             }
-
-            assertEquals("Should be fail", false, isSuccess)
         }
     }
 }
