@@ -9,7 +9,7 @@ data class HomeUiState(
     val isRefreshing: Boolean = false,
     val isUserProfileLoading: Boolean = false,
     val isPostsLoading: Boolean? = null,
-    val isPostDeleting: Boolean = false,
+    val isPostDeleting: Boolean? = null,
     val posts: SnapshotStateList<Post> = mutableStateListOf(),
     val userProfile: UserProfile? = null,
     val username: String = "",

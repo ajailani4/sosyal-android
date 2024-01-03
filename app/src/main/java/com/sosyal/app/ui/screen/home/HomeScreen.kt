@@ -125,7 +125,7 @@ fun HomeScreen(
             )
         }
 
-        if (uiState.isPostDeleting) ProgressBarWithBackground()
+        if (uiState.isPostDeleting == true) ProgressBarWithBackground()
 
         if (showDeletePostDialog) {
             AlertDialog(

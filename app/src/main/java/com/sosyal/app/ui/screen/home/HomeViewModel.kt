@@ -12,7 +12,7 @@ import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
-import com.sosyal.app.util.observeUseCaseResult
+import com.sosyal.app.util.observeApiResult
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -62,8 +62,8 @@ class HomeViewModel(
     }
 
     private fun getUserProfile() {
-        viewModelScope.observeUseCaseResult(
-            useCase = getUserProfileUseCase(),
+        viewModelScope.observeApiResult(
+            apiResult = getUserProfileUseCase(),
             onLoading = { uiState = uiState.copy(isUserProfileLoading = true) },
             onSuccess = {
                 uiState = uiState.copy(
@@ -76,8 +76,8 @@ class HomeViewModel(
     }
 
     private fun getPosts() {
-        viewModelScope.observeUseCaseResult(
-            useCase = getPostsUseCase(),
+        viewModelScope.observeApiResult(
+            apiResult = getPostsUseCase(),
             onLoading = { uiState = uiState.copy(isPostsLoading = true) },
             onSuccess = {
                 if (it != null) {
@@ -142,15 +142,15 @@ class HomeViewModel(
 
     private fun deletePost() {
         uiState.selectedPost.id?.let { id ->
-            viewModelScope.observeUseCaseResult(
-                useCase = deletePostUseCase(id),
+            viewModelScope.observeApiResult(
+                apiResult = deletePostUseCase(id),
                 onLoading = { uiState = uiState.copy(isPostDeleting = true) },
                 onSuccess = {
                     uiState.posts.remove(uiState.selectedPost)
 
                     uiState = uiState.copy(isPostDeleting = false)
                 },
-                onError = { uiState = uiState.copy(errorMessage = it) }
+                onError = { uiState = uiState.copy(isPostDeleting = false, errorMessage = it) }
             )
         }
     }
