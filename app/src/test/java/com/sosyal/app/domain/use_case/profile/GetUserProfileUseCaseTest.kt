@@ -3,7 +3,7 @@ package com.sosyal.app.domain.use_case.profile
 import com.sosyal.app.domain.model.UserProfile
 import com.sosyal.app.domain.repository.UserProfileRepositoryFake
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.ResourceType
 import com.sosyal.app.util.userProfile
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +34,7 @@ class GetUserProfileUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Result.Success(userProfile),
+                ApiResult.Success(userProfile),
                 actualResource
             )
         }
@@ -48,7 +48,7 @@ class GetUserProfileUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Result.Error<UserProfile>(),
+                ApiResult.Error<UserProfile>(),
                 actualResource
             )
         }

@@ -12,7 +12,7 @@ import com.sosyal.app.domain.use_case.post.ReceivePostUseCase
 import com.sosyal.app.domain.use_case.post.SendPostUseCase
 import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
-import com.sosyal.app.util.observeApiResult
+import com.sosyal.app.util.collectApiResult
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -62,7 +62,7 @@ class HomeViewModel(
     }
 
     private fun getUserProfile() {
-        viewModelScope.observeApiResult(
+        viewModelScope.collectApiResult(
             apiResult = getUserProfileUseCase(),
             onLoading = { uiState = uiState.copy(isUserProfileLoading = true) },
             onSuccess = {
@@ -76,7 +76,7 @@ class HomeViewModel(
     }
 
     private fun getPosts() {
-        viewModelScope.observeApiResult(
+        viewModelScope.collectApiResult(
             apiResult = getPostsUseCase(),
             onLoading = { uiState = uiState.copy(isPostsLoading = true) },
             onSuccess = {
@@ -142,7 +142,7 @@ class HomeViewModel(
 
     private fun deletePost() {
         uiState.selectedPost.id?.let { id ->
-            viewModelScope.observeApiResult(
+            viewModelScope.collectApiResult(
                 apiResult = deletePostUseCase(id),
                 onLoading = { uiState = uiState.copy(isPostDeleting = true) },
                 onSuccess = {

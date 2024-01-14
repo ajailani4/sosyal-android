@@ -8,7 +8,7 @@ import com.sosyal.app.domain.use_case.user_credential.GetUserCredentialUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.upload_edit_post.UploadEditPostEvent
 import com.sosyal.app.ui.screen.upload_edit_post.UploadEditPostViewModel
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.post
 import com.sosyal.app.util.userCredential
@@ -53,9 +53,9 @@ class UploadEditPostViewModelTest {
     @Test
     fun `Get post detail should be success`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Success(post))
+            val apiResult = flowOf(ApiResult.Success(post))
 
-            doReturn(result).`when`(getPostDetailUseCase)(anyString())
+            doReturn(apiResult).`when`(getPostDetailUseCase)(anyString())
 
             uploadEditPostViewModel = UploadEditPostViewModel(
                 savedStateHandle,
@@ -73,9 +73,9 @@ class UploadEditPostViewModelTest {
     @Test
     fun `Get post detail should be error`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Error<Post>())
+            val apiResult = flowOf(ApiResult.Error<Post>())
 
-            doReturn(result).`when`(getPostDetailUseCase)(anyString())
+            doReturn(apiResult).`when`(getPostDetailUseCase)(anyString())
 
             uploadEditPostViewModel = UploadEditPostViewModel(
                 savedStateHandle,

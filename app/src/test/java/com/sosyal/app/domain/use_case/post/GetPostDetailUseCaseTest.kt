@@ -2,7 +2,7 @@ package com.sosyal.app.domain.use_case.post
 
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.domain.repository.PostRepositoryFake
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.ResourceType
 import com.sosyal.app.util.post
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,7 +33,7 @@ class GetPostDetailUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Result.Success(post),
+                ApiResult.Success(post),
                 actualResource
             )
         }
@@ -47,7 +47,7 @@ class GetPostDetailUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Result.Error<Post>(),
+                ApiResult.Error<Post>(),
                 actualResource
             )
         }

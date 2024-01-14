@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.use_case.user_profile.EditUserProfileUseCase
 import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.io.File
@@ -63,7 +63,7 @@ class EditProfileViewModel(
                 userProfileState = UIState.Error(it.message)
             }.collect {
                 userProfileState = when (it) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         it.data?.let { userProfile ->
                             username = userProfile.username
                             name = userProfile.name
@@ -74,7 +74,7 @@ class EditProfileViewModel(
                         UIState.Success(null)
                     }
 
-                    is Result.Error -> UIState.Error(it.message)
+                    is ApiResult.Error -> UIState.Error(it.message)
                 }
             }
         }
@@ -92,9 +92,9 @@ class EditProfileViewModel(
                 editUserProfileState = UIState.Error(it.message)
             }.collect {
                 editUserProfileState = when (it) {
-                    is Result.Success -> UIState.Success(null)
+                    is ApiResult.Success -> UIState.Success(null)
 
-                    is Result.Error -> UIState.Error(it.message)
+                    is ApiResult.Error -> UIState.Error(it.message)
                 }
             }
         }

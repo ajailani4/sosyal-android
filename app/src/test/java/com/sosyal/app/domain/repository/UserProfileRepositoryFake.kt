@@ -10,22 +10,22 @@ import java.io.File
 class UserProfileRepositoryFake : UserProfileRepository {
     private lateinit var resourceType: ResourceType
 
-    override fun getUserProfile(): Flow<Result<UserProfile>> =
+    override fun getUserProfile(): Flow<ApiResult<UserProfile>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success(userProfile))
+            ResourceType.Success -> flowOf(ApiResult.Success(userProfile))
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
     override fun editUserProfile(
         name: String,
         email: String,
         avatar: File?
-    ): Flow<Result<JsonObject>> =
+    ): Flow<ApiResult<JsonObject>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success())
+            ResourceType.Success -> flowOf(ApiResult.Success())
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
     fun setResourceType(type: ResourceType) {

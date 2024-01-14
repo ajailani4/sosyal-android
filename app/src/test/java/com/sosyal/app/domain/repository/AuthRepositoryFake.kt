@@ -1,7 +1,7 @@
 package com.sosyal.app.domain.repository
 
 import com.sosyal.app.domain.model.UserCredential
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.ResourceType
 import com.sosyal.app.util.userCredential
 import kotlinx.coroutines.flow.Flow
@@ -15,21 +15,21 @@ class AuthRepositoryFake : AuthRepository {
         email: String,
         username: String,
         password: String
-    ): Flow<Result<UserCredential>> =
+    ): Flow<ApiResult<UserCredential>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success(userCredential))
+            ResourceType.Success -> flowOf(ApiResult.Success(userCredential))
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
     override fun login(
         username: String,
         password: String
-    ): Flow<Result<UserCredential>> =
+    ): Flow<ApiResult<UserCredential>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success(userCredential))
+            ResourceType.Success -> flowOf(ApiResult.Success(userCredential))
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
     fun setResourceType(type: ResourceType) {

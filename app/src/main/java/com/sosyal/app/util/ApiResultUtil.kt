@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-fun <T> CoroutineScope.observeApiResult(
-    apiResult: Flow<Result<T>>?,
+fun <T> CoroutineScope.collectApiResult(
+    apiResult: Flow<ApiResult<T>>?,
     onLoading: (() -> Unit)? = null,
     onSuccess: suspend (data: T?) -> Unit,
     onError: ((String?) -> Unit)? = null
@@ -15,9 +15,9 @@ fun <T> CoroutineScope.observeApiResult(
     this.launch {
         apiResult?.collect { result ->
             when (result) {
-                is Result.Success -> onSuccess(result.data)
+                is ApiResult.Success -> onSuccess(result.data)
 
-                is Result.Error -> onError?.invoke(result.message)
+                is ApiResult.Error -> onError?.invoke(result.message)
             }
         }
     }

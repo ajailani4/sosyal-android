@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -62,9 +62,9 @@ class RegisterViewModel(
                     registerState = UIState.Error(it.message)
                 }.collect {
                     registerState = when (it) {
-                        is Result.Success -> UIState.Success(null)
+                        is ApiResult.Success -> UIState.Success(null)
 
-                        is Result.Error -> UIState.Error(it.message)
+                        is ApiResult.Error -> UIState.Error(it.message)
                     }
                 }
             }

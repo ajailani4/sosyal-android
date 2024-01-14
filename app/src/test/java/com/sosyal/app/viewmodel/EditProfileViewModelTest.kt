@@ -6,7 +6,7 @@ import com.sosyal.app.domain.use_case.user_profile.GetUserProfileUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.edit_profile.EditProfileEvent
 import com.sosyal.app.ui.screen.edit_profile.EditProfileViewModel
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.userProfile
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,9 +41,9 @@ class EditProfileViewModelTest {
     @Test
     fun `Get user profile should be success`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Success(userProfile))
+            val apiResult = flowOf(ApiResult.Success(userProfile))
 
-            doReturn(result).`when`(getUserProfileUseCase)()
+            doReturn(apiResult).`when`(getUserProfileUseCase)()
 
             editProfileViewModel = EditProfileViewModel(
                 getUserProfileUseCase,
@@ -63,9 +63,9 @@ class EditProfileViewModelTest {
     @Test
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Error<UserProfile>())
+            val apiResult = flowOf(ApiResult.Error<UserProfile>())
 
-            doReturn(result).`when`(getUserProfileUseCase)()
+            doReturn(apiResult).`when`(getUserProfileUseCase)()
 
             editProfileViewModel = EditProfileViewModel(
                 getUserProfileUseCase,
@@ -85,9 +85,9 @@ class EditProfileViewModelTest {
     @Test
     fun `Edit user profile should be success`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Success<JsonObject>())
+            val apiResult = flowOf(ApiResult.Success<JsonObject>())
 
-            doReturn(result).`when`(editUserProfileUseCase)(
+            doReturn(apiResult).`when`(editUserProfileUseCase)(
                 name = anyString(),
                 email = anyString(),
                 avatar = anyOrNull()
@@ -113,9 +113,9 @@ class EditProfileViewModelTest {
     @Test
     fun `Edit user profile should be fail`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Error<JsonObject>())
+            val apiResult = flowOf(ApiResult.Error<JsonObject>())
 
-            doReturn(result).`when`(editUserProfileUseCase)(
+            doReturn(apiResult).`when`(editUserProfileUseCase)(
                 name = anyString(),
                 email = anyString(),
                 avatar = isNull()

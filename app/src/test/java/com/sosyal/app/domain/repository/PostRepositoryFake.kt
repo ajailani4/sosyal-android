@@ -2,7 +2,7 @@ package com.sosyal.app.domain.repository
 
 import com.sosyal.app.domain.model.Post
 import com.sosyal.app.util.ResourceType
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.post
 import com.sosyal.app.util.posts
 import kotlinx.coroutines.flow.Flow
@@ -12,11 +12,11 @@ import kotlinx.serialization.json.JsonObject
 
 class PostRepositoryFake : PostRepository {
     private lateinit var resourceType: ResourceType
-    override fun getPosts(): Flow<Result<List<Post>>> =
+    override fun getPosts(): Flow<ApiResult<List<Post>>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success(posts))
+            ResourceType.Success -> flowOf(ApiResult.Success(posts))
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
     override fun receivePost(): SharedFlow<Post> {
@@ -27,18 +27,18 @@ class PostRepositoryFake : PostRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getPostDetail(id: String): Flow<Result<Post>> =
+    override fun getPostDetail(id: String): Flow<ApiResult<Post>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success(post))
+            ResourceType.Success -> flowOf(ApiResult.Success(post))
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
-    override fun deletePost(id: String): Flow<Result<JsonObject>> =
+    override fun deletePost(id: String): Flow<ApiResult<JsonObject>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Result.Success())
+            ResourceType.Success -> flowOf(ApiResult.Success())
 
-            ResourceType.Error -> flowOf(Result.Error())
+            ResourceType.Error -> flowOf(ApiResult.Error())
         }
 
     fun setResourceType(type: ResourceType) {

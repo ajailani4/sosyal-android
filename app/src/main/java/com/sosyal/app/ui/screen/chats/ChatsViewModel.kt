@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.sosyal.app.domain.model.Chat
 import com.sosyal.app.domain.use_case.chat.GetChatsUseCase
 import com.sosyal.app.ui.common.UIState
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -29,7 +29,7 @@ class ChatsViewModel(
                 chatsState = UIState.Error(it.message)
             }.collect {
                 chatsState = when (it) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         if (it.data != null) {
                             chats.addAll(it.data)
                         }
@@ -37,7 +37,7 @@ class ChatsViewModel(
                         UIState.Success(null)
                     }
 
-                    is Result.Error -> UIState.Error(it.message)
+                    is ApiResult.Error -> UIState.Error(it.message)
                 }
             }
         }

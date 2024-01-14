@@ -77,7 +77,7 @@ class HomeViewModelTest {
     fun `Get user profile should be success`() {
         testCoroutineRule.runTest {
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
-            doReturn(flowOf(Result.Success(userProfile))).`when`(getUserProfileUseCase)()
+            doReturn(flowOf(ApiResult.Success(userProfile))).`when`(getUserProfileUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -103,7 +103,7 @@ class HomeViewModelTest {
     fun `Get user profile should be fail`() {
         testCoroutineRule.runTest {
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
-            doReturn(flowOf(Result.Error<UserProfile>())).`when`(getUserProfileUseCase)()
+            doReturn(flowOf(ApiResult.Error<UserProfile>())).`when`(getUserProfileUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -129,7 +129,7 @@ class HomeViewModelTest {
             val postSharedFlow = _postSharedFlow.asSharedFlow()
 
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
-            doReturn(flowOf(Result.Success(posts))).`when`(getPostsUseCase)()
+            doReturn(flowOf(ApiResult.Success(posts))).`when`(getPostsUseCase)()
             doReturn(postSharedFlow).`when`(receivePostUseCase)()
 
             homeViewModel = HomeViewModel(
@@ -160,7 +160,7 @@ class HomeViewModelTest {
     fun `Get posts should be fail`() {
         testCoroutineRule.runTest {
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
-            doReturn(flowOf(Result.Error<List<Post>>())).`when`(getPostsUseCase)()
+            doReturn(flowOf(ApiResult.Error<List<Post>>())).`when`(getPostsUseCase)()
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -183,7 +183,7 @@ class HomeViewModelTest {
     fun `Delete post should be success`() {
         testCoroutineRule.runTest {
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
-            doReturn(flowOf(Result.Success<JsonObject>())).`when`(deletePostUseCase)(anyString())
+            doReturn(flowOf(ApiResult.Success<JsonObject>())).`when`(deletePostUseCase)(anyString())
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,
@@ -210,7 +210,7 @@ class HomeViewModelTest {
     fun `Delete post should be fail`() {
         testCoroutineRule.runTest {
             doReturn(flowOf(userCredential)).`when`(getUserCredentialUseCase)()
-            doReturn(flowOf(Result.Error<JsonObject>())).`when`(deletePostUseCase)(anyString())
+            doReturn(flowOf(ApiResult.Error<JsonObject>())).`when`(deletePostUseCase)(anyString())
 
             homeViewModel = HomeViewModel(
                 getUserCredentialUseCase,

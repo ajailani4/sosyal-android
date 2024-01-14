@@ -5,7 +5,7 @@ import com.sosyal.app.domain.use_case.auth.RegisterAccountUseCase
 import com.sosyal.app.ui.common.UIState
 import com.sosyal.app.ui.screen.register.RegisterEvent
 import com.sosyal.app.ui.screen.register.RegisterViewModel
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import com.sosyal.app.util.TestCoroutineRule
 import com.sosyal.app.util.userCredential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,9 +43,9 @@ class RegisterViewModelTest {
     @Test
     fun `Register account should be success`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Success(userCredential))
+            val apiResult = flowOf(ApiResult.Success(userCredential))
 
-            doReturn(result).`when`(registerAccountUseCase)(
+            doReturn(apiResult).`when`(registerAccountUseCase)(
                 name = anyString(),
                 email = anyString(),
                 username = anyString(),
@@ -67,9 +67,9 @@ class RegisterViewModelTest {
     @Test
     fun `Register account should be fail`() {
         testCoroutineRule.runTest {
-            val result = flowOf(Result.Error<UserCredential>())
+            val apiResult = flowOf(ApiResult.Error<UserCredential>())
 
-            doReturn(result).`when`(registerAccountUseCase)(
+            doReturn(apiResult).`when`(registerAccountUseCase)(
                 name = anyString(),
                 email = anyString(),
                 username = anyString(),

@@ -1,7 +1,7 @@
 package com.sosyal.app.domain.repository
 
 import com.sosyal.app.domain.model.UserCredential
-import com.sosyal.app.util.Result
+import com.sosyal.app.util.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -10,10 +10,10 @@ interface AuthRepository {
         email: String,
         username: String,
         password: String
-    ): Flow<Result<UserCredential>>
+    ): Flow<ApiResult<UserCredential>>
 
     fun login(
         username: String,
         password: String
-    ): Flow<Result<UserCredential>>
+    ): Flow<ApiResult<UserCredential>>
 }
